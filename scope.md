@@ -29,8 +29,11 @@ legal?)
         * I should use the queue module with one queue for this?
             * Probably not queue, because that's for doing everything in a bunch of threads then
             unblocking at the end
-    * Final solution will probably use a class that wraps threads around a function, uses the
-    [splat operator] [1] (`*`), and a class for Mongo connections to a certain database.
-
-
-[1]: http://stackoverflow.com/questions/4979542/python-use-list-as-function-parameters 
+    * Final solution will probably use Mongo and use threads and queues only when necessary for 
+    multiple requests. 
+        * If I want smart context switching when things are idle on I/O, threading actually needs to
+        go higher up. 
+* Open Gaming License content created
+    * Default skills in an object
+    * More can wait until I have some arch done
+* Class for all the key components of a character
