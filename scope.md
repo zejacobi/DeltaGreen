@@ -22,7 +22,15 @@ legal?)
 ## Implementation 
 * Classes for connecting to Mongo Database
     * Wrapper class/function for making requests async
-        * Should this just be the default for all Mongo Requests
+        * Should this just be the default for all Mongo Requests?
         * This might get annoying if I use a variety of query types, to have to wrap 
         each one
         * Can I use decorators?
+        * I should use the queue module with one queue for this?
+            * Probably not queue, because that's for doing everything in a bunch of threads then
+            unblocking at the end
+    * Final solution will probably use a class that wraps threads around a function, uses the
+    [splat operator] [1] (`*`), and a class for Mongo connections to a certain database.
+
+
+[1]: http://stackoverflow.com/questions/4979542/python-use-list-as-function-parameters 
