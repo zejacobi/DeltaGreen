@@ -145,7 +145,7 @@
       "Medicine": 60,
       "Persuade": 40,
       "Pharmacy": 50,
-      "Search": 40,
+      "Search": 40
     },
     "Choices": {
       "Number": 2,
@@ -169,7 +169,7 @@
     "_id": "Scientist",
     "Skills": {
       "Bureaucracy": 40,
-      "Computer Science": 40,
+      "Computer Science": 40
     },
     "Choices": {
       "Number": 3,
