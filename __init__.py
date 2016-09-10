@@ -1,0 +1,3 @@
+"""
+Delta Green Character Generator
+"""
