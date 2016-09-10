@@ -1,0 +1,233 @@
+[
+  {
+    "_id": "Historian",
+    "Skills": {
+      "Archeology": 50,
+      "Bureaucracy": 40,
+      "History": 60,
+      "Occult": 40,
+      "Persuade": 40
+    },
+    "Choices": {
+      "Number": 2,
+      "Skills" : {
+        "Anthropology": 40,
+        "HUMINT": 50,
+        "Navigate": 50,
+        "Ride": 50,
+        "Search": 60,
+        "Survival": 50
+      }
+    },
+    "Subskills": [
+      {
+        "Skill": "Foreign Language",
+        "Sub": "",
+        "Value": 50
+      },
+      {
+        "Skill": "Foreign Language",
+        "Sub": "",
+        "Value": 40
+      }
+    ],
+    "Bonds": 4
+  },
+  {
+    "_id": "Anthropologist",
+    "Skills": {
+      "Anthropology": 50,
+      "Bureaucracy": 40,
+      "History": 60,
+      "Occult": 40,
+      "Persuade": 40
+    },
+    "Choices": {
+      "Number": 2,
+      "Skills" : {
+        "Archeology": 40,
+        "HUMINT": 50,
+        "Navigate": 50,
+        "Ride": 50,
+        "Search": 60,
+        "Survival": 50
+      }
+    },
+    "Subskills": [
+      {
+        "Skill": "Foreign Language",
+        "Sub": "",
+        "Value": 50
+      },
+      {
+        "Skill": "Foreign Language",
+        "Sub": "",
+        "Value": 40
+      }
+    ],
+    "Bonds": 4
+  },
+  {
+    "_id": "Computer Scientist",
+    "Skills": {
+      "Computer Science": 60,
+      "SIGINT": 40
+    },
+    "Choices": {
+      "Number": 4,
+      "Skills": {
+        "Accounting": 50,
+        "Bureaucracy": 50,
+        "Craft": 40,
+        "Foreign Language": 40,
+        "Heavy Machinery": 50,
+        "Law": 40,
+        "Science": 40
+      }
+    },
+    "Subskills": [
+      {
+        "Skill": "Craft",
+        "Sub": "Electrician",
+        "Value": 30
+      },
+      {
+        "Skill": "Craft",
+        "Sub": "Electrician",
+        "Value": 30
+      },
+      {
+        "Skill": "Craft",
+        "Sub": "Microelectronics",
+        "Value": 40
+      },
+      {
+        "Skill": "Science",
+        "Sub": "Mathematics",
+        "Value": 40
+      }
+    ],
+    "Bonds": 3
+  },
+  {
+    "_id": "Federal Agent",
+    "Skills": {
+      "Alertness": 50,
+      "Bureaucracy": 40,
+      "Criminology": 50,
+      "Drive": 50,
+      "Firearms": 50,
+      "Forensics": 30,
+      "HUMINT": 60,
+      "Law": 30,
+      "Persuade": 50,
+      "Search": 50,
+      "Unarmed Combat": 60
+    },
+    "Choices": {
+      "Number": 1,
+      "Skills" : {
+        "Accounting": 60,
+        "Computer Science": 50,
+        "Foreign Language": 50,
+        "Heavy Weapons": 50,
+        "Pharmacy": 50
+      }
+    },
+    "Subskills": [],
+    "Bonds": 3
+  },
+  {
+    "_id": "Physician",
+    "Skills": {
+      "Bureaucracy": 50,
+      "First Aid": 60,
+      "Medicine": 60,
+      "Persuade": 40,
+      "Pharmacy": 50,
+      "Search": 40,
+    },
+    "Choices": {
+      "Number": 2,
+      "Skills" : {
+        "Forensics": 50,
+        "Psychotherapy": 60,
+        "Science": 50,
+        "Surgery": 50
+      }
+    },
+    "Subskills": [
+      {
+        "Skill": "Science",
+        "Sub": "Biology",
+        "Value": 50
+      }
+    ],
+    "Bonds": 3
+  },
+  {
+    "_id": "Scientist",
+    "Skills": {
+      "Bureaucracy": 40,
+      "Computer Science": 40,
+    },
+    "Choices": {
+      "Number": 3,
+      "Skills" : {
+        "Accounting": 50,
+        "Craft": 40,
+        "Foreign Language": 40,
+        "Forensics": 40,
+        "Law": 40,
+        "Pharmacy": 40
+      }
+    },
+    "Subskills": [
+      {
+        "Skill": "Science",
+        "Sub": "",
+        "Value": 60
+      },
+      {
+        "Skill": "Science",
+        "Sub": "",
+        "Value": 50
+      },
+      {
+        "Skill": "Science",
+        "Sub": "",
+        "Value": 50
+      }
+    ],
+    "Bonds": 4
+  },
+  {
+    "_id": "Special Operator",
+    "Skills": {
+      "Alertness": 60,
+      "Athletics": 60,
+      "Demolitions": 40,
+      "Firearms": 60,
+      "Heavy Weapons": 50,
+      "Melee Weapons": 50,
+      "Navigate": 50,
+      "Stealth": 50,
+      "Survival": 50,
+      "Swim": 50,
+      "Unarmed Combat": 60
+    },
+    "Choices": {
+      "Number": 0,
+      "Skills" : {
+      }
+    },
+    "Subskills": [
+      {
+        "Skill": "Military Science",
+        "Sub": "Land",
+        "Value": 60
+      }
+    ],
+    "Bonds": 2
+  }
+]
