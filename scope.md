@@ -15,6 +15,9 @@ I'm capable of in python to prospective future employers.
 * Random generation of a complete Delta Green character (stats, bonds, disorders, etc.)
 * Front end that displays a random character every time the endpoint is visited
 * Characters are saved in a database in a sensible format
+* Open gaming license vs not distinction made in DB and on front end and players must check
+if they own the actual game and can access the non open-gaming license content (hopefully this is
+legal?)
 
 ## Implementation 
 * Classes for connecting to Mongo Database
