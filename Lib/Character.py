@@ -10,7 +10,8 @@ class Character(object):
         self.defaults = default_skills
         self.sub_skills = sub_skills
         self.sub_skill_types = sub_skills.keys()
-        self.bonds = 0
+        self.num_bonds = 0
+        self.bonds = []
         self.class_name = ''
         self.package_name = ''
         self.stats = {
@@ -94,7 +95,7 @@ class Character(object):
     def apply_class(self, class_obj):
         skills = class_obj['Skills']
         sub_skills = class_obj['Subskills']
-        self.bonds = class_obj['Bonds']
+        self.num_bonds = class_obj['Bonds']
         self.class_name = class_obj['_id']
 
         for skill in skills:
@@ -234,3 +235,34 @@ class Character(object):
             'Willpower Points': self.wp,
             'Breaking Point': self.bp
         }
+
+    def add_bond(self, bond):
+        """
+
+        :param dict bond:
+        :return:
+        """
+        self.bonds.append(bond)
+
+    def get_bonds(self):
+        return [bond["_id"] for bond in self.bonds]
+
+    def get_bond_types(self):
+        types = {
+            "Family": False,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }
+        for bond in self.bonds:
+            for bond_type in types:
+                types[bond_type] = types[bond_type] or bond[bond_type]
+
+        return types
+
+    def has_bond_type(self, bond_type):
+        types = self.get_bond_types()
+        if bond_type in types:
+            return types[bond_type]
+        return False
