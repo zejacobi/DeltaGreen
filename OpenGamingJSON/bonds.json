@@ -1,0 +1,289 @@
+[
+  {
+    "_id": "Mother",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Father",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Brother",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Sister",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false
+  },
+  {
+    "_id": "Aunt",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Uncle",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Niece",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Nephew",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Grandfather",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Grandmother",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Spouse",
+    "Required": null,
+    "Family": true,
+    "Romantic": true,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Fiance",
+    "Required": null,
+    "Family": false,
+    "Romantic": true,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Boyfriend",
+    "Required": null,
+    "Family": false,
+    "Romantic": true,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Girlfriend",
+    "Required": null,
+    "Family": false,
+    "Romantic": true,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Partner Officer",
+    "Required": ["Federal Agent"],
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": true,
+    "Therapy": true
+  },
+  {
+    "_id": "Coworker",
+    "Required": [
+      "Historian",
+      "Anthropologist",
+      "Computer Scientist",
+      "Physician",
+      "Scientist"
+    ],
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": true,
+    "Therapy": true
+  },
+  {
+    "_id": "War-buddy",
+    "Required": [
+      "Special Operator",
+      "Combat Veteran"
+    ],
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": true,
+    "Therapy": true
+  },
+  {
+    "_id": "Underworld Contact",
+    "Required": [
+      "Gangster",
+      "Criminalist",
+      "Hacker",
+      "Black Bag",
+      "Criminal",
+      "Federal Agent",
+      "Computer Scientist"
+    ],
+    "Family": false,
+    "Romantic": false,
+    "Friend": true,
+    "Work": true,
+    "Therapy": true
+  },
+  {
+    "_id": "Student",
+    "Required": [
+      "Anthropologist",
+      "Historian",
+      "Scientist",
+      "Physician"
+    ],
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": true,
+    "Therapy": true
+  },
+  {
+    "_id": "Teammate",
+    "Required": [
+      "Athlete",
+      "Combat Veteran",
+      "Firefighter",
+      "Special Operator"
+    ],
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": true,
+    "Therapy": true
+  },
+  {
+    "_id": "Priest",
+    "Required": null,
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Therapist",
+    "Required": null,
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Roommate",
+    "Required": null,
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": true,
+    "Therapy": false
+  },
+  {
+    "_id": "Neighbour",
+    "Required": null,
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": true,
+    "Therapy": false
+  },
+  {
+    "_id": "Mentor",
+    "Required": null,
+    "Family": false,
+    "Romantic": false,
+    "Friend": true,
+    "Work": true,
+    "Therapy": false
+  },
+  {
+    "_id": "Boss",
+    "Required": null,
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": true,
+    "Therapy": false
+  },
+  {
+    "_id": "Ex-spouse",
+    "Required": null,
+    "Family": false,
+    "Romantic": false,
+    "Friend": true,
+    "Work": false,
+    "Therapy": false
+  },
+  {
+    "_id": "Son",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": false
+  },
+  {
+    "_id": "Daughter",
+    "Required": null,
+    "Family": true,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": false
+  }
+]
