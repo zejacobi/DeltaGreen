@@ -21,6 +21,11 @@ globals `DATABASE` and `MONGO_STRING`
 ## Running The Tests
 * Forthcoming
 
+## Wishlist
+* Language families/association scores to give more realistic language combinations
+* When picking a random skill in a package, more weight given to existing skills
+* Classes provide some bias to the stats
+
 ## Legal
 Parts of Delta Green are licensed under the OGL. I'm trying to only publicly share the parts that
 are. If you are a rights holder or (heavens forfend) their lawyer, you can reach me at 

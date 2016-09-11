@@ -14,12 +14,12 @@ class Character(object):
         self.class_name = ''
         self.package_name = ''
         self.stats = {
-            "Strength": 0,
-            "Dexterity": 0,
-            "Constitution": 0,
-            "Intelligence": 0,
-            "Power": 0,
-            "Charisma": 0
+            'Strength': 0,
+            'Dexterity': 0,
+            'Constitution': 0,
+            'Intelligence': 0,
+            'Power': 0,
+            'Charisma': 0
         }
         self.skill_mappings = skill_mappings
 
@@ -34,7 +34,7 @@ class Character(object):
 
     @staticmethod
     def roll_stat():
-        rolls = [random.randrange(1,7) for _ in range(4)]
+        rolls = [random.randrange(1, 7) for _ in range(4)]
         return sum(sorted(rolls, reverse=True)[:3])
 
     def get_random_sub_skill(self, skill):
@@ -109,8 +109,16 @@ class Character(object):
 
         if num_choices:
             skill_list = list(skill_choices.keys())
-            random.shuffle(skill_list)
-            for skill in skill_list[:num_choices]:
+            if 'Subskills' in choices:
+                choice_sub_skills = choices['Subskills']
+                sample_list = [False for _ in skill_list]
+                sample_list.extend(choice_sub_skills)
+                for tf in random.sample(sample_list, num_choices):
+                    if tf:
+                        num_choices -= 1
+                        self.safe_set_skill(tf['Skill'], tf['Sub'], tf['Value'])
+
+            for skill in random.sample(skill_list, num_choices):
                 success = self.safe_set_skill(skill, '', skill_choices[skill])
                 while success is not True:
                     success = self.safe_set_skill(skill, '', skill_choices[skill])
@@ -172,12 +180,12 @@ class Character(object):
     def apply_stats(self):
         best_skills = sorted(self.skills.items(), key=operator.itemgetter(1), reverse=True)[:5]
         stat_count = {
-            "Power": 2,  # San, Willpower
-            "Strength": 0.5,  # 1/2 HP
-            "Constitution": 0.5,  # 1/2 HP,
-            "Dexterity": 0,
-            "Intelligence": 0,
-            "Charisma": 0
+            'Power': 2,  # San, Willpower
+            'Strength': 1,  # 1/2 HP
+            'Constitution': 1,  # 1/2 HP,
+            'Dexterity': 0,
+            'Intelligence': 0,
+            'Charisma': 0
         }
         observed_stats = []
         for skill, _ in best_skills:
@@ -196,14 +204,16 @@ class Character(object):
                 stat_count[stat] += 1
 
         die_rolls = sorted([self.roll_stat() for _ in range(6)], reverse=True)
+        while sum(die_rolls) < 69:
+            die_rolls = sorted([self.roll_stat() for _ in range(6)], reverse=True)
         stat_order = sorted(stat_count.items(), key=operator.itemgetter(1), reverse=True)
         self.stats = {stat[0]: die_rolls[i] for i, stat in enumerate(stat_order)}
 
     def calculate_attributes(self):
-        self.hp = int(math.ceil(self.stats["Strength"]/2 + self.stats["Constitution"]/2))
-        self.wp = self.stats["Power"]
-        self.sanity = self.stats["Power"] * 5
-        self.bp = self.stats["Power"] * 4
+        self.hp = int(math.ceil(self.stats['Strength']/2 + self.stats['Constitution']/2))
+        self.wp = self.stats['Power']
+        self.sanity = self.stats['Power'] * 5
+        self.bp = self.stats['Power'] * 4
 
     def get_skills(self):
         return self.skills
@@ -219,8 +229,8 @@ class Character(object):
 
     def get_attributes(self):
         return {
-            "Sanity": self.sanity,
-            "Hit Points": self.hp,
-            "Willpower Points": self.wp,
-            "Breaking Point": self.bp
+            'Sanity': self.sanity,
+            'Hit Points': self.hp,
+            'Willpower Points': self.wp,
+            'Breaking Point': self.bp
         }
