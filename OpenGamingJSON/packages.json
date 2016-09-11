@@ -196,5 +196,68 @@
       "All": false,
       "List": []
     }
+  },
+  {
+    "_id": "Criminalist",
+    "Skills": [
+      "Accounting",
+      "Bureaucracy",
+      "Computer Science",
+      "Criminology",
+      "Forensics",
+      "Law",
+      "Pharmacy",
+      "Search"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Firefighter",
+    "Skills": [
+      "Alertness",
+      "Demolitions",
+      "Drive",
+      "First Aid",
+      "Forensics",
+      "Heavy Machinery",
+      "Navigate",
+      "Search"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Gangster",
+    "Skills": [
+      "Alertness",
+      "Criminology",
+      "Drive",
+      "Dodge",
+      "Persuade",
+      "Stealth",
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 2,
+      "All": false,
+      "List": [
+        "Athletics",
+        "Foreign Language",
+        "Firearms",
+        "HUMINT",
+        "Melee Weapons",
+        "Pharmacy",
+        "Unarmed Combat"
+      ]
+    }
   }
 ]
