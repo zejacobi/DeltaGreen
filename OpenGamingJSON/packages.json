@@ -1,0 +1,200 @@
+[
+  {
+    "_id": "Artiste",
+    "Skills": [
+      "Alertness",
+      "Disguise",
+      "Persuade",
+      "HUMINT",
+      "Craft",
+      "Art",
+      "Art",
+      "Art"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Athlete",
+    "Skills": [
+      "Alertness",
+      "Athletics",
+      "Dodge",
+      "First Aid",
+      "HUMINT",
+      "Persuade",
+      "Swim",
+      "Unarmed Combat"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Media Worker",
+    "Skills": [
+      "Anthropology",
+      "Art",
+      "Bureaucracy",
+      "History",
+      "Law",
+      "Occult",
+      "Persuade",
+      "HUMINT"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Black Bag",
+    "Skills": [
+      "Alertness",
+      "Athletics",
+      "Criminology",
+      "Disguise",
+      "Search",
+      "Stealth"
+    ],
+    "Subskills": [
+      {
+        "Skill": "Craft",
+        "Sub": "Locksmith"
+      },
+      {
+        "Skill": "Craft",
+        "Sub": "Electrician"
+      }
+    ],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Blue-Collar Worker",
+    "Skills": [
+      "Alertness",
+      "Craft",
+      "Craft",
+      "Drive",
+      "First Aid",
+      "Heavy Machinery",
+      "Navigate",
+      "Search"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Bureaucrat",
+    "Skills": [
+      "Accounting",
+      "Bureaucracy",
+      "Computer Science",
+      "Criminology",
+      "HUMINT",
+      "Law",
+      "Persuade"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 1,
+      "All": true,
+      "List": []
+    }
+  },
+  {
+    "_id": "Clergy",
+    "Skills": [
+      "Foreign Languages",
+      "Foreign Languages",
+      "Foreign Languages",
+      "History",
+      "HUMINT",
+      "Occult",
+      "Persuade",
+      "Psychotherapy"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Combat Veteran",
+    "Skills": [
+      "Alertness",
+      "Dodge",
+      "Firearms",
+      "First Aid",
+      "Heavy Weapons",
+      "Melee Weapons",
+      "Stealth",
+      "Unarmed Combat"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Hacker",
+    "Skills": [
+      "Computer Science",
+      "SIGINT"
+    ],
+    "Subskills": [
+      {
+        "Skill": "Craft",
+        "Sub": "Microelectronics"
+      }, {
+        "Skill": "Science",
+        "Sub": "Mathematics"
+      }
+    ],
+    "Choices": {
+      "Number": 4,
+      "All": true,
+      "List": []
+    }
+  },
+  {
+    "_id": "Counselor",
+    "Skills": [
+      "Bureaucracy",
+      "First Aid",
+      "Foreign Language",
+      "HUMINT",
+      "Law",
+      "Persuade",
+      "Psychotherapy",
+      "Search"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  }
+]

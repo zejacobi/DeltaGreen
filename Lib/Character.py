@@ -8,6 +8,9 @@ class Character(object):
         self.defaults = default_skills
         self.sub_skills = sub_skills
         self.sub_skill_types = sub_skills.keys()
+        self.bonds = 0
+        self.class_name = ''
+        self.package_name = ''
 
     @staticmethod
     def get_subskill_str(skill, sub):
@@ -79,6 +82,8 @@ class Character(object):
     def apply_class(self, class_obj):
         skills = class_obj['Skills']
         sub_skills = class_obj['Subskills']
+        self.bonds = class_obj["Bonds"]
+        self.class_name = class_obj["_id"]
 
         for skill in skills:
             self.set_skill(skill, skills[skill])
