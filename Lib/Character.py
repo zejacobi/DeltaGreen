@@ -29,15 +29,6 @@ class Character(object):
             return True
         return False
 
-    def add_to_skill(self, skill, addition):
-        if skill in self.skills:
-            self.skills[skill] += addition
-            return True
-        elif skill in self.sub_skill_types:
-            self.add_to_skill(self.add_random_sub_skill(skill), addition)
-            return True
-        return False
-
     def add_sub_skill(self, skill, sub):
         if not sub:
             return self.add_random_sub_skill(skill)
@@ -82,8 +73,8 @@ class Character(object):
     def apply_class(self, class_obj):
         skills = class_obj['Skills']
         sub_skills = class_obj['Subskills']
-        self.bonds = class_obj["Bonds"]
-        self.class_name = class_obj["_id"]
+        self.bonds = class_obj['Bonds']
+        self.class_name = class_obj['_id']
 
         for skill in skills:
             self.set_skill(skill, skills[skill])
@@ -103,5 +94,59 @@ class Character(object):
                 while success is not True:
                     success = self.safe_set_skill(skill, '', skill_choices[skill])
 
+    def add_to_skill(self, skill, addition, novel_sub_skill=True):
+        if skill in self.skills:
+            self.skills[skill] += addition
+            return True
+        elif skill in self.sub_skill_types:
+            self.add_to_skill(self.add_random_sub_skill(skill, novel_sub_skill), addition)
+            return True
+        return False
+
+    def add_to_sub_skill(self, skill, sub, addition, novel_sub_skill=False):
+        if sub:
+            string = self.get_subskill_str(skill, sub)
+            if string in self.skills:
+                return self.add_to_skill(string, addition)
+            else:
+                return self.add_to_skill(self.add_sub_skill(skill, sub), addition)
+        else:
+            return self.add_to_skill(skill, addition, novel_sub_skill=novel_sub_skill)
+
+    def add_package_skill(self, skill, sub):
+        if sub:
+            return self.add_to_sub_skill(skill, sub, 20)
+        else:
+            return self.add_to_skill(skill, 20)
+
+    def apply_package(self, package):
+        skills = package['Skills']
+        sub_skills = package['Subskills']
+        self.package_name = package['_id']
+
+        for skill in skills:
+            self.add_package_skill(skill, '')
+
+        for obj in sub_skills:
+            self.add_package_skill(obj['Skill'], obj['Sub'])
+        
+        choices = package['Choices']
+        skill_choices = choices['List']
+        all_skills = choices['All']
+        num_choices = choices['Number']
+        if num_choices:
+            if all_skills:
+                skill_choices = list(self.skills.keys())
+            for skill in skill_choices[:num_choices]:
+                success = self.add_package_skill(skill, '')
+                while success is not True:
+                    success = self.add_package_skill(skill, '')
+
     def get_skills(self):
         return self.skills
+
+    def get_class(self):
+        return self.class_name
+
+    def get_package(self):
+        return self.package_name

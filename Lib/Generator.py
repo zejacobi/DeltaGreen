@@ -9,12 +9,13 @@ from Lib.Mongo import database
 class Generator(object):
     def __init__(self):
         self.classes = []
-        self.class_name = ''
+        self.packages = []
         self.defaults = {}
         self.sub_skills = {}
 
         threads = [
             Thread(target=self.get_classes),
+            Thread(target=self.get_packages),
             Thread(target=self.get_defaults),
             Thread(target=self.get_sub_skills)
         ]
@@ -32,6 +33,11 @@ class Generator(object):
         for class_obj in pointer:
             self.classes.append(class_obj)
 
+    def get_packages(self):
+        pointer = database['packages'].find()
+        for package in pointer:
+            self.packages.append(package)
+
     def get_defaults(self):
         res = database['default_stats'].find_one()
         del res['_id']
@@ -42,8 +48,10 @@ class Generator(object):
         del res['_id']
         self.sub_skills = res
 
-    def set_class(self):
+    def random_character_class(self):
         class_obj = random.choice(self.classes)
-        self.class_name = class_obj["_id"]
         self.character.apply_class(class_obj)
 
+    def random_character_package(self):
+        package = random.choice(self.packages)
+        self.character.apply_package(package)
