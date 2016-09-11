@@ -2,6 +2,8 @@
 Open Source [Delta Green] [1] random character generator.
 
 ## Features
+* Generates a complete Delta Green character (all skills, stats, derived attributes)
+    * Doesn't generate actual bonds or do damaged veterans
 
 ## Installing
 * Create a virtual environment in the project folder with `virtualenv -p python3 venv`
@@ -12,7 +14,12 @@ file called `ExternalServices.py` (in the top level project directory). This fil
 globals `DATABASE` and `MONGO_STRING`
 * Add the open gaming content to your Mongo database with `python SeedDB.py OpenGamingJSON/`
 
+## Using
+* From the top level directory: `python Test.py`
+    * The results will print to the console.
+
 ## Running The Tests
+* Forthcoming
 
 
 [1]: http://www.delta-green.com/

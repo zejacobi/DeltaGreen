@@ -37,3 +37,15 @@ legal?)
     * Default skills in an object
     * More can wait until I have some arch done
 * Class for all the key components of a character
+* Generate all of the skills for a character using a set of recursive functions that dynamically
+generate sub-skills when they're required
+    * By a sub-skill, I mean Craft (Microelectronics) and its ilk
+    * I want these to be editable separate of the main skill list, to avoid filling the list of 
+    skills up with these, like D&D 3.5e character generators would
+* Similar functions should allow me to add 20 to each skill for apply a package
+* Once all skills are assigned, pick the top five. Using a separate dictionary that applies a stat
+to each skill, then determine what order to put skills in.
+    * Skills can use multiple stats and we count the totals
+    * Power gets 2 free points (willpower, san)
+    * Str gets 0.5 free points (HP)
+    * Con gets 0.5 free points (HP)
