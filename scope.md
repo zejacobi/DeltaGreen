@@ -7,7 +7,16 @@ responsive interface in Angular.
 
 I want this personally, because I think it would be cool to have this for Delta Green. 
 I want to program this publicly because I think it will be a good way to show off what
-I'm capable of in python to prospective future employers.
+I'm capable of in python to prospective future employers. 
+
+And I want to give back to the RPG community. I spent countless hours playing with [PCGEN] [1] when 
+I was younger. I don't know Java, so I can't really contribute to PCGEN. But I can try and make 
+something of my own and make sure it's FOSS. Since I'm currently obsessed with Delta Green and there
+appears to be no Delta Green character generator, here's where I can make a big impact. 
+
+It also helps that Delta Green is under the OGL. I can enforce a separation between OGL content and
+non-OGL using my .gitignore file. If/when I end up hosting this, I hope to use a password from the
+Delta Green sourcebook to gatekeep non-OGL content to only people who have bought the book. 
 
 # Phase 1
 
@@ -49,3 +58,18 @@ to each skill, then determine what order to put skills in.
     * Power gets 2 free points (willpower, san)
     * Str gets 0.5 free points (HP)
     * Con gets 0.5 free points (HP)
+* I've now found out that there can be enumerated sub-skills in the choices a class can make, 
+although this won't affect any open classes - it's only for the closed classes.
+    * I'm going to try and come up with a system that sometimes picks sub-skills based on their
+    relative abundance IFF sub-skills exist for the choices for that class
+* After this, I think my top priorities are:
+    * Creating a bonds json file, putting bonds in the database, logic for applying them to 
+    characters
+        * This will probably require some layout and query logic such that professors with the 
+        criminal package don't get a war buddy bond. 
+    * Double checking my logic in the Character Class and possibly simplifying it
+    * Documenting Character.py and Generator.py
+    * Unit tests for Character.py and Generator.py
+    
+    
+[1]: http://pcgen.org/

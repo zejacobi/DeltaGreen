@@ -21,5 +21,10 @@ globals `DATABASE` and `MONGO_STRING`
 ## Running The Tests
 * Forthcoming
 
+## Legal
+Parts of Delta Green are licensed under the OGL. I'm trying to only publicly share the parts that
+are. If you are a rights holder or (heavens forfend) their lawyer, you can reach me at 
+zejacobi (squiggly a/at character thingy) gmail (dot) com
+
 
 [1]: http://www.delta-green.com/
