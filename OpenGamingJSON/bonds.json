@@ -157,7 +157,7 @@
     ],
     "Family": false,
     "Romantic": false,
-    "Friend": false,
+    "Friend": true,
     "Work": true,
     "Therapy": false
   },
@@ -229,8 +229,8 @@
     "Required": null,
     "Family": false,
     "Romantic": false,
-    "Friend": false,
-    "Work": true,
+    "Friend": true,
+    "Work": false,
     "Therapy": false
   },
   {
@@ -238,8 +238,8 @@
     "Required": null,
     "Family": false,
     "Romantic": false,
-    "Friend": false,
-    "Work": true,
+    "Friend": true,
+    "Work": false,
     "Therapy": false
   },
   {
@@ -302,6 +302,21 @@
     "Family": false,
     "Romantic": false,
     "Friend": true,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Parole Officer",
+    "Required": [
+      "Computer Scientist",
+      "Hacker",
+      "Black Bag",
+      "Criminal",
+      "Gangster"
+    ],
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
     "Work": false,
     "Therapy": true
   }
