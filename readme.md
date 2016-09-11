@@ -2,8 +2,8 @@
 Open Source [Delta Green] [1] random character generator.
 
 ## Features
-* Generates a complete Delta Green character (all skills, stats, derived attributes)
-    * Doesn't generate actual bonds or do damaged veterans
+* Generates a complete Delta Green character (all skills, stats, derived attributes, bonds)
+    * Can't yet do damaged veterans
 
 ## Installing
 * Create a virtual environment in the project folder with `virtualenv -p python3 venv`
