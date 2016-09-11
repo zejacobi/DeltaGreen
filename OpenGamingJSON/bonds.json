@@ -69,7 +69,7 @@
     "Romantic": false,
     "Friend": false,
     "Work": false,
-    "Therapy": true
+    "Therapy": false
   },
   {
     "_id": "Grandfather",
@@ -290,7 +290,7 @@
   {
     "_id": "Support Group Sponsor",
     "Required": null,
-    "Family": true,
+    "Family": false,
     "Romantic": false,
     "Friend": false,
     "Work": false,
@@ -299,7 +299,7 @@
   {
     "_id": "Support Group Buddy",
     "Required": null,
-    "Family": true,
+    "Family": false,
     "Romantic": false,
     "Friend": true,
     "Work": false,
