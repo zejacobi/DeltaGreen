@@ -259,5 +259,123 @@
         "Unarmed Combat"
       ]
     }
+  },
+  {
+    "_id": "Interrogator",
+    "Skills": [
+      "Criminology",
+      "Foreign Language",
+      "Foreign Language",
+      "HUMINT",
+      "Law",
+      "Persuade",
+      "Pharmacy",
+      "Search"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Liberal Arts",
+    "Skills": [
+      "Anthropology",
+      "Art",
+      "Foreign Language",
+      "History",
+      "Persuade"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 3,
+      "All": true,
+      "List": []
+    }
+  },
+  {
+    "_id": "Military Officer",
+    "Skills": [
+      "Bureaucracy",
+      "Firearms",
+      "History",
+      "Military Science",
+      "Navigate",
+      "Persuade",
+      "Unarmed Combat"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 1,
+      "All": false,
+      "List": [
+        "Artillery",
+        "Heavy Machinery",
+        "Heavy Weapons",
+        "HUMINT",
+        "Pilot",
+        "SIGINT"
+      ]
+    }
+  },
+  {
+    "_id": "MBA",
+    "Skills": [
+      "Accounting",
+      "Bureaucracy",
+      "HUMINT",
+      "Law",
+      "Persuade"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 3,
+      "All": true,
+      "List": []
+    }
+  },
+  {
+    "_id": "Nurse/Paramedic/Pre-Med",
+    "Skills": [
+      "Alertness",
+      "First Aid",
+      "Medicine",
+      "Persuade",
+      "Pharmacy",
+      "Psychotherapy",
+      "Search"
+    ],
+    "Subskills": [
+      {
+        "Skill": "Science",
+        "Sub": "Biology"
+      }
+    ],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Conspiracy Theorist",
+    "Skills": [
+      "Anthropology",
+      "Archeology",
+      "Computer Science",
+      "Criminology",
+      "History",
+      "Occult",
+      "Persuade",
+      "Search"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
   }
 ]

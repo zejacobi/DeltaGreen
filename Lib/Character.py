@@ -167,6 +167,7 @@ class Character(object):
         if num_choices:
             if all_skills:
                 skill_choices = list(self.skills.keys())
+                skill_choices.remove('Unnatural')  # Can't improve this through normal channels
             for skill in skill_choices[:num_choices]:
                 success = self.add_package_skill(skill, '')
                 while success is not True:
@@ -184,9 +185,9 @@ class Character(object):
             'Power': 2,  # San, Willpower
             'Strength': 1,  # 1/2 HP
             'Constitution': 1,  # 1/2 HP,
-            'Dexterity': 0,
-            'Intelligence': 0,
-            'Charisma': 0
+            'Dexterity': 0.5,  # Initiative
+            'Intelligence': 0,  # Practically every skill gives this anyway
+            'Charisma': self.num_bonds * 2 / 3  # Bond strength (this seems to be a good modifier)
         }
         observed_stats = []
         for skill, _ in best_skills:
