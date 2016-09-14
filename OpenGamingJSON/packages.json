@@ -458,5 +458,70 @@
       "All": false,
       "List": []
     }
+  },
+  {
+    "_id": "Science Grad Student",
+    "Skills": [
+      "Bureaucracy",
+      "Computer Use",
+      "Craft",
+      "Foreign Language",
+      "Science",
+      "Science",
+      "Science"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 1,
+      "All": false,
+      "List": [
+        "Accounting",
+        "Forensics",
+        "Law",
+        "Pharmacy"
+      ]
+    }
+  },
+  {
+    "_id": "Social Worker/Criminal Justice Degree",
+    "Skills": [
+      "Bureaucracy",
+      "Criminology",
+      "Forensics",
+      "Foreign Language",
+      "HUMINT",
+      "Law",
+      "Persuade",
+      "Search"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Soldier",
+    "Skills": [
+      "Alertness",
+      "Artillery",
+      "Athletics",
+      "Drive",
+      "Firearms",
+      "Heavy Weapons",
+      "Unarmed Combat"
+    ],
+    "Subskills": [
+      {
+        "Skill": "Military Science",
+        "Sub": "Land"
+      }
+    ],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
   }
 ]
