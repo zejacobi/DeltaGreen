@@ -377,5 +377,24 @@
       "All": false,
       "List": []
     }
+  },
+  {
+    "_id": "Outdoorsman",
+    "Skills": [
+      "Alertness",
+      "Athletics",
+      "Firearms",
+      "Navigate",
+      "Ride",
+      "Search",
+      "Stealth",
+      "Survival"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
   }
 ]
