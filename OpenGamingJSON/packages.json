@@ -396,5 +396,67 @@
       "All": false,
       "List": []
     }
+  },
+  {
+    "_id": "Photographer",
+    "Skills": [
+      "Alertness",
+      "Computer Science",
+      "Persuade",
+      "Search",
+      "Stealth"
+    ],
+    "Subskills": [
+      {
+        "Skill": "Art",
+        "Sub": "Photography"
+      }
+    ],
+    "Choices": {
+      "Number": 2,
+      "All": true,
+      "List": []
+    }
+  },
+  {
+    "_id": "Pilot/Sailor",
+    "Skills": [
+      "Alertness",
+      "First Aid",
+      "Foreign Language",
+      "Navigate",
+      "Pilot",
+      "Survival",
+      "Swim"
+    ],
+    "Subskills": [
+      {
+        "Skill": "Craft",
+        "Sub": "Mechanic"
+      }],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Police Officer",
+    "Skills": [
+      "Alertness",
+      "Criminology",
+      "Drive",
+      "Firearms",
+      "HUMINT",
+      "Law",
+      "Melee Weapons",
+      "Unarmed Combat"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
   }
 ]
