@@ -523,5 +523,42 @@
       "All": false,
       "List": []
     }
+  },
+  {
+    "_id": "Translator",
+    "Skills": [
+      "Anthropology",
+      "Foreign Language",
+      "Foreign Language",
+      "Foreign Language",
+      "History",
+      "HUMINT",
+      "Persuade",
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 1,
+      "All": true,
+      "List": []
+    }
+  },
+  {
+    "_id": "Urban Explorer",
+    "Skills": [
+      "Alertness",
+      "Athletics",
+      "Craft",
+      "Navigate",
+      "Law",
+      "Search",
+      "Stealth",
+      "Persuade"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
   }
 ]
