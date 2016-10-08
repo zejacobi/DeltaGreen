@@ -11,7 +11,8 @@ Open Source [Delta Green] [1] random character generator.
 * Install the necessary packages with `pip install requirements.txt`
 * You'll need to create a MongoDB database and save the connection string and database name to a
 file called `ExternalServices.py` (in the top level project directory). This file will need the 
-globals `DATABASE` and `MONGO_STRING`
+globals `DATABASE` (the name of the mongo database you plan to use) and `MONGO_STRING` 
+(the connection string you intend to use)
 * Add the open gaming content to your Mongo database with `python SeedDB.py OpenGamingJSON/`
 
 ## Using
@@ -19,9 +20,11 @@ globals `DATABASE` and `MONGO_STRING`
     * The results will print to the console.
 
 ## Running The Tests
-* Forthcoming
+From the top level directory: `python -m unittest Tests/test_*`
 
 ## Wishlist
+* Damaged Veterans
+* Disorders
 * Language families/association scores to give more realistic language combinations
 * When picking a random skill in a package, more weight given to existing skills
 * Classes provide some bias to the stats

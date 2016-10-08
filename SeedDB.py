@@ -21,7 +21,8 @@ threads = []
 def insert(json_doc, collection):
     """
     Function for inserting JSON files into a database
-    :param json json_doc: A valid JSON document
+    :param dict json_doc: A valid python dictionary, which will be converted to JSON as it is
+    inserted.
     :param str collection: The collection to insert the document into
     :return: The unique ID given to the inserted item
     """
