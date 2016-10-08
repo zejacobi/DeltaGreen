@@ -22,6 +22,9 @@ globals `DATABASE` (the name of the mongo database you plan to use) and `MONGO_S
 ## Running The Tests
 From the top level directory: `python -m unittest Tests/test_*`
 
+## Building The Docs
+
+
 ## Wishlist
 * Damaged Veterans
 * Disorders
