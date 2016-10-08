@@ -184,7 +184,8 @@
       "Anthropologist",
       "Historian",
       "Scientist",
-      "Physician"
+      "Physician",
+      "Professor"
     ],
     "Family": false,
     "Romantic": false,
@@ -314,6 +315,24 @@
       "Criminal",
       "Gangster"
     ],
+    "Family": false,
+    "Romantic": false,
+    "Friend": false,
+    "Work": false,
+    "Therapy": true
+  },
+  {
+    "_id": "Waiter At Favourite Restaurant",
+    "Required": null,
+    "Family": false,
+    "Romantic": false,
+    "Friend": true,
+    "Work": false,
+    "Therapy": false
+  },
+  {
+    "_id": "Bartender At Favourite Bar",
+    "Required": null,
     "Family": false,
     "Romantic": false,
     "Friend": false,
