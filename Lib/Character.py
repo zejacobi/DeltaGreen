@@ -74,7 +74,7 @@ class Character(object):
         searches the record of available sub-skills and returns one of them at random
         :param str skill: A skill which has associated subskills (e.g. Craft, Foreign Language)
         :return: The name of one sub-skill under the aegis of the parent skill (e.g. Mechanic for
-         Craft, French for Foreign Language)
+        Craft, French for Foreign Language)
         :rtype: str
         """
         choices = self.sub_skills[skill]
@@ -106,8 +106,8 @@ class Character(object):
         with a starting value of 0. If no *sub* value provided, one will be chosen at random.
         :param str skill: A skill which has associated subskills (e.g. Craft, Foreign Language)
         :param str sub: name of one sub-skill under the aegis of the parent skill (e.g. Mechanic for
-         Craft, French for Foreign Language), or a falsey value for a random sub-skill to be chosen
-         instead of a specific sub-skill.
+        Craft, French for Foreign Language), or a falsey value for a random sub-skill to be chosen
+        instead of a specific sub-skill.
         :return: The display string for the sub-skill
         :rtype: str
         """
@@ -125,8 +125,8 @@ class Character(object):
         specific skill to the provided value.
         :param str skill: A skill which has associated subskills (e.g. Craft, Foreign Language)
         :param str sub: name of one sub-skill under the aegis of the parent skill (e.g. Mechanic for
-         Craft, French for Foreign Language), or a falsey value for a random sub-skill to be chosen
-         instead of a specific sub-skill.
+        Craft, French for Foreign Language), or a falsey value for a random sub-skill to be chosen
+        instead of a specific sub-skill.
         :param int value: The number to set the sub-skill to
         :return: True (if a skill was successfully set to the desired value) or False (if no skill
         could be set to the desired value)
@@ -160,9 +160,9 @@ class Character(object):
         :param str skill: A skill which may or may not have associated subskills (e.g. *"Craft"*,
         *"Foreign Language"* have associated sub-skills, "Swim" does not)
         :param str sub: name of one sub-skill under the aegis of the parent skill (e.g. Mechanic for
-         Craft, French for Foreign Language), or a falsey value for a random sub-skill to be chosen
-         instead of a specific sub-skill. If the *skill* parameter isn't a sub-skill, this will
-         be ignored
+        Craft, French for Foreign Language), or a falsey value for a random sub-skill to be chosen
+        instead of a specific sub-skill. If the *skill* parameter isn't a sub-skill, this will
+        be ignored
         :param int value: The number to set the skill/sub-skill to
         :return: True (if a skill was successfully set to the desired value) or False (if no skill
         could be set to the desired value, or if the skill has already been modified)
@@ -265,8 +265,8 @@ class Character(object):
         :param str skill: A skill which may or may not have associated subskills (e.g. *"Craft"*,
         *"Foreign Language"* have associated sub-skills, "Swim" does not)
         :param str sub: name of one sub-skill under the aegis of the parent skill (e.g. Mechanic for
-         Craft, French for Foreign Language), or a falsey value for a random sub-skill to be chosen
-         instead of a specific sub-skill.
+        Craft, French for Foreign Language), or a falsey value for a random sub-skill to be chosen
+        instead of a specific sub-skill.
         :param int addition: The amount to add to the skill or sub-skill
         :param bool novel_sub_skill: If True and the *skill* parameter is a sub-skill, then the
         amount will be added to a new sub-skill that the character doesn't already have

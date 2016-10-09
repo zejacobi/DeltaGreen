@@ -1,10 +1,14 @@
 import unittest
 import os
-import SeedDB
+import sys
 import mongomock
 import json
 
 from threading import Thread
+
+sys.path.insert(0, os.path.abspath('..'))  # Fix for weird structure required by Sphinx
+
+import DeltaGreen.SeedDB as SeedDB
 
 test_file = os.path.join('.', 'Tests', 'TestData', 'test.json')
 json_obj = {"_id": "test"}

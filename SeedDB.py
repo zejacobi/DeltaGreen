@@ -11,7 +11,8 @@ from queue import Queue
 from glob import glob
 
 
-from Lib.Mongo import database
+sys.path.insert(0, os.path.abspath('..'))  # Fix for weird structure required by Sphinx
+from DeltaGreen.Lib.Mongo import database
 
 q = Queue()
 num_threads = 2
@@ -59,7 +60,12 @@ def worker():
         q.task_done()
 
 if __name__ == '__main__':
-    directory = sys.argv[1]
+    try:
+        directory = sys.argv[1]
+    except IndexError:
+        print('Error: No directory supplied.')
+        exit()
+
     json_dir = os.path.join(os.curdir, directory)
     json_files = glob(json_dir + '*.json')
 

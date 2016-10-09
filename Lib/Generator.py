@@ -2,8 +2,8 @@ from threading import Thread
 
 import random
 
-from Lib.Character import Character
-from Lib.Mongo import database
+from DeltaGreen.Lib.Character import Character
+from DeltaGreen.Lib.Mongo import database
 
 
 class Generator(object):

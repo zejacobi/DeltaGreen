@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from Lib.Generator import Generator
+from DeltaGreen.Lib.Generator import Generator
 
 gen = Generator()
 gen.generate()
