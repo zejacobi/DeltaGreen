@@ -42,6 +42,7 @@ class Generator(object):
     def get_classes(self):
         """
         Gets character classes from the database and appends them to the classes property.
+
         :return: None
         """
         pointer = database['classes'].find()
@@ -51,6 +52,7 @@ class Generator(object):
     def get_packages(self):
         """
         Gets packages from the database and appends them to the **packages** property.
+
         :return: None
         """
         pointer = database['packages'].find()
@@ -60,6 +62,7 @@ class Generator(object):
     def get_defaults(self):
         """
         Gets default skills from the database and appends them to the **defaults** property.
+
         :return: None
         """
         res = database['default_stats'].find_one()
@@ -70,6 +73,7 @@ class Generator(object):
         """
         Gets skill mappings (which determine stat order) from the database and appends them to
         the **skill_mapping** property.
+
         :return: None
         """
         res = database['skill_mapping'].find_one()
@@ -80,6 +84,7 @@ class Generator(object):
         """
         Gets a dictionary mapping sub-skill categories to their specific options from the database
         and appends them to the **sub_skills** property.
+
         :return: None
         """
         res = database['sub_skills'].find_one()
@@ -90,6 +95,7 @@ class Generator(object):
         """
         Randomly chooses a character class from among those it has access to (from the database) and
         applies it to the character object
+
         :return: None
         """
         class_obj = random.choice(self.classes)
@@ -99,6 +105,7 @@ class Generator(object):
         """
         Randomly chooses a skill package from among those it has access to (from the database) and
         applies it to the character object
+
         :return: None
         """
         package = random.choice(self.packages)
@@ -107,6 +114,7 @@ class Generator(object):
     def random_character_stats(self):
         """
         Generates stats for the attached character and uses them to calculate derived attributes.
+
         :return: None
         """
         self.character.apply_stats()
@@ -116,6 +124,7 @@ class Generator(object):
         """
         Gets bonds that are available to the character (based on the class and package) from the
         database and appends them to the **bonds** property.
+
         :return: None
         """
         required = [None]
@@ -140,6 +149,7 @@ class Generator(object):
         Uses the bonds it has on file as valid for the character class and the number of bonds the
         character class allows to create the correct number of bonds, well distributed across
         potential types of bonds.
+
         :return: None
         """
         num_bonds = self.character.num_bonds
@@ -174,7 +184,8 @@ class Generator(object):
         """
         Method that randomly generates a completed Delta Green character. Doesn't return anything,
         but the properties are accessible through the **character** property on this Class.
-        :return:
+
+        :return: None
         """
         self.random_character_class()
         self.random_character_package()

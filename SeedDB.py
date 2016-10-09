@@ -21,8 +21,9 @@ threads = []
 def insert(json_doc, collection):
     """
     Function for inserting JSON files into a database
+
     :param dict json_doc: A valid python dictionary, which will be converted to JSON as it is
-    inserted.
+        inserted.
     :param str collection: The collection to insert the document into
     :return: The unique ID given to the inserted item
     """
@@ -32,8 +33,9 @@ def insert(json_doc, collection):
 def parse_json(json_file_path):
     """
     Parses a JSON file and returns the object encoded in it and the bare name of the file
-    :param str json_file_path: A relative or absolute path from the current directory to a file in
-        JSON format
+
+    :param str json_file_path: A relative or absolute path from the current directory to a file
+        in JSON format
     :return: A tuple containing an object in JSON format and a string containing the name of
         the file the JSON object was drawn from with the path and .json removed
     :rtype tuple
