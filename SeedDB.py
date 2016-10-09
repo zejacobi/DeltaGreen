@@ -11,8 +11,7 @@ from queue import Queue
 from glob import glob
 
 
-sys.path.insert(0, os.path.abspath('..'))  # Fix for weird structure required by Sphinx
-from DeltaGreen.Lib.Mongo import database
+from Lib.Mongo import database
 
 q = Queue()
 num_threads = 2

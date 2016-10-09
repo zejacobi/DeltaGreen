@@ -7,7 +7,7 @@ Submodules
 DeltaGreen.Lib.Character module
 -------------------------------
 
-.. automodule:: DeltaGreen.Lib.Character
+.. automodule:: Lib.Character
         :members:
         :undoc-members:
         :show-inheritance:
@@ -16,7 +16,7 @@ DeltaGreen.Lib.Character module
 DeltaGreen.Lib.Generator module
 -------------------------------
 
-.. automodule:: DeltaGreen.Lib.Generator
+.. automodule:: Lib.Generator
         :members:
         :undoc-members:
         :show-inheritance:
