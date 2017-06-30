@@ -115,10 +115,10 @@ class TestParsingJSON(unittest.TestCase):
         """Tests that it will add a new skill, set to the provided value"""
         skill = 'Foreign Language'
         sub = 'Spanish'
-        str = skill + ' (' + sub + ')'
+        expected_str = skill + ' (' + sub + ')'
         value = 50
         self.assertEqual(self.character._set_sub_skill(skill, sub, value), True)
-        self.assertEqual(self.character.skills[str], value)
+        self.assertEqual(self.character.skills[expected_str], value)
 
     def test_private_set_sub_skill_with_existing(self):
         """
@@ -126,12 +126,12 @@ class TestParsingJSON(unittest.TestCase):
         """
         skill = 'Foreign Language'
         sub = 'Spanish'
-        str = skill + ' (' + sub + ')'
+        expected_str = skill + ' (' + sub + ')'
         starting_value = 50
         new_value = 70
-        self.character.skills[str] = starting_value
+        self.character.skills[expected_str] = starting_value
         self.assertEqual(self.character._set_sub_skill(skill, sub, new_value), True)
-        self.assertEqual(self.character.skills[str], new_value)
+        self.assertEqual(self.character.skills[expected_str], new_value)
 
     def test_private_set_sub_skill_at_random(self):
         """Tests that a random sub-skill will be added if a specific one isn't provided"""
@@ -147,9 +147,10 @@ class TestParsingJSON(unittest.TestCase):
         character
         """
         self.random_mock.choice_list = [self.sub_skills[self.sub_skill_names[0]][0]]
-        str = self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'
-        self.assertEqual(self.character._add_random_sub_skill(self.sub_skill_names[0]), str)
-        self.assertEqual(self.character.skills[str], 0)
+        expected_str = self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'
+        self.assertEqual(self.character._add_random_sub_skill(self.sub_skill_names[0]),
+                         expected_str)
+        self.assertEqual(self.character.skills[expected_str], 0)
 
     def test_private_add_random_sub_skill_novel_false(self):
         """
@@ -158,11 +159,12 @@ class TestParsingJSON(unittest.TestCase):
         skill would be chose).
         """
         self.random_mock.choice_list = [self.sub_skills[self.sub_skill_names[0]][0]]
-        str = self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'
+        expected_str = self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'
         starting_value = 50
-        self.character.skills[str] = starting_value
-        self.assertEqual(self.character._add_random_sub_skill(self.sub_skill_names[0], False), str)
-        self.assertEqual(self.character.skills[str], starting_value)
+        self.character.skills[expected_str] = starting_value
+        self.assertEqual(self.character._add_random_sub_skill(self.sub_skill_names[0], False),
+                         expected_str)
+        self.assertEqual(self.character.skills[expected_str], starting_value)
 
     def test_private_add_random_sub_skill_retry_needed(self):
         """
