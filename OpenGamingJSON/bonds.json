@@ -127,7 +127,7 @@
   },
   {
     "_id": "Partner Officer",
-    "Required": ["Federal Agent"],
+    "Required": ["Federal Agent", "Police Officer"],
     "Family": false,
     "Romantic": false,
     "Friend": false,
@@ -141,7 +141,8 @@
       "Anthropologist",
       "Computer Scientist",
       "Physician",
-      "Scientist"
+      "Scientist",
+      "Office Worker"
     ],
     "Family": false,
     "Romantic": false,
@@ -153,7 +154,9 @@
     "_id": "War-buddy",
     "Required": [
       "Special Operator",
-      "Combat Veteran"
+      "Combat Veteran",
+      "Notched Barrel",
+      "Soldier"
     ],
     "Family": false,
     "Romantic": false,
@@ -170,7 +173,8 @@
       "Black Bag",
       "Criminal",
       "Federal Agent",
-      "Computer Scientist"
+      "Computer Scientist",
+      "Weasel"
     ],
     "Family": false,
     "Romantic": false,
@@ -199,7 +203,9 @@
       "Athlete",
       "Combat Veteran",
       "Firefighter",
-      "Special Operator"
+      "Special Operator",
+      "Notched Barrel",
+      "Soldier"
     ],
     "Family": false,
     "Romantic": false,
@@ -313,7 +319,8 @@
       "Hacker",
       "Black Bag",
       "Criminal",
-      "Gangster"
+      "Gangster",
+      "Weasel"
     ],
     "Family": false,
     "Romantic": false,
