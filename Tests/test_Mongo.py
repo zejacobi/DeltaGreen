@@ -39,8 +39,8 @@ class TestFind(unittest.TestCase):
         self.collection = 'Test'
         self.mongo = mongomock.MongoClient()[self.collection]
         self.Mongo.database = self.mongo
-        self.insertedDocs = [dict(_id=1, data=1), dict(_id=2, data=2), dict(_id=3, data=3)]
-        self.mongo[self.collection].insert_many(self.insertedDocs)
+        self.inserted_docs = [dict(_id=1, data=1), dict(_id=2, data=2), dict(_id=3, data=3)]
+        self.mongo[self.collection].insert_many(self.inserted_docs)
 
     def test_mock(self):
         """Ensure that the database has been successfully mocked"""
@@ -48,18 +48,18 @@ class TestFind(unittest.TestCase):
 
     def test_find_all(self):
         """Ensure that find_all returns all inserted records"""
-        self.assertEqual(Mongo.find_all(self.collection), self.insertedDocs)
+        self.assertEqual(Mongo.find_all(self.collection), self.inserted_docs)
 
     def test_find_subset(self):
         """Ensure that find_subset returns one the expected results"""
         self.assertEqual(Mongo.find_subset(self.collection, {'_id': {'$lte': 2}}),
-                         self.insertedDocs[0:2])
+                         self.inserted_docs[0:2])
 
     def test_find_one(self):
         """Ensure that find_one returns the expected document if given no query"""
-        self.assertEqual(Mongo.find_one(self.collection), {'data': self.insertedDocs[0]['data']})
+        self.assertEqual(Mongo.find_one(self.collection), {'data': self.inserted_docs[0]['data']})
 
     def test_find_one_with_query(self):
         """Ensure that find_one returns the expected document if given a query"""
         self.assertEqual(Mongo.find_one(self.collection, {'data': 2}),
-                         {'data': self.insertedDocs[1]['data']})
+                         {'data': self.inserted_docs[1]['data']})

@@ -1,7 +1,5 @@
 from threading import Thread
 
-import random
-
 import Lib.Mongo as Mongo
 
 from Lib.Character import Character
@@ -108,7 +106,7 @@ class Generator(object):
 
         :return: None
         """
-        class_obj = random.choice(self.classes)
+        class_obj = self.character.random.choice(self.classes)
         self.character.apply_class(class_obj)
 
     def random_character_package(self):
@@ -118,7 +116,7 @@ class Generator(object):
 
         :return: None
         """
-        package = random.choice(self.packages)
+        package = self.character.random.choice(self.packages)
         self.character.apply_package(package)
 
     def random_character_stats(self):
@@ -140,14 +138,14 @@ class Generator(object):
         """
         num_bonds = self.character.num_bonds
         if num_bonds:
-            self.character.add_bond(random.choice(self.bonds))
+            self.character.add_bond(self.character.random.choice(self.bonds))
             num_bonds -= 1
 
         for _ in range(num_bonds):
             bond_types = self.character.get_bond_types()
             all_types = all([bond_types[bond_type] for bond_type in bond_types])
             while True:
-                proposed_bond = random.choice(self.bonds)
+                proposed_bond = self.character.random.choice(self.bonds)
                 if proposed_bond in self.character.bonds:
                     continue
 

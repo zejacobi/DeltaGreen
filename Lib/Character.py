@@ -47,6 +47,8 @@ class Character(object):
         self.sanity = 0
         self.bp = 0
 
+        self.random = random  # this will make my life easier with unit testing
+
     @staticmethod
     def _get_subskill_str(skill, sub):
         """
@@ -59,14 +61,13 @@ class Character(object):
         """
         return skill + ' (' + sub + ')'
 
-    @staticmethod
-    def roll_stat():
+    def roll_stat(self):
         """
         Does a classic 4d6 drop lowest roll, to be used as the value of a stat
         :return: An integer between 3 and 18
         :rtype: int
         """
-        rolls = [random.randrange(1, 7) for _ in range(4)]
+        rolls = [self.random.randrange(1, 7) for _ in range(4)]
         return sum(sorted(rolls, reverse=True)[:3])
 
     def _get_random_sub_skill(self, skill):
@@ -81,7 +82,7 @@ class Character(object):
         :rtype: str
         """
         choices = self.sub_skills[skill]
-        return random.choice(choices)
+        return self.random.choice(choices)
 
     def _set_skill(self, skill, value):
         """
@@ -236,13 +237,13 @@ class Character(object):
                 choice_sub_skills = choices['Subskills']
                 sample_list = [False for _ in skill_list]
                 sample_list.extend(choice_sub_skills)
-                for tf in random.sample(sample_list, num_choices):
+                for tf in self.random.sample(sample_list, num_choices):
                     # picks a fair amount of sub-skills, proportional to the number there are
                     if tf:
                         num_choices -= 1
                         self._safe_set_skill(tf['Skill'], tf['Sub'], tf['Value'])
 
-            for skill in random.sample(skill_list, num_choices):
+            for skill in self.random.sample(skill_list, num_choices):
                 success = self._safe_set_skill(skill, '', skill_choices[skill])
                 while success is not True:
                     # tries other random sub-skills if the first doesn't work
