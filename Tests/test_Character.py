@@ -5,7 +5,7 @@ from Tests.RandomMock import RandomMock
 
 
 class TestCharacter(unittest.TestCase):
-    """Test the JSON parsing"""
+    """Test Character Class"""
     @classmethod
     def setUpClass(cls):
         cls.skills = {
@@ -74,8 +74,8 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.character._set_skill('Nonexistent', 30), False)
 
     def test_private_set_skill_with_a_subskill(self):
-        """Tests that setting an accessible sub-skill returns true and sets a random sub-skill to the
-        provided value"""
+        """Tests that setting an accessible sub-skill returns true and sets a random sub-skill to
+        the provided value"""
         self.random_mock.choice_list = [self.sub_skills[self.sub_skill_names[0]][0]]
         self.assertEqual(self.character._set_skill(self.sub_skill_names[0], 30), True)
         self.assertEqual(self.character.skills[
@@ -85,20 +85,20 @@ class TestCharacter(unittest.TestCase):
         """Tests that it will add a new skill, set to 0"""
         skill = 'Foreign Language'
         sub = 'Spanish'
-        str = skill + ' (' + sub + ')'
-        self.assertEqual(self.character._add_sub_skill(skill, sub), str)
-        self.assertEqual(self.character.skills[str], 0)
+        sub_skill_str = skill + ' (' + sub + ')'
+        self.assertEqual(self.character._add_sub_skill(skill, sub), sub_skill_str)
+        self.assertEqual(self.character.skills[sub_skill_str], 0)
 
     def test_private_add_sub_skill_with_existing(self):
         """Tests that it will return the skill string without affecting the value when the skill has
         already been added to the list"""
         skill = 'Foreign Language'
         sub = 'Spanish'
-        str = skill + ' (' + sub + ')'
+        sub_skill_str = skill + ' (' + sub + ')'
         starting_value = 50
-        self.character.skills[str] = starting_value
-        self.assertEqual(self.character._add_sub_skill(skill, sub), str)
-        self.assertEqual(self.character.skills[str], starting_value)
+        self.character.skills[sub_skill_str] = starting_value
+        self.assertEqual(self.character._add_sub_skill(skill, sub), sub_skill_str)
+        self.assertEqual(self.character.skills[sub_skill_str], starting_value)
 
     def test_private_add_sub_skill_at_random(self):
         """Tests that a random sub-skill will be added if a specific one isn't provided"""
@@ -655,3 +655,20 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.character.skills['Alertness'], 40)
         self.assertEqual(self.character.skills['Foreign Language (Spanish)'], 20)
         self.assertEqual(self.character.skills['Foreign Language (Arabic)'], 20)
+
+    def test_set_stat(self):
+        """It should return true and modify the character if the stat exists"""
+        self.assertEqual(self.character.set_stat('Strength', 10), True)
+        self.assertEqual(self.character.stats['Strength'], 10)
+
+    def test_set_stat_does_not_exist(self):
+        """It should return false and leave the character untouched if the stat doesn't exist"""
+        self.assertEqual(self.character.set_stat('Wisdom', 10), False)
+        self.assertEqual(self.character.stats, {
+            'Strength': 0,
+            'Dexterity': 0,
+            'Constitution': 0,
+            'Intelligence': 0,
+            'Power': 0,
+            'Charisma': 0
+        })
