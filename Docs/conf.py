@@ -52,7 +52,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Delta Green Character Generator'
-copyright = '2016, Zachary Jacobi'
+copyright = '2016-2017, Zachary Jacobi (GPL Licensed)'
 author = 'Zachary Jacobi'
 
 # The version info for the project you're documenting, acts as replacement for
