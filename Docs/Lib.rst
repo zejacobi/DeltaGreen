@@ -20,3 +20,21 @@ DeltaGreen.Lib.Generator module
         :members:
         :undoc-members:
         :show-inheritance:
+
+
+DeltaGreen.Lib.Mongo module
+---------------------------
+
+.. automodule:: Lib.Mongo
+        :members:
+        :undoc-members:
+        :show-inheritance:
+
+
+DeltaGreen.Lib.Utilities.Workspace module
+-----------------------------------------
+
+.. automodule:: Lib.Utilities.Workspace
+        :members:
+        :undoc-members:
+        :show-inheritance:
