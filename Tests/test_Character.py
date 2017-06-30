@@ -4,7 +4,7 @@ from Lib.Character import Character
 from Tests.RandomMock import RandomMock
 
 
-class TestParsingJSON(unittest.TestCase):
+class TestCharacter(unittest.TestCase):
     """Test the JSON parsing"""
     @classmethod
     def setUpClass(cls):
@@ -223,6 +223,95 @@ class TestParsingJSON(unittest.TestCase):
         self.character.skills[expected_str] = starting_value
         self.assertEqual(self.character._safe_set_skill(skill, sub, 60), False)
         self.assertEqual(self.character.skills[expected_str], starting_value)
+
+    def test_private_add_to_skill(self):
+        """Tests that it can add to an already existing skill"""
+        starting_value = self.character.skills[self.skill_names[0]]
+        self.assertEqual(self.character._add_to_skill(self.skill_names[0], 20), True)
+        self.assertEqual(self.character.skills[self.skill_names[0]], starting_value + 20)
+
+    def test_private_add_to_skill_invalid(self):
+        """Tests that it won't add if the skill doesn't exist"""
+        self.assertEqual(self.character._add_to_skill('Moustache', 20), False)
+
+    def test_private_add_to_skill_with_sub_skill(self):
+        """Tests that it can add to a sub skill"""
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        self.random_mock.choice_list = [sub]
+        self.assertEqual(self.character._add_to_skill(skill, 20), True)
+        self.assertEqual(self.character.skills[expected_str], 20)
+
+    def test_private_add_to_skill_with_sub_skill_existing_but_not_novel(self):
+        """Tests that it can add to a sub skill if it already exists but novel is false"""
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        self.character.skills[expected_str] = 20
+        self.random_mock.choice_list = [sub]
+        self.assertEqual(self.character._add_to_skill(skill, 20, False), True)
+        self.assertEqual(self.character.skills[expected_str], 40)
+
+    def test_private_add_to_skill_with_sub_skill_existing_and_novel(self):
+        """Tests that it will try as many times as it needs to in order to add to a novel
+        sub-skill"""
+        skill = self.sub_skill_names[0]
+        sub1 = self.sub_skills[skill][0]
+        sub2 = self.sub_skills[skill][1]
+        original_string = skill + ' (' + sub1 + ')'
+        new_string = skill + ' (' + sub2 + ')'
+        self.character.skills[original_string] = 20
+        self.random_mock.choice_list = [sub1, sub1, sub1, sub1, sub2]
+        self.assertEqual(self.character._add_to_skill(skill, 20), True)
+        self.assertEqual(self.character.skills[original_string], 20)
+        self.assertEqual(self.character.skills[new_string], 20)
+        self.assertEqual(self.random_mock.choice_state, len(self.random_mock.choice_list) - 1)
+
+    def test_private_add_to_sub_skill(self):
+        """Tests that it can add to an already existing sub-skill"""
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        starting_value = 20
+        self.character.skills[expected_str] = starting_value
+        self.assertEqual(self.character._add_to_sub_skill(skill, sub, 20), True)
+        self.assertEqual(self.character.skills[expected_str], starting_value + 20)
+
+    def test_private_add_to_sub_skill_with_new_sub_skill(self):
+        """Tests that it can add a sub skill and add the provided value to 0"""
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        self.assertEqual(self.character._add_to_sub_skill(skill, sub, 20), True)
+        self.assertEqual(self.character.skills[expected_str], 20)
+
+    def test_private_add_to_sub_skill_with_sub_skill_existing_but_not_novel(self):
+        """Tests that it will add to the first randomly chosen sub-skill if that skill already
+        exists and novel is false"""
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        self.character.skills[expected_str] = 20
+        self.random_mock.choice_list = [sub]
+        self.assertEqual(self.character._add_to_sub_skill(skill, '', 20), True)
+        self.assertEqual(self.character.skills[expected_str], 40)
+        self.assertEqual(self.random_mock.choice_state, 0)
+
+    def test_private_add_to_sub_skill_with_sub_skill_existing_and_novel(self):
+        """Tests that it will try as many times as it needs to in order to add to a novel
+        sub-skill"""
+        skill = self.sub_skill_names[0]
+        sub1 = self.sub_skills[skill][0]
+        sub2 = self.sub_skills[skill][1]
+        original_string = skill + ' (' + sub1 + ')'
+        new_string = skill + ' (' + sub2 + ')'
+        self.character.skills[original_string] = 20
+        self.random_mock.choice_list = [sub1, sub1, sub1, sub1, sub2]
+        self.assertEqual(self.character._add_to_sub_skill(skill, '', 20, True), True)
+        self.assertEqual(self.character.skills[original_string], 20)
+        self.assertEqual(self.character.skills[new_string], 20)
+        self.assertEqual(self.random_mock.choice_state, len(self.random_mock.choice_list) - 1)
 
     def test_roll_stat(self):
         """Test that roll stat correctly grabs the top three results"""

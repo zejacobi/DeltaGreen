@@ -274,7 +274,7 @@ class Character(object):
         Adds a set value to a skill that has sub-skills. If *sub* is falsey, it picks a random
         sub-skill to add the value to. If the bool *novel_sub_skill* is True, this skill will be
         one that the character doesn't already have. Otherwise it *might* be added to a skill the
-        character already has.
+        character already has. Defaults to leaving the option open on an existing skill.
 
         :param str skill: A skill which may or may not have associated subskills (e.g. *"Craft"*,
             *"Foreign Language"* have associated sub-skills, "Swim" does not)
