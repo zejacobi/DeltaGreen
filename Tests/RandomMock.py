@@ -27,3 +27,6 @@ class RandomMock(object):
     def sample(self, *_):
         self.sample_state += 1
         return self.sample_list[self.sample_state % len(self.sample_list)]
+
+    def shuffle(self, *_):
+        pass
