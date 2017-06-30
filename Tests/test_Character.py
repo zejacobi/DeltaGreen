@@ -14,6 +14,7 @@ class TestCharacter(unittest.TestCase):
             "Anthropology": 0,
             "Archeology": 0,
             "Artillery": 0,
+            "Unnatural": 0
         }
         cls.skill_names = [skill for skill in cls.skills.keys()]
         cls.sub_skills = {
@@ -552,3 +553,27 @@ class TestCharacter(unittest.TestCase):
                          40)
         self.assertEqual(
             self.character.skills['Art (' + class_obj['Choices']['Subskills'][0]['Sub'] + ')'], 40)
+
+    def test_add_package_skill_normal_skill(self):
+        """Tests that it will return true and apply +20 to a normal skill"""
+        starting = self.character.skills[self.skill_names[0]]
+        self.assertEqual(self.character.add_package_skill(self.skill_names[0], ''), True)
+        self.assertEqual(self.character.skills[self.skill_names[0]], starting + 20)
+
+    def test_add_package_skill_sub_skill(self):
+        """Tests that it will return true and apply +20 to a sub-skill with the specific type
+        given"""
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        self.assertEqual(self.character.add_package_skill(skill, sub), True)
+        self.assertEqual(self.character.skills[expected_str], 20)
+
+    def test_add_package_skill_random_sub_skill(self):
+        """Tests that it will return true and apply +20 to a sub-skill with a random type given"""
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        self.random_mock.choice_list = [sub]
+        self.assertEqual(self.character.add_package_skill(skill, ''), True)
+        self.assertEqual(self.character.skills[expected_str], 20)
