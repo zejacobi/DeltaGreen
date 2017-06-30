@@ -1,4 +1,5 @@
 import unittest
+import math
 
 from Lib.Character import Character
 from Tests.RandomMock import RandomMock
@@ -14,7 +15,8 @@ class TestCharacter(unittest.TestCase):
             "Anthropology": 0,
             "Archeology": 0,
             "Artillery": 0,
-            "Unnatural": 0
+            "Unnatural": 0,
+            "Ride": 0
         }
         cls.skill_names = [skill for skill in cls.skills.keys()]
         cls.sub_skills = {
@@ -31,12 +33,13 @@ class TestCharacter(unittest.TestCase):
         cls.sub_skill_names = [skill for skill in cls.sub_skills.keys()]
         cls.mappings = {
             "Accounting": ["Intelligence"],
-            "Alertness": ["Intelligence"],
-            "Anthropology": ["Intelligence"],
+            "Alertness": ["Intelligence", "Power"],
+            "Anthropology": ["Intelligence", "Charisma"],
             "Archeology": ["Intelligence"],
             "Artillery": ["Intelligence"],
             "Art": ["Dexterity", "Power"],
-            "Foreign Language": ["Intelligence", "Charisma"]
+            "Foreign Language": ["Intelligence", "Charisma"],
+            "Ride": ["Dexterity", "Constitution"]
         }
 
         cls.random_mock = RandomMock()
@@ -672,3 +675,214 @@ class TestCharacter(unittest.TestCase):
             'Power': 0,
             'Charisma': 0
         })
+
+    def test_apply_stats_floor(self):
+        """It should apply stats in order of best to worst based on available skills"""
+        self.random_mock.range_list = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                       1, 1, 1, 1, 1, 2, 3, 5, 1, 3, 3, 5, 1, 3, 4, 5, 1, 3, 4, 6,
+                                       1, 3, 5, 6, 1, 3, 6, 6]
+        self.character.skills['Foreign Language (French)'] = 50
+        self.character.skills['Art (Journalism)'] = 40
+        self.character.skills['Anthropology'] = 30
+        self.character.skills['Ride'] = 60
+        self.character.num_bonds = 4
+        self.character.apply_stats()
+        self.assertEqual(self.character.stats, {'Charisma': 15,
+                                                'Constitution': 11,
+                                                'Dexterity': 12,
+                                                'Intelligence': 13,
+                                                'Power': 14,
+                                                'Strength': 10})
+
+    def test_apply_stats_no_floor(self):
+        """It should re-roll nothing if the floor doesn't exist"""
+        self.random_mock.range_list = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                       1, 1, 1, 1, 1, 2, 3, 5, 1, 3, 3, 5, 1, 3, 4, 5, 1, 3, 4, 6,
+                                       1, 3, 5, 6, 1, 3, 6, 6]
+        self.character.skills['Foreign Language (French)'] = 50
+        self.character.skills['Art (Journalism)'] = 40
+        self.character.skills['Anthropology'] = 30
+        self.character.skills['Ride'] = 60
+        self.character.num_bonds = 4
+        self.character.apply_stats(0)
+        self.assertEqual(self.character.stats, {'Charisma': 3,
+                                                'Constitution': 3,
+                                                'Dexterity': 3,
+                                                'Intelligence': 3,
+                                                'Power': 3,
+                                                'Strength': 3})
+
+    def test_calculate_attributes(self):
+        """It should correctly set the attributes based on the stats"""
+        self.character.stats = {'Charisma': 15,
+                                'Constitution': 11,
+                                'Dexterity': 12,
+                                'Intelligence': 13,
+                                'Power': 14,
+                                'Strength': 10}
+        self.character.calculate_attributes()
+        self.assertEqual(
+            self.character.hp, int(math.ceil((self.character.stats['Strength'] +
+                                              self.character.stats['Constitution'])/2)))
+        self.assertEqual(self.character.wp, self.character.stats['Power'])
+        self.assertEqual(self.character.sanity, self.character.stats['Power'] * 5)
+        self.assertEqual(self.character.bp, self.character.stats['Power'] * 4)
+
+    def test_get_skills(self):
+        """It should return the character's skills object"""
+        self.assertEqual(self.character.get_skills(), self.character.skills)
+
+    def test_get_class(self):
+        """It should return the character's class name"""
+        self.character.class_name = 'Driver'
+        self.assertEqual(self.character.get_class(), self.character.class_name)
+
+    def test_get_package(self):
+        """It should return the character's class name"""
+        self.character.package_name = 'Driver'
+        self.assertEqual(self.character.get_package(), self.character.package_name)
+
+    def test_get_stats(self):
+        stats = {
+            'Charisma': 15,
+            'Constitution': 11,
+            'Dexterity': 12,
+            'Intelligence': 13,
+            'Power': 14,
+            'Strength': 10
+        }
+        self.character.stats = stats
+        self.assertEqual(self.character.get_stats(), stats)
+
+    def test_get_attributes(self):
+        """It should return the character's attributes"""
+
+        self.character.stats = {'Charisma': 15,
+                                'Constitution': 11,
+                                'Dexterity': 12,
+                                'Intelligence': 13,
+                                'Power': 14,
+                                'Strength': 10}
+        self.character.calculate_attributes()
+        self.assertEqual(self.character.get_attributes(), {
+            'Sanity': self.character.stats['Power'] * 5,
+            'Hit Points': int(math.ceil((self.character.stats['Strength'] +
+                                         self.character.stats['Constitution'])/2)),
+            'Willpower Points': self.character.stats['Power'],
+            'Breaking Point': self.character.stats['Power'] * 4
+        })
+
+    def test_add_bond(self):
+        """Tests that it adds a bond to the array of bonds"""
+        bond = {
+            "_id": "Mother",
+            "Required": None,
+            "Family": True,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }
+        self.character.add_bond(bond)
+        self.assertEqual(self.character.bonds, [bond])
+
+    def test_get_bond(self):
+        """Tests that it returns the array of bonds"""
+        bonds = [{"_id": "Daughter"}, {"_id": "Son"}]
+        self.character.bonds = bonds
+        self.assertEqual(self.character.get_bonds(), [bond["_id"] for bond in bonds])
+
+    def test_get_bond_type(self):
+        """Tests that it returns the expected array"""
+        bonds = [{
+            "_id": "Mother",
+            "Required": None,
+            "Family": True,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }, {
+            "_id": "Bartender",
+            "Required": None,
+            "Family": False,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        }]
+        self.character.bonds = bonds
+        self.assertEqual(self.character.get_bond_types(), {
+            "Family": True,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        })
+
+    def test_has_bond_type_type_exists_and_character_has_it(self):
+        """Tests that it returns true when the type of bond exists and the character has one"""
+        bonds = [{
+            "_id": "Mother",
+            "Required": None,
+            "Family": True,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }, {
+            "_id": "Bartender",
+            "Required": None,
+            "Family": False,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        }]
+        self.character.bonds = bonds
+        self.assertEqual(self.character.has_bond_type('Family'), True)
+
+    def test_has_bond_type_type_exists_and_character_does_not_have_it(self):
+        """Tests that it returns false when the type of bond exists and the character doesn't
+            have one"""
+        bonds = [{
+            "_id": "Mother",
+            "Required": None,
+            "Family": True,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }, {
+            "_id": "Bartender",
+            "Required": None,
+            "Family": False,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        }]
+        self.character.bonds = bonds
+        self.assertEqual(self.character.has_bond_type('Romantic'), False)
+
+    def test_has_bond_type_type_does_not_exist(self):
+        """Tests that it returns false when the type of doesn't exist"""
+        bonds = [{
+            "_id": "Mother",
+            "Required": None,
+            "Family": True,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }, {
+            "_id": "Bartender",
+            "Required": None,
+            "Family": False,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        }]
+        self.character.bonds = bonds
+        self.assertEqual(self.character.has_bond_type('Relative'), False)

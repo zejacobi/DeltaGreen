@@ -394,10 +394,7 @@ class Character(object):
                         break
 
         for stat in observed_stats:
-            if stat not in stat_count:
-                stat_count[stat] = 1
-            else:
-                stat_count[stat] += 1
+            stat_count[stat] += 1
 
         die_rolls = sorted([self.roll_stat() for _ in range(6)], reverse=True)
         if floor:
