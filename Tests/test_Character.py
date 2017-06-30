@@ -186,6 +186,64 @@ class TestParsingJSON(unittest.TestCase):
         self.assertEqual(self.character.skills[new_str], 0)
         self.assertEqual(self.random_mock.choice_state, len(self.random_mock.choice_list) - 1)
 
+    def test_private_safe_set_skill(self):
+        """Test that it can set an ordinary skill still at its default value to another value"""
+        self.assertEqual(self.character._safe_set_skill(self.skill_names[0], '', 60), True)
+        self.assertEqual(self.character.skills[self.skill_names[0]], 60)
+
+    def test_private_safe_set_already_set(self):
+        """Test that it won't overwrite an already set skill value"""
+        value = 55
+        self.character.skills[self.skill_names[0]] = value
+        self.assertEqual(self.character._safe_set_skill(self.skill_names[0], '', 60), False)
+        self.assertEqual(self.character.skills[self.skill_names[0]], value)
+
+    def test_private_safe_set_skill_random_sub_skill(self):
+        """
+        Test that if provided a sub-skill type skill without the specific sub-skill specified, it
+        will pick and set one at random
+        """
+        self.random_mock.choice_list = [self.sub_skills[self.sub_skill_names[0]][0]]
+        expected_str = self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'
+        self.assertEqual(self.character._safe_set_skill(self.sub_skill_names[0], '', 60), True)
+        self.assertEqual(self.character.skills[expected_str], 60)
+
+    def test_private_safe_set_skill_new_sub_skill(self):
+        """
+        Test that if provided a skill and sub-skill and the sub-skill is new, that it returns true
+        and set the sub-skill to the provided value
+        """
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        self.assertEqual(self.character._safe_set_skill(skill, sub, 60), True)
+        self.assertEqual(self.character.skills[expected_str], 60)
+
+    def test_private_safe_set_skill_existing_sub_skill(self):
+        """
+        Test that if provided a skill and sub-skill and the sub-skill exists but is still 0, that
+        it return true and set the sub-skill to the provided value
+        """
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        self.character.skills[expected_str] = 0
+        self.assertEqual(self.character._safe_set_skill(skill, sub, 60), True)
+        self.assertEqual(self.character.skills[expected_str], 60)
+
+    def test_private_safe_set_skill_existing_sub_skill_with_value(self):
+        """
+        Test that if provided a skill and sub-skill and the sub-skill exists and is not 0, that
+        it returns false and leaves the sub-skill alone
+        """
+        skill = self.sub_skill_names[0]
+        sub = self.sub_skills[skill][0]
+        expected_str = skill + ' (' + sub + ')'
+        starting_value = 30
+        self.character.skills[expected_str] = starting_value
+        self.assertEqual(self.character._safe_set_skill(skill, sub, 60), False)
+        self.assertEqual(self.character.skills[expected_str], starting_value)
+
     def test_roll_stat(self):
         """Test that roll stat correctly grabs the top three results"""
         self.random_mock.range_list = [1, 2, 3, 4]
