@@ -15,6 +15,7 @@ class TestParsingJSON(unittest.TestCase):
             "Archeology": 0,
             "Artillery": 0,
         }
+        cls.skill_names = [skill for skill in cls.skills.keys()]
         cls.sub_skills = {
             "Art": [
                 "Creative Writing",
@@ -26,6 +27,7 @@ class TestParsingJSON(unittest.TestCase):
                 "Arabic"
             ]
         }
+        cls.sub_skill_names = [skill for skill in cls.sub_skills.keys()]
         cls.mappings = {
             "Accounting": ["Intelligence"],
             "Alertness": ["Intelligence"],
@@ -56,10 +58,131 @@ class TestParsingJSON(unittest.TestCase):
         self.assertEqual(self.character._get_subskill_str('a', 'b'), 'a (b)')
 
     def test_private_get_random_sub_skill(self):
-        """Test that ther esult from random.choice is returned"""
+        """Test that the result from random.choice is returned"""
         self.random_mock.choice_list = [self.sub_skills['Art'][1]]
         self.assertEqual(self.character._get_random_sub_skill('Art'),
                          self.random_mock.choice_list[0])
+
+    def test_private_set_skill(self):
+        """Tests that setting an accessible skill returns true and actually does set the skill"""
+        self.assertEqual(self.character._set_skill(self.skill_names[0], 30), True)
+        self.assertEqual(self.character.skills[self.skill_names[0]], 30)
+
+    def test_private_set_skill_not_found(self):
+        """Tests that trying to set the value of a non-existent skill returns false"""
+        self.assertEqual(self.character._set_skill('Nonexistent', 30), False)
+
+    def test_private_set_skill_with_a_subskill(self):
+        """
+        Tests that setting an accessible sub-skill returns true and sets a random sub-skill to the
+        provided value
+        """
+        self.random_mock.choice_list = [self.sub_skills[self.sub_skill_names[0]][0]]
+        self.assertEqual(self.character._set_skill(self.sub_skill_names[0], 30), True)
+        self.assertEqual(self.character.skills[
+            self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'], 30)
+
+    def test_private_add_sub_skill(self):
+        """Tests that it will add a new skill, set to 0"""
+        skill = 'Foreign Language'
+        sub = 'Spanish'
+        str = skill + ' (' + sub + ')'
+        self.assertEqual(self.character._add_sub_skill(skill, sub), str)
+        self.assertEqual(self.character.skills[str], 0)
+
+    def test_private_add_sub_skill_with_existing(self):
+        """
+        Tests that it will return the skill string without affecting the value when the skill has
+        already been added to the list
+        """
+        skill = 'Foreign Language'
+        sub = 'Spanish'
+        str = skill + ' (' + sub + ')'
+        starting_value = 50
+        self.character.skills[str] = starting_value
+        self.assertEqual(self.character._add_sub_skill(skill, sub), str)
+        self.assertEqual(self.character.skills[str], starting_value)
+
+    def test_private_add_sub_skill_at_random(self):
+        """Tests that a random sub-skill will be added if a specific one isn't provided"""
+        self.random_mock.choice_list = [self.sub_skills[self.sub_skill_names[0]][0]]
+        self.assertEqual(self.character._add_sub_skill(self.sub_skill_names[0], ''),
+                         self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')')
+        self.assertEqual(self.character.skills[
+            self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'], 0)
+
+    def test_private_set_sub_skill(self):
+        """Tests that it will add a new skill, set to the provided value"""
+        skill = 'Foreign Language'
+        sub = 'Spanish'
+        str = skill + ' (' + sub + ')'
+        value = 50
+        self.assertEqual(self.character._set_sub_skill(skill, sub, value), True)
+        self.assertEqual(self.character.skills[str], value)
+
+    def test_private_set_sub_skill_with_existing(self):
+        """
+        Tests that it will set the sub-skill to the provided value
+        """
+        skill = 'Foreign Language'
+        sub = 'Spanish'
+        str = skill + ' (' + sub + ')'
+        starting_value = 50
+        new_value = 70
+        self.character.skills[str] = starting_value
+        self.assertEqual(self.character._set_sub_skill(skill, sub, new_value), True)
+        self.assertEqual(self.character.skills[str], new_value)
+
+    def test_private_set_sub_skill_at_random(self):
+        """Tests that a random sub-skill will be added if a specific one isn't provided"""
+        value = 50
+        self.random_mock.choice_list = [self.sub_skills[self.sub_skill_names[0]][0]]
+        self.assertEqual(self.character._set_sub_skill(self.sub_skill_names[0], '', value), True)
+        self.assertEqual(self.character.skills[
+            self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'], value)
+
+    def test_private_add_random_sub_skill(self):
+        """
+        Tests that this will return a string incorporating a random sub-skill and add it to the
+        character
+        """
+        self.random_mock.choice_list = [self.sub_skills[self.sub_skill_names[0]][0]]
+        str = self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'
+        self.assertEqual(self.character._add_random_sub_skill(self.sub_skill_names[0]), str)
+        self.assertEqual(self.character.skills[str], 0)
+
+    def test_private_add_random_sub_skill_novel_false(self):
+        """
+        Tests that this will return a string incorporating a random sub-skill and not overwrite it
+        if it already exists (this requires the novel kwarg to be false, otherwise a different
+        skill would be chose).
+        """
+        self.random_mock.choice_list = [self.sub_skills[self.sub_skill_names[0]][0]]
+        str = self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'
+        starting_value = 50
+        self.character.skills[str] = starting_value
+        self.assertEqual(self.character._add_random_sub_skill(self.sub_skill_names[0], False), str)
+        self.assertEqual(self.character.skills[str], starting_value)
+
+    def test_private_add_random_sub_skill_retry_needed(self):
+        """
+        Tests that this will try as many times as are necessary to get a new sub-skill if it picks
+        one that already exists (as long as novel is true)
+        """
+        self.random_mock.choice_list = [
+            self.sub_skills[self.sub_skill_names[0]][0],
+            self.sub_skills[self.sub_skill_names[0]][0],
+            self.sub_skills[self.sub_skill_names[0]][0],
+            self.sub_skills[self.sub_skill_names[0]][1],
+        ]
+        existing_str = self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[0] + ')'
+        new_str = self.sub_skill_names[0] + ' (' + self.random_mock.choice_list[-1] + ')'
+        starting_value = 50
+        self.character.skills[existing_str] = starting_value
+        self.assertEqual(self.character._add_random_sub_skill(self.sub_skill_names[0]), new_str)
+        self.assertEqual(self.character.skills[existing_str], starting_value)
+        self.assertEqual(self.character.skills[new_str], 0)
+        self.assertEqual(self.random_mock.choice_state, len(self.random_mock.choice_list) - 1)
 
     def test_roll_stat(self):
         """Test that roll stat correctly grabs the top three results"""

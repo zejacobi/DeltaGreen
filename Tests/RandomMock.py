@@ -8,9 +8,9 @@ class RandomMock(object):
     Class that is a random mock
     """
     def __init__(self):
-        self.range_state = 0
-        self.choice_state = 0
-        self.sample_state = 0
+        self.range_state = -1
+        self.choice_state = -1
+        self.sample_state = -1
 
         self.range_list = []
         self.choice_list = []
