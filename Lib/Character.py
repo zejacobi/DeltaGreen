@@ -378,7 +378,7 @@ class Character(object):
             'Constitution': 1,  # 1/2 HP,
             'Dexterity': 0.5,  # Initiative
             'Intelligence': 0,  # Practically every skill gives this anyway
-            'Charisma': self.num_bonds * 2 / 3  # Bond strength (this seems to be a good modifier)
+            'Charisma': self.num_bonds * 2 / 3  # Bond strength (2/3 to be a good modifier)
         }
         observed_stats = []
         for skill, _ in best_skills:

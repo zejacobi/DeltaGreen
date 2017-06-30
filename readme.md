@@ -15,6 +15,8 @@ globals `DATABASE` (the name of the mongo database you plan to use) and `MONGO_S
 (the connection string you intend to use). An example file has been provided as 
 `ExternalServicesExample.py`
 * Add the open gaming content to your Mongo database with `python SeedDB.py OpenGamingJSON/`
+* Whenever you open this in a new terminal/powershell window, you'll have to activate the VENV again
+with `source venv/bin/activate`
 
 ## Using
 * From the top level directory: `python Test.py`
