@@ -311,7 +311,7 @@ class Character(object):
         if sub:
             return self._add_to_sub_skill(skill, sub, 20)
         else:
-            return self._add_to_skill(skill, 20)
+            return self._add_to_skill(skill, 20, False)
 
     def apply_package(self, package):
         """
@@ -344,9 +344,7 @@ class Character(object):
                 skill_choices.remove('Unnatural')  # Can't improve this through normal channels
             self.random.shuffle(skill_choices)
             for skill in skill_choices[:num_choices]:
-                success = self.add_package_skill(skill, '')
-                while success is not True:
-                    success = self.add_package_skill(skill, '')
+                self.add_package_skill(skill, '')
 
     def set_stat(self, stat, value):
         """

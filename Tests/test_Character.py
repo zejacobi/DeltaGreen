@@ -577,3 +577,81 @@ class TestCharacter(unittest.TestCase):
         self.random_mock.choice_list = [sub]
         self.assertEqual(self.character.add_package_skill(skill, ''), True)
         self.assertEqual(self.character.skills[expected_str], 20)
+
+    def test_apply_package_simple_package(self):
+        """It should add the skills and sub-skills to the character"""
+        package = {
+            "_id": "Test",
+            "Skills": [
+                "Alertness"
+            ],
+            "Subskills": [
+                {
+                    "Skill": "Foreign Language",
+                    "Sub": "Spanish"
+                }],
+            "Choices": {
+                "Number": 0,
+                "All": False,
+                "List": []
+            }
+        }
+        self.character.apply_package(package)
+        self.assertEqual(self.character.package_name, package['_id'])
+        self.assertEqual(self.character.skills['Alertness'], 40)
+        self.assertEqual(self.character.skills['Foreign Language (Spanish)'], 20)
+
+    def test_apply_package_one_all_choice(self):
+        """It should add the skills and sub-skills to the character, then add one of the skills
+            from all.
+        """
+        package = {
+            "_id": "Test",
+            "Skills": [
+                "Alertness"
+            ],
+            "Subskills": [
+                {
+                    "Skill": "Foreign Language",
+                    "Sub": "Spanish"
+                }],
+            "Choices": {
+                "Number": 1,
+                "All": True,
+                "List": []
+            }
+        }
+        self.skill_names.sort()
+        expected_all_skill_value = self.character.skills[self.skill_names[0]] + 20
+        self.character.apply_package(package)
+        self.assertEqual(self.character.package_name, package['_id'])
+        self.assertEqual(self.character.skills['Alertness'], 40)
+        self.assertEqual(self.character.skills[self.skill_names[0]], expected_all_skill_value)
+        self.assertEqual(self.character.skills['Foreign Language (Spanish)'], 20)
+
+    def test_apply_package_one_choice(self):
+        """It should add the skills and sub-skills to the character, then add one of the skills
+            from the list of choices.
+        """
+        package = {
+            "_id": "Test",
+            "Skills": [
+                "Alertness"
+            ],
+            "Subskills": [
+                {
+                    "Skill": "Foreign Language",
+                    "Sub": "Spanish"
+                }],
+            "Choices": {
+                "Number": 1,
+                "All": False,
+                "List": ['Foreign Language']
+            }
+        }
+        self.random_mock.choice_list = ['Arabic']
+        self.character.apply_package(package)
+        self.assertEqual(self.character.package_name, package['_id'])
+        self.assertEqual(self.character.skills['Alertness'], 40)
+        self.assertEqual(self.character.skills['Foreign Language (Spanish)'], 20)
+        self.assertEqual(self.character.skills['Foreign Language (Arabic)'], 20)
