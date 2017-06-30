@@ -242,12 +242,9 @@ class Character(object):
                     if tf:
                         num_choices -= 1
                         self._safe_set_skill(tf['Skill'], tf['Sub'], tf['Value'])
-
-            for skill in self.random.sample(skill_list, num_choices):
-                success = self._safe_set_skill(skill, '', skill_choices[skill])
-                while success is not True:
-                    # tries other random sub-skills if the first doesn't work
-                    success = self._safe_set_skill(skill, '', skill_choices[skill])
+            if num_choices:
+                for skill in self.random.sample(skill_list, num_choices):
+                    self._safe_set_skill(skill, '', skill_choices[skill])
 
     def _add_to_skill(self, skill, addition, novel_sub_skill=True):
         """
