@@ -12,7 +12,8 @@ Open Source [Delta Green] [1] random character generator.
 * You'll need to create a MongoDB database and save the connection string and database name to a
 file called `ExternalServices.py` (in the top level project directory). This file will need the 
 globals `DATABASE` (the name of the mongo database you plan to use) and `MONGO_STRING` 
-(the connection string you intend to use)
+(the connection string you intend to use). An example file has been provided as 
+`ExternalServicesExample.py`
 * Add the open gaming content to your Mongo database with `python SeedDB.py OpenGamingJSON/`
 
 ## Using
