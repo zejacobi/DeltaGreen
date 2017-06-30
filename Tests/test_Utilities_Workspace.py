@@ -22,6 +22,7 @@ class TestParsingJSON(unittest.TestCase):
         os.remove(test_file)
 
     def test_parse_json(self):
+        """Tests that a JSON file is parsed correctly"""
         obj, name = Workspace.parse_json(test_file)
         self.assertDictEqual(obj, json_obj)
         self.assertEqual(name, 'test')
