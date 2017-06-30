@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from Lib.Generator import Generator
 
 gen = Generator()
@@ -18,7 +16,7 @@ for attribute_name in ['Hit Points', 'Willpower Points', 'Sanity', 'Breaking Poi
 print('Stats')
 stats = gen.character.get_stats()
 for stat_name in ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Power',
-                         'Charisma']:
+                  'Charisma']:
     print('   ', stat_name + ':', stats[stat_name])
 print('Skills')
 skills = gen.character.get_skills()

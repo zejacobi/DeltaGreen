@@ -2,8 +2,9 @@ from threading import Thread
 
 import random
 
+import Lib.Mongo as Mongo
+
 from Lib.Character import Character
-from Lib.Mongo import database
 
 
 class Generator(object):
@@ -24,11 +25,11 @@ class Generator(object):
         self.sub_skills = {}
 
         threads = [
-            Thread(target=self.get_classes),
-            Thread(target=self.get_packages),
-            Thread(target=self.get_defaults),
-            Thread(target=self.get_sub_skills),
-            Thread(target=self.get_skill_mapping)
+            Thread(target=self._get_classes),
+            Thread(target=self._get_packages),
+            Thread(target=self._get_defaults),
+            Thread(target=self._get_sub_skills),
+            Thread(target=self._get_skill_mapping)
         ]
 
         for t in threads:
@@ -39,57 +40,66 @@ class Generator(object):
 
         self.character = Character(self.defaults, self.sub_skills, self.skill_mapping)
 
-    def get_classes(self):
+    def _get_classes(self):
         """
         Gets character classes from the database and appends them to the classes property.
 
         :return: None
         """
-        pointer = database['classes'].find()
-        for class_obj in pointer:
-            self.classes.append(class_obj)
+        self.classes = Mongo.find_all('classes')
 
-    def get_packages(self):
+    def _get_packages(self):
         """
         Gets packages from the database and appends them to the **packages** property.
 
         :return: None
         """
-        pointer = database['packages'].find()
-        for package in pointer:
-            self.packages.append(package)
+        self.packages = Mongo.find_all('packages')
 
-    def get_defaults(self):
+    def _get_defaults(self):
         """
         Gets default skills from the database and appends them to the **defaults** property.
 
         :return: None
         """
-        res = database['default_stats'].find_one()
-        del res['_id']
-        self.defaults = res
+        self.defaults = Mongo.find_one('default_stats')
 
-    def get_skill_mapping(self):
+    def _get_skill_mapping(self):
         """
         Gets skill mappings (which determine stat order) from the database and appends them to
         the **skill_mapping** property.
 
         :return: None
         """
-        res = database['skill_mapping'].find_one()
-        del res['_id']
-        self.skill_mapping = res
+        self.skill_mapping = Mongo.find_one('skill_mapping')
 
-    def get_sub_skills(self):
+    def _get_sub_skills(self):
         """
         Gets a dictionary mapping sub-skill categories to their specific options from the database
         and appends them to the **sub_skills** property.
 
         :return: None
         """
-        res = database['sub_skills'].find_one()
-        del res['_id']
-        self.sub_skills = res
+        self.sub_skills = Mongo.find_one('sub_skills')
+
+    def _get_bonds(self):
+        """
+        Gets bonds that are available to the character (based on the class and package) from the
+        database and appends them to the **bonds** property.
+
+        :return: None
+        """
+        required = [None]
+
+        character_class = self.character.get_class()
+        if character_class:
+            required.append(character_class)
+
+        character_package = self.character.get_package()
+        if character_package:
+            required.append(character_package)
+
+        self.bonds = Mongo.find_subset('bonds', {"Required": {"$in": required}})
 
     def random_character_class(self):
         """
@@ -119,30 +129,6 @@ class Generator(object):
         """
         self.character.apply_stats()
         self.character.calculate_attributes()
-
-    def get_bonds(self):
-        """
-        Gets bonds that are available to the character (based on the class and package) from the
-        database and appends them to the **bonds** property.
-
-        :return: None
-        """
-        required = [None]
-
-        character_class = self.character.get_class()
-        if character_class:
-            required.append(character_class)
-
-        character_package = self.character.get_package()
-        if character_package:
-            required.append(character_package)
-
-        pointer = database['bonds'].find({
-            "Required": {"$in": required}
-        })
-
-        for bond in pointer:
-            self.bonds.append(bond)
 
     def random_character_bonds(self):
         """
@@ -189,6 +175,6 @@ class Generator(object):
         """
         self.random_character_class()
         self.random_character_package()
-        self.get_bonds()
+        self._get_bonds()
         self.random_character_stats()
         self.random_character_bonds()

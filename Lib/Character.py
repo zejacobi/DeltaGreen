@@ -48,7 +48,7 @@ class Character(object):
         self.bp = 0
 
     @staticmethod
-    def get_subskill_str(skill, sub):
+    def _get_subskill_str(skill, sub):
         """
         Generates a properly formatted skill string in the format <skill> (<sub>)
 
@@ -69,7 +69,7 @@ class Character(object):
         rolls = [random.randrange(1, 7) for _ in range(4)]
         return sum(sorted(rolls, reverse=True)[:3])
 
-    def get_random_sub_skill(self, skill):
+    def _get_random_sub_skill(self, skill):
         """
         Given a skill which is further broken down into sub-skills (e.g. Foreign Language),
         searches the record of available sub-skills and returns one of them at random
@@ -83,7 +83,7 @@ class Character(object):
         choices = self.sub_skills[skill]
         return random.choice(choices)
 
-    def set_skill(self, skill, value):
+    def _set_skill(self, skill, value):
         """
         Sets the provided skill to the provided value. If the skill has subcomponents (i.e.
         Foreign Language has the French, Spanish, etc. subcomponents), one of them will be chosen
@@ -99,32 +99,32 @@ class Character(object):
             self.skills[skill] = value
             return True
         elif skill in self.sub_skill_types:
-            self.set_skill(self.add_random_sub_skill(skill), value)
+            self._set_skill(self._add_random_sub_skill(skill), value)
             return True
         return False
 
-    def add_sub_skill(self, skill, sub):
+    def _add_sub_skill(self, skill, sub):
         """
         Generates the display string for a sub-skill ("Foreign Language", "French" becomes
         "Foreign Language (French)") and adds it the **skills** property of the character class,
         with a starting value of 0. If no *sub* value provided, one will be chosen at random.
+        If a sub-skill is chosen at random, it will specifically be one that isn't already use.
 
         :param str skill: A skill which has associated subskills (e.g. Craft, Foreign Language)
         :param str sub: name of one sub-skill under the aegis of the parent skill (e.g. Mechanic for
             Craft, French for Foreign Language), or a falsey value for a random sub-skill to be
-            chosen
-            instead of a specific sub-skill.
+            chosen instead of a specific sub-skill.
         :return: The display string for the sub-skill
         :rtype: str
         """
         if not sub:
-            return self.add_random_sub_skill(skill)
-        string = self.get_subskill_str(skill, sub)
+            return self._add_random_sub_skill(skill)
+        string = self._get_subskill_str(skill, sub)
         if string not in self.skills:
             self.skills[string] = 0
         return string
     
-    def set_sub_skill(self, skill, sub, value):
+    def _set_sub_skill(self, skill, sub, value):
         """
         Convenience function for setting a sub-skill to a certain value. It adds the skill/sub-skill
         to the list of skills (randomly generating a sub-skill if none passed) and then sets that
@@ -139,9 +139,9 @@ class Character(object):
             could be set to the desired value)
         :rtype: bool
         """
-        return self.set_skill(self.add_sub_skill(skill, sub), value)
+        return self._set_skill(self._add_sub_skill(skill, sub), value)
 
-    def add_random_sub_skill(self, skill, novel=True):
+    def _add_random_sub_skill(self, skill, novel=True):
         """
         Adds a random sub-skill to the character (setting it to 0 in the process).
 
@@ -152,16 +152,16 @@ class Character(object):
         :return: The display string (e.g. "Foreign Language (French)") for the sub-skill
         :rtype: str
         """
-        choice = self.get_random_sub_skill(skill)
-        string = self.get_subskill_str(skill, choice)
+        choice = self._get_random_sub_skill(skill)
+        string = self._get_subskill_str(skill, choice)
         if novel:
             while string in self.skills:
-                choice = self.get_random_sub_skill(skill)
-                string = self.get_subskill_str(skill, choice)
-        self.add_sub_skill(skill, choice)
+                choice = self._get_random_sub_skill(skill)
+                string = self._get_subskill_str(skill, choice)
+        self._add_sub_skill(skill, choice)
         return string
 
-    def safe_set_skill(self, skill, sub, value):
+    def _safe_set_skill(self, skill, sub, value):
         """
         Safely sets a skill or a sub-skill to the requested value. "Safely" means this function
         will only modify skills that are set to their default value. It won't overwrite any skills
@@ -170,9 +170,9 @@ class Character(object):
         :param str skill: A skill which may or may not have associated subskills (e.g. *"Craft"*,
             *"Foreign Language"* have associated sub-skills, "Swim" does not)
         :param str sub: name of one sub-skill under the aegis of the parent skill (e.g. Mechanic for
-            Craft, French for Foreign Language), or a falsey value for a random sub-skill to be chosen
-            instead of a specific sub-skill. If the *skill* parameter isn't a sub-skill, this will
-            be ignored
+            Craft, French for Foreign Language), or a falsey value for a random sub-skill to be
+            chosen instead of a specific sub-skill. If the *skill* parameter isn't a sub-skill,
+            this will be ignored
         :param int value: The number to set the skill/sub-skill to
         :return: True (if a skill was successfully set to the desired value) or False (if no skill
             could be set to the desired value, or if the skill has already been modified)
@@ -181,20 +181,20 @@ class Character(object):
         if not sub:
             if skill in self.skills:
                 if self.skills[skill] == self.defaults[skill]:
-                    self.set_skill(skill, value)
+                    self._set_skill(skill, value)
                     return True
                 return False
             else:
-                return self.set_skill(skill, value)
+                return self._set_skill(skill, value)
         else:
-            string = self.get_subskill_str(skill, sub)
+            string = self._get_subskill_str(skill, sub)
             if string in self.skills:
                 if self.skills[string] == 0:
-                    self.set_skill(string, value)
+                    self._set_skill(string, value)
                     return True
                 return False
             else:
-                self.set_sub_skill(skill, sub, value)
+                self._set_sub_skill(skill, sub, value)
                 return True
 
     def apply_class(self, class_obj):
@@ -221,10 +221,10 @@ class Character(object):
         self.class_name = class_obj['_id']
 
         for skill in skills:
-            self.set_skill(skill, skills[skill])
+            self._set_skill(skill, skills[skill])
         
         for obj in sub_skills:
-            self.set_sub_skill(obj['Skill'], obj['Sub'], obj['Value'])
+            self._set_sub_skill(obj['Skill'], obj['Sub'], obj['Value'])
 
         choices = class_obj['Choices']
         skill_choices = choices['Skills']
@@ -237,16 +237,18 @@ class Character(object):
                 sample_list = [False for _ in skill_list]
                 sample_list.extend(choice_sub_skills)
                 for tf in random.sample(sample_list, num_choices):
+                    # picks a fair amount of sub-skills, proportional to the number there are
                     if tf:
                         num_choices -= 1
-                        self.safe_set_skill(tf['Skill'], tf['Sub'], tf['Value'])
+                        self._safe_set_skill(tf['Skill'], tf['Sub'], tf['Value'])
 
             for skill in random.sample(skill_list, num_choices):
-                success = self.safe_set_skill(skill, '', skill_choices[skill])
+                success = self._safe_set_skill(skill, '', skill_choices[skill])
                 while success is not True:
-                    success = self.safe_set_skill(skill, '', skill_choices[skill])
+                    # tries other random sub-skills if the first doesn't work
+                    success = self._safe_set_skill(skill, '', skill_choices[skill])
 
-    def add_to_skill(self, skill, addition, novel_sub_skill=True):
+    def _add_to_skill(self, skill, addition, novel_sub_skill=True):
         """
         Adds a set value to a skill. If the skill is one that has sub-skills, it picks a random
         sub-skill to add the value to. If the bool *novel_sub_skill* is True, this skill will be
@@ -265,11 +267,11 @@ class Character(object):
             self.skills[skill] += addition
             return True
         elif skill in self.sub_skill_types:
-            self.add_to_skill(self.add_random_sub_skill(skill, novel_sub_skill), addition)
+            self._add_to_skill(self._add_random_sub_skill(skill, novel_sub_skill), addition)
             return True
         return False
 
-    def add_to_sub_skill(self, skill, sub, addition, novel_sub_skill=False):
+    def _add_to_sub_skill(self, skill, sub, addition, novel_sub_skill=False):
         """
         Adds a set value to a skill that has sub-skills. If *sub* is falsey, it picks a random
         sub-skill to add the value to. If the bool *novel_sub_skill* is True, this skill will be
@@ -289,13 +291,13 @@ class Character(object):
         :rtype: bool
         """
         if sub:
-            string = self.get_subskill_str(skill, sub)
+            string = self._get_subskill_str(skill, sub)
             if string in self.skills:
-                return self.add_to_skill(string, addition)
+                return self._add_to_skill(string, addition)
             else:
-                return self.add_to_skill(self.add_sub_skill(skill, sub), addition)
+                return self._add_to_skill(self._add_sub_skill(skill, sub), addition)
         else:
-            return self.add_to_skill(skill, addition, novel_sub_skill=novel_sub_skill)
+            return self._add_to_skill(skill, addition, novel_sub_skill=novel_sub_skill)
 
     def add_package_skill(self, skill, sub):
         """
@@ -309,9 +311,9 @@ class Character(object):
         :rtype: bool
         """
         if sub:
-            return self.add_to_sub_skill(skill, sub, 20)
+            return self._add_to_sub_skill(skill, sub, 20)
         else:
-            return self.add_to_skill(skill, 20)
+            return self._add_to_skill(skill, 20)
 
     def apply_package(self, package):
         """
@@ -361,13 +363,17 @@ class Character(object):
             return True
         return False
 
-    def apply_stats(self):
+    def apply_stats(self, floor=68):
         """
         Generates stats using 4d6 drop lowest
         and applies them, with the best stats going to where the program thinks the character
         should be best. This is based off of skills (with some weighting given to game useful
         qualities, to ensure characters aren't weak)
 
+        :param int floor: The minimum allowable sum of all of the randomly generated statistics.
+            Having this set to a value significantly increases the strength of a character (although
+            this effect is less pronounced for values less than 65 and practically non-existent
+            below 60). Set to 0 for the hardcore gamer cred of taking whatever the dice gives you.
         :return: None
         :rtype: None
         """
@@ -397,8 +403,9 @@ class Character(object):
                 stat_count[stat] += 1
 
         die_rolls = sorted([self.roll_stat() for _ in range(6)], reverse=True)
-        while sum(die_rolls) < 69:
-            die_rolls = sorted([self.roll_stat() for _ in range(6)], reverse=True)
+        if floor:
+            while sum(die_rolls) < floor:
+                die_rolls = sorted([self.roll_stat() for _ in range(6)], reverse=True)
         stat_order = sorted(stat_count.items(), key=operator.itemgetter(1), reverse=True)
         self.stats = {stat[0]: die_rolls[i] for i, stat in enumerate(stat_order)}
 
@@ -472,9 +479,9 @@ class Character(object):
         Adds a bond to the character's list of bonds
 
         :param dict bond: A dictionary with parameters **_id** (the bond's name), **Required**
-            (an array listing any requirements for having the bond), and the classes of bond (
-            **Family**, **Romantic**, **Friend**, **Work**, **Therapy**), booleans which are used to
-            ensure an even and reasonable distribution of bonds.
+            (an array listing any package or class requirements for having the bond), and the
+            classes of bond (**Family**, **Romantic**, **Friend**, **Work**, **Therapy**),
+            booleans which are used to ensure an even and reasonable distribution of bonds.
 
         :return: None
         :rtype: None
