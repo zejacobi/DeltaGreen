@@ -635,3 +635,11 @@ class Character(object):
         :rtype: None
         """
         self.disorders.append(disorder['_id'])
+
+    def get_adaptations(self):
+        """Determines what type of sanity damage (if any) the character is already adapted to.
+
+        :return: A list of which types of sanity damage a character is adapted to.
+        :rtype: list
+        """
+        return [name for name in self.adapted.keys() if self.adapted[name]]

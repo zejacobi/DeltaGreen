@@ -1275,3 +1275,13 @@ class TestCharacter(unittest.TestCase):
         self.character.disorders = disorders
 
         self.assertEqual(self.character.get_disorders(), disorders)
+
+    def test_get_adaptations_none(self):
+        """Tests that it returns an empty array when the character isn't adapted to anything"""
+        self.assertEqual(self.character.get_adaptations(), [])
+
+    def test_get_adaptations(self):
+        """Tests that it returns an array with any adaptations the character might have"""
+        adapted = 'Violence'
+        self.character.adapted[adapted] = True
+        self.assertEqual(self.character.get_adaptations(), [adapted])
