@@ -1,5 +1,6 @@
 import unittest
 import mongomock
+import operator
 
 from os import path
 
@@ -23,6 +24,7 @@ class TestGenerator(unittest.TestCase):
         cls.random_mock = RandomMock()
 
         cls.bonds = parse_json(path.join(data_path, 'bonds.json'))[0]
+        cls.bonds = sorted(cls.bonds, key=operator.itemgetter('Work'), reverse=True)
         cls.classes = parse_json(path.join(data_path, 'classes.json'))[0]
         cls.default_stats = parse_json(path.join(data_path, 'default_stats.json'))[0]
         cls.packages = parse_json(path.join(data_path, 'packages.json'))[0]
@@ -133,3 +135,46 @@ class TestGenerator(unittest.TestCase):
             'Power': 13,
             'Charisma': 11
         })
+
+    def test_random_character_bonds_no_bonds(self):
+        """Tests the no bonds are added if the character has no capacity for bonds"""
+        self.generator.character.num_bonds = 0
+        self.generator.random_character_bonds()
+        self.assertEqual(self.generator.character.bonds, [])
+
+    def test_random_character_bonds_one_bond(self):
+        """Tests that only one bond is added when the character only has the capacity for one
+            bond"""
+        self.generator.character.num_bonds = 1
+        self.random_mock.choice_list = [self.bonds[0]]
+        self.generator.random_character_bonds()
+        self.assertEqual(self.generator.character.bonds, self.random_mock.choice_list)
+
+    def test_random_character_bonds_ignore_repeats(self):
+        """Tests that the same bond cannot be added multiple times"""
+        self.generator.character.num_bonds = 2
+        self.random_mock.choice_list = [self.bonds[0], self.bonds[0], self.bonds[-1]]
+        self.generator.random_character_bonds()
+        self.assertEqual(self.generator.character.bonds, [self.bonds[0], self.bonds[-1]])
+
+    def test_random_character_bonds_ignore_invalid(self):
+        """Tests that invalid bonds will be ignored"""
+        self.generator.character.num_bonds = 2
+        self.random_mock.choice_list = [self.bonds[0], {"_id": "Fake"}, self.bonds[-1]]
+        self.generator.random_character_bonds()
+        self.assertEqual(self.generator.character.bonds, [self.bonds[0], self.bonds[-1]])
+
+    def test_random_character_bonds_ignore_same_type(self):
+        """Tests that the same type of bond cannot be added multiple times"""
+        self.generator.character.num_bonds = 2
+        self.random_mock.choice_list = [self.bonds[0], self.bonds[1], self.bonds[-1]]
+        self.generator.random_character_bonds()
+        self.assertEqual(self.generator.character.bonds, [self.bonds[0], self.bonds[-1]])
+
+    def test_random_character_bonds_add_all_bonds(self):
+        """Tests that all bonds become fair game once all types are full"""
+        self.generator.character.num_bonds = len(self.bonds)
+        self.random_mock.choice_list = self.bonds
+        self.generator.random_character_bonds()
+        self.assertEqual(sorted(self.generator.character.bonds, key=operator.itemgetter('_id')),
+                         sorted(self.bonds, key=operator.itemgetter('_id')))

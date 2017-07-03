@@ -9,9 +9,9 @@
     "Therapy": false
   },
   {
-    "_id": "Spouse",
+    "_id": "Boyfriend",
     "Required": null,
-    "Family": true,
+    "Family": false,
     "Romantic": true,
     "Friend": false,
     "Work": false,

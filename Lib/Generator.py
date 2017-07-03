@@ -155,7 +155,7 @@ class Generator(object):
                     break
 
                 for bond_type in bond_types:
-                    if proposed_bond[bond_type]:
+                    if proposed_bond.get(bond_type, False):  # protects against missing properties
                         proposed_bond_type = bond_type
                         break
                 else:
