@@ -178,3 +178,50 @@ class TestGenerator(unittest.TestCase):
         self.generator.random_character_bonds()
         self.assertEqual(sorted(self.generator.character.bonds, key=operator.itemgetter('_id')),
                          sorted(self.bonds, key=operator.itemgetter('_id')))
+
+    def test_generate(self):
+        """Tests that a random character is generated"""
+        class_name = 'Federal Agent'
+        skill_choice = 'Accounting'
+        package_name = 'Weasel'
+        self.random_mock.choice_list = [class_obj for class_obj in self.classes
+                                        if class_obj['_id'] == class_name]
+        self.random_mock.choice_list.extend([package for package in self.packages
+                                             if package['_id'] == package_name])
+        self.random_mock.choice_list.extend(self.bonds[-3:])
+        self.random_mock.range_list = [5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1,
+                                       5, 5, 5, 1, ]
+        self.random_mock.sample_list = [[skill_choice]]
+        self.generator.generate()
+
+        with self.subTest(msg='Testing that stats are set correctly'):
+            self.assertEqual(self.generator.character.stats, {
+                'Strength': 15,
+                'Dexterity': 15,
+                'Constitution': 15,
+                'Intelligence': 15,
+                'Power': 15,
+                'Charisma': 15
+            })
+
+        with self.subTest(msg='Testing that the class name was set correctly'):
+            self.assertEqual(self.generator.character.class_name, class_name)
+
+        with self.subTest(msg='Testing that the package name was set correctly'):
+            self.assertEqual(self.generator.character.package_name, package_name)
+
+        with self.subTest(msg='Testing that the number of bonds were set correctly'):
+            self.assertEqual(self.generator.character.num_bonds,
+                             self.random_mock.choice_list[0]['Bonds'])
+
+        with self.subTest(msg='Testing that the bonds were set correctly'):
+            self.assertEqual(sorted(self.generator.character.bonds, key=operator.itemgetter('_id')),
+                             sorted(self.bonds[-3:], key=operator.itemgetter('_id')))
+
+        with self.subTest(msg='Testing that the skills are set correctly'):
+            for skill in self.random_mock.choice_list[0]['Skills'].keys():
+                with self.subTest(msg='Testing setting the skill: ' + skill):
+                    skill_level = (self.random_mock.choice_list[0]['Skills'][skill]
+                                   + 20 * (skill in self.random_mock.choice_list[1]['Skills']))
+                    self.assertEqual(self.generator.character.skills[skill], skill_level)
+
