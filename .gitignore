@@ -4,3 +4,8 @@ ExternalServices.py
 /ClosedJSON/
 /Saved Characters/
 /Docs/_build/
+Docs/_static/
+Docs/_templates/
+.DS_Store
+*.pyc
+**/__pycache__/
