@@ -1,0 +1,72 @@
+[
+  {
+    "_id": "Computer Scientist",
+    "Skills": {
+      "Computer Science": 60,
+      "SIGINT": 40
+    },
+    "Choices": {
+      "Number": 4,
+      "Skills": {
+        "Accounting": 50,
+        "Bureaucracy": 50,
+        "Craft": 40,
+        "Foreign Language": 40,
+        "Heavy Machinery": 50,
+        "Law": 40,
+        "Science": 40
+      }
+    },
+    "Subskills": [
+      {
+        "Skill": "Craft",
+        "Sub": "Electrician",
+        "Value": 30
+      },
+      {
+        "Skill": "Craft",
+        "Sub": "Mechanic",
+        "Value": 30
+      },
+      {
+        "Skill": "Craft",
+        "Sub": "Microelectronics",
+        "Value": 40
+      },
+      {
+        "Skill": "Science",
+        "Sub": "Mathematics",
+        "Value": 40
+      }
+    ],
+    "Bonds": 3
+  },
+  {
+    "_id": "Federal Agent",
+    "Skills": {
+      "Alertness": 50,
+      "Bureaucracy": 40,
+      "Criminology": 50,
+      "Drive": 50,
+      "Firearms": 50,
+      "Forensics": 30,
+      "HUMINT": 60,
+      "Law": 30,
+      "Persuade": 50,
+      "Search": 50,
+      "Unarmed Combat": 60
+    },
+    "Choices": {
+      "Number": 1,
+      "Skills" : {
+        "Accounting": 60,
+        "Computer Science": 50,
+        "Foreign Language": 50,
+        "Heavy Weapons": 50,
+        "Pharmacy": 50
+      }
+    },
+    "Subskills": [],
+    "Bonds": 3
+  }
+]

@@ -15,6 +15,7 @@ class Generator(object):
         """
         Gets all information from the Mongo Database and uses it to instantiate a character class.
         """
+        self.Mongo = Mongo
         self.classes = []
         self.bonds = []
         self.packages = []
@@ -44,7 +45,7 @@ class Generator(object):
 
         :return: None
         """
-        self.classes = Mongo.find_all('classes')
+        self.classes = self.Mongo.find_all('classes')
 
     def _get_packages(self):
         """
@@ -52,7 +53,7 @@ class Generator(object):
 
         :return: None
         """
-        self.packages = Mongo.find_all('packages')
+        self.packages = self.Mongo.find_all('packages')
 
     def _get_defaults(self):
         """
@@ -60,7 +61,7 @@ class Generator(object):
 
         :return: None
         """
-        self.defaults = Mongo.find_one('default_stats')
+        self.defaults = self.Mongo.find_one('default_stats')
 
     def _get_skill_mapping(self):
         """
@@ -69,7 +70,7 @@ class Generator(object):
 
         :return: None
         """
-        self.skill_mapping = Mongo.find_one('skill_mapping')
+        self.skill_mapping = self.Mongo.find_one('skill_mapping')
 
     def _get_sub_skills(self):
         """
@@ -78,7 +79,7 @@ class Generator(object):
 
         :return: None
         """
-        self.sub_skills = Mongo.find_one('sub_skills')
+        self.sub_skills = self.Mongo.find_one('sub_skills')
 
     def _get_bonds(self):
         """
@@ -97,7 +98,7 @@ class Generator(object):
         if character_package:
             required.append(character_package)
 
-        self.bonds = Mongo.find_subset('bonds', {"Required": {"$in": required}})
+        self.bonds = self.Mongo.find_subset('bonds', {"Required": {"$in": required}})
 
     def random_character_class(self):
         """

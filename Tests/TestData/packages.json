@@ -1,0 +1,40 @@
+[
+  {
+    "_id": "Notched Barrel",
+    "Skills": [
+      "Alertness",
+      "Demolitions",
+      "Dodge",
+      "Firearms",
+      "Heavy Weapons",
+      "Melee Weapons",
+      "Unarmed",
+      "Stealth"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  },
+  {
+    "_id": "Weasel",
+    "Skills": [
+      "Alertness",
+      "Bureaucracy",
+      "Criminology",
+      "Persuade",
+      "HUMINT",
+      "Law",
+      "Accounting",
+      "Stealth"
+    ],
+    "Subskills": [],
+    "Choices": {
+      "Number": 0,
+      "All": false,
+      "List": []
+    }
+  }
+]
