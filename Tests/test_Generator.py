@@ -78,6 +78,7 @@ class TestGenerator(unittest.TestCase):
         """Tests that no class specific bonds will be returned when it's run without a class or
             package"""
         self.generator._get_bonds()
+
         self.assertEqual(self.generator.bonds,
                          [bond for bond in self.bonds if bond["Required"] is None])
 
@@ -86,6 +87,7 @@ class TestGenerator(unittest.TestCase):
         self.generator.character.class_name = "Federal Agent"
         self.generator.character.package_name = "Office Worker"
         self.generator._get_bonds()
+
         self.assertEqual(self.generator.bonds, self.bonds)
 
     def test_random_character_class(self):
@@ -97,9 +99,16 @@ class TestGenerator(unittest.TestCase):
                                         if class_obj['_id'] == class_name]
         self.random_mock.sample_list = [[skill_choice]]
         self.generator.random_character_class()
-        self.assertEqual(self.generator.character.class_name, class_name)
-        self.assertEqual(self.generator.character.num_bonds, 3)
-        self.assertEqual(self.generator.character.skills[skill_choice], 60)
+
+        with self.subTest(msg='Testing that the class name was correctly set'):
+            self.assertEqual(self.generator.character.class_name, class_name)
+
+        with self.subTest(msg='Testing the number of bonds matches what\'s expected for the class'):
+            self.assertEqual(self.generator.character.num_bonds, 3)
+
+        with self.subTest(msg='Testing that the skill choice went as expected'):
+            self.assertEqual(self.generator.character.skills[skill_choice], 60)
+
         for skill in self.random_mock.choice_list[0]['Skills'].keys():
             with self.subTest(msg='Testing setting the skill: ' + skill):
                 self.assertEqual(self.generator.character.skills[skill],
@@ -111,6 +120,7 @@ class TestGenerator(unittest.TestCase):
         self.random_mock.choice_list = [package for package in self.packages
                                         if package['_id'] == package_name]
         self.generator.random_character_package()
+
         for skill in self.random_mock.choice_list[0]['Skills']:
             with self.subTest(msg='Testing setting the skill: ' + skill):
                 self.assertEqual(self.generator.character.skills[skill],
@@ -127,6 +137,7 @@ class TestGenerator(unittest.TestCase):
         self.generator.character.skills['Athletics'] = 96
         self.generator.character.skills['Psychotherapy'] = 95
         self.generator.random_character_stats()
+
         self.assertEqual(self.generator.character.stats, {
             'Strength': 15,
             'Dexterity': 14,
@@ -140,6 +151,7 @@ class TestGenerator(unittest.TestCase):
         """Tests the no bonds are added if the character has no capacity for bonds"""
         self.generator.character.num_bonds = 0
         self.generator.random_character_bonds()
+
         self.assertEqual(self.generator.character.bonds, [])
 
     def test_random_character_bonds_one_bond(self):
@@ -148,6 +160,7 @@ class TestGenerator(unittest.TestCase):
         self.generator.character.num_bonds = 1
         self.random_mock.choice_list = [self.bonds[0]]
         self.generator.random_character_bonds()
+
         self.assertEqual(self.generator.character.bonds, self.random_mock.choice_list)
 
     def test_random_character_bonds_ignore_repeats(self):
@@ -155,6 +168,7 @@ class TestGenerator(unittest.TestCase):
         self.generator.character.num_bonds = 2
         self.random_mock.choice_list = [self.bonds[0], self.bonds[0], self.bonds[-1]]
         self.generator.random_character_bonds()
+
         self.assertEqual(self.generator.character.bonds, [self.bonds[0], self.bonds[-1]])
 
     def test_random_character_bonds_ignore_invalid(self):
@@ -162,6 +176,7 @@ class TestGenerator(unittest.TestCase):
         self.generator.character.num_bonds = 2
         self.random_mock.choice_list = [self.bonds[0], {"_id": "Fake"}, self.bonds[-1]]
         self.generator.random_character_bonds()
+
         self.assertEqual(self.generator.character.bonds, [self.bonds[0], self.bonds[-1]])
 
     def test_random_character_bonds_ignore_same_type(self):
@@ -169,6 +184,7 @@ class TestGenerator(unittest.TestCase):
         self.generator.character.num_bonds = 2
         self.random_mock.choice_list = [self.bonds[0], self.bonds[1], self.bonds[-1]]
         self.generator.random_character_bonds()
+
         self.assertEqual(self.generator.character.bonds, [self.bonds[0], self.bonds[-1]])
 
     def test_random_character_bonds_add_all_bonds(self):
@@ -176,6 +192,7 @@ class TestGenerator(unittest.TestCase):
         self.generator.character.num_bonds = len(self.bonds)
         self.random_mock.choice_list = self.bonds
         self.generator.random_character_bonds()
+
         self.assertEqual(sorted(self.generator.character.bonds, key=operator.itemgetter('_id')),
                          sorted(self.bonds, key=operator.itemgetter('_id')))
 
