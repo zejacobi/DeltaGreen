@@ -32,6 +32,10 @@ class Character(object):
         self.class_name = ''
         self.package_name = ''
         self.disorders = []
+        self.adapted = {
+            "Violence": False,
+            "Helplessness": False
+        }
         self.stats = {
             'Strength': 0,
             'Dexterity': 0,
