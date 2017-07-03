@@ -1,0 +1,110 @@
+[
+  {
+    "_id": "Addiction",
+    "Violence": true,
+    "Helplessness": true,
+    "Unnatural": false
+  },
+  {
+    "_id": "Depression",
+    "Violence": true,
+    "Helplessness": true,
+    "Unnatural": true
+  },
+  {
+    "_id": "Intermittent Explosive Disorder",
+    "Violence": true,
+    "Helplessness": false,
+    "Unnatural": false
+  },
+  {
+    "_id": "Ligyrophobia",
+    "Violence": true,
+    "Helplessness": false,
+    "Unnatural": false
+  },
+  {
+    "_id": "Sleep Disorder",
+    "Violence": true,
+    "Helplessness": false,
+    "Unnatural": true
+  },
+  {
+    "_id": "PTSD",
+    "Violence": true,
+    "Helplessness": false,
+    "Unnatural": false
+  },
+  {
+    "_id": "Totemic Compulsion",
+    "Violence": true,
+    "Helplessness": false,
+    "Unnatural": false
+  },
+  {
+    "_id": "Paranoia",
+    "Violence": true,
+    "Helplessness": false,
+    "Unnatural": true
+  },
+  {
+    "_id": "Anxiety Disorder",
+    "Violence": false,
+    "Helplessness": true,
+    "Unnatural": false
+  },
+  {
+    "_id": "Conversion Disorder",
+    "Violence": false,
+    "Helplessness": true,
+    "Unnatural": false
+  },
+  {
+    "_id": "Dissociative Identity Disorder",
+    "Violence": false,
+    "Helplessness": true,
+    "Unnatural": true
+  },
+  {
+    "_id": "Enclosure-Related Phobia",
+    "Violence": false,
+    "Helplessness": true,
+    "Unnatural": false
+  },
+  {
+    "_id": "Obsession",
+    "Violence": false,
+    "Helplessness": true,
+    "Unnatural": false
+  },
+  {
+    "_id": "Obsessive/Compulsive Disorder",
+    "Violence": false,
+    "Helplessness": true,
+    "Unnatural": false
+  },
+  {
+    "_id": "Amnesia",
+    "Violence": false,
+    "Helplessness": false,
+    "Unnatural": true
+  },
+  {
+    "_id": "Depersonalization Disorder",
+    "Violence": false,
+    "Helplessness": false,
+    "Unnatural": true
+  },
+  {
+    "_id": "Fugues",
+    "Violence": false,
+    "Helplessness": false,
+    "Unnatural": true
+  },
+  {
+    "_id": "Megalomania",
+    "Violence": false,
+    "Helplessness": false,
+    "Unnatural": true
+  }
+]
