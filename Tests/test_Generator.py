@@ -30,6 +30,10 @@ class TestGenerator(unittest.TestCase):
         cls.packages = parse_json(path.join(data_path, 'packages.json'))[0]
         cls.skill_mapping = parse_json(path.join(data_path, 'skill_mapping.json'))[0]
         cls.sub_skills = parse_json(path.join(data_path, 'sub_skills.json'))[0]
+        cls.violence_disorders = parse_json(path.join(data_path, 'violence_disorders.json'))[0]
+        cls.unnatural_disorders = parse_json(path.join(data_path, 'unnatural_disorders.json'))[0]
+        cls.helplessness_disorders = parse_json(path.join(data_path,
+                                                          'helplessness_disorders.json'))[0]
 
         cls.mongo_obj.insert(cls.bonds, 'bonds')
         cls.mongo_obj.insert(cls.classes, 'classes')
@@ -37,6 +41,9 @@ class TestGenerator(unittest.TestCase):
         cls.mongo_obj.insert(cls.packages, 'packages')
         cls.mongo_obj.insert(cls.skill_mapping, 'skill_mapping')
         cls.mongo_obj.insert(cls.sub_skills, 'sub_skills')
+        cls.mongo_obj.insert(cls.helplessness_disorders, 'disorders')
+        cls.mongo_obj.insert(cls.unnatural_disorders, 'disorders')
+        cls.mongo_obj.insert(cls.violence_disorders, 'disorders')
 
         cls.default_stats.pop('_id')
         cls.skill_mapping.pop('_id')
@@ -73,6 +80,14 @@ class TestGenerator(unittest.TestCase):
     def test_init_sub_skills(self):
         """Initializing the class should have grabbed the sub-skills from the database"""
         self.assertEqual(self.generator.sub_skills, self.sub_skills)
+
+    def test_init_disorders(self):
+        """Initializing the class should have grabbed the sub-skills from the database"""
+        self.assertEqual(self.generator.disorders, {
+            "Violence": self.violence_disorders,
+            "Helplessness": self.helplessness_disorders,
+            "Unnatural": self.unnatural_disorders,
+        })
 
     def test_private_get_bonds_no_class(self):
         """Tests that no class specific bonds will be returned when it's run without a class or

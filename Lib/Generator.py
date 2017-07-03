@@ -19,6 +19,11 @@ class Generator(object):
         self.classes = []
         self.bonds = []
         self.packages = []
+        self.disorders = {
+            "Violence": [],
+            "Helplessness": [],
+            "Unnatural": []
+        }
         self.skill_mapping = {}
         self.defaults = {}
         self.sub_skills = {}
@@ -27,6 +32,9 @@ class Generator(object):
             Thread(target=self._get_classes),
             Thread(target=self._get_packages),
             Thread(target=self._get_defaults),
+            Thread(target=self._get_violence_disorders),
+            Thread(target=self._get_helplessness_disorders),
+            Thread(target=self._get_unnatural_disorders),
             Thread(target=self._get_sub_skills),
             Thread(target=self._get_skill_mapping)
         ]
@@ -46,6 +54,30 @@ class Generator(object):
         :return: None
         """
         self.classes = self.Mongo.find_all('classes')
+
+    def _get_violence_disorders(self):
+        """
+        Gets all violence related disorders from the database.
+
+        :return: None
+        """
+        self.disorders['Violence'] = self.Mongo.find_subset('disorders', {"Violence": True})
+
+    def _get_helplessness_disorders(self):
+        """
+        Gets all helplessness related disorders from the database.
+
+        :return: None
+        """
+        self.disorders['Helplessness'] = self.Mongo.find_subset('disorders', {"Helplessness": True})
+
+    def _get_unnatural_disorders(self):
+        """
+        Gets all unnatural related disorders from the database.
+
+        :return: None
+        """
+        self.disorders['Unnatural'] = self.Mongo.find_subset('disorders', {"Unnatural": True})
 
     def _get_packages(self):
         """

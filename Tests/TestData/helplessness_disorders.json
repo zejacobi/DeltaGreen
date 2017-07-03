@@ -1,0 +1,11 @@
+[{
+    "_id": "Anxiety Disorder",
+    "Violence": false,
+    "Helplessness": true,
+    "Unnatural": false
+}, {
+    "_id": "Conversion Disorder",
+    "Violence": false,
+    "Helplessness": true,
+    "Unnatural": false
+}]
