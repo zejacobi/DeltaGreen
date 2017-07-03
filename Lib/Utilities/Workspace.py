@@ -15,7 +15,7 @@ def parse_json(json_file_path):
         in JSON format
     :return: A tuple containing an object in JSON format and a string containing the name of
         the file the JSON object was drawn from with the path and .json removed
-    :rtype tuple
+    :rtype: tuple
     """
     with open(json_file_path, 'r') as file_obj:
         raw_json = file_obj.read()
