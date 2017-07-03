@@ -15,8 +15,12 @@ class TestCharacter(unittest.TestCase):
             "Anthropology": 0,
             "Archeology": 0,
             "Artillery": 0,
+            "Athletics": 0,
+            "Bureaucracy": 0,
+            "Computer Science": 0,
             "Unnatural": 0,
-            "Ride": 0
+            "Ride": 0,
+            "Occult": 0
         }
         cls.skill_names = [skill for skill in cls.skills.keys()]
         cls.sub_skills = {
@@ -1038,12 +1042,19 @@ class TestCharacter(unittest.TestCase):
 
         self.assertEqual(self.character.bonds, [bond])
 
-    def test_get_bond(self):
+    def test_get_bonds(self):
         """Tests that it returns the array of bonds"""
         bonds = [{"_id": "Daughter"}, {"_id": "Son"}]
         self.character.bonds = bonds
 
         self.assertEqual(self.character.get_bonds(), [bond["_id"] for bond in bonds])
+
+    def test_get_lost_bonds(self):
+        """Tests that it returns the array of bonds"""
+        bonds = [{"_id": "Daughter"}, {"_id": "Son"}]
+        self.character.lost_bonds = bonds
+
+        self.assertEqual(self.character.get_lost_bonds(), [bond["_id"] for bond in bonds])
 
     def test_get_bond_type(self):
         """Tests that it returns the expected array"""
@@ -1143,3 +1154,124 @@ class TestCharacter(unittest.TestCase):
         self.character.bonds = bonds
 
         self.assertEqual(self.character.has_bond_type('Relative'), False)
+
+    def test_damaged_veteran_violence(self):
+        """Tests that all properties from the Extreme Violence damaged veteran were properly set"""
+        new_occult = self.character.skills['Occult'] + 10
+        new_charisma = self.character.stats['Charisma'] - 3
+        new_sanity = self.character.sanity - 5
+        self.character.damaged_veteran_violence()
+
+        with self.subTest('Checking that occult increased'):
+            self.assertEqual(self.character.skills['Occult'], new_occult)
+
+        with self.subTest('Checking that sanity decreased'):
+            self.assertEqual(self.character.sanity, new_sanity)
+
+        with self.subTest('Checking that Charisma decreased'):
+            self.assertEqual(self.character.stats['Charisma'], new_charisma)
+
+        with self.subTest('Checking that the character is now adapted to violence'):
+            self.assertEqual(self.character.adapted['Violence'], True)
+
+        with self.subTest('Checking that the type of damaged veteran was set'):
+            self.assertEqual(self.character.damaged_veteran, 'Extreme Violence')
+
+    def test_damaged_veteran_helplessness(self):
+        """Tests that all properties from the Captivity or Imprisonment damaged veteran were
+        properly set"""
+        new_occult = self.character.skills['Occult'] + 10
+        new_power = self.character.stats['Power'] - 3
+        new_sanity = self.character.sanity - 5
+        self.character.damaged_veteran_helplessness()
+
+        with self.subTest('Checking that occult increased'):
+            self.assertEqual(self.character.skills['Occult'], new_occult)
+
+        with self.subTest('Checking that sanity decreased'):
+            self.assertEqual(self.character.sanity, new_sanity)
+
+        with self.subTest('Checking that Power decreased'):
+            self.assertEqual(self.character.stats['Power'], new_power)
+
+        with self.subTest('Checking that the character is now adapted to violence'):
+            self.assertEqual(self.character.adapted['Helplessness'], True)
+
+        with self.subTest('Checking that the type of damaged veteran was set'):
+            self.assertEqual(self.character.damaged_veteran, 'Captivity or Imprisonment')
+
+    def test_damaged_veteran_experience(self):
+        """Tests that all properties from the Hard Experience damaged veteran were
+            properly set"""
+        remaining_bond = {"_id": "Mom"}
+        lost_bond = {"_id": "Wife"}
+        self.character.num_bonds = 2
+        expected_bonds = self.character.num_bonds - 1
+        self.random_mock.sample_list = [["Alertness", "Athletics", "Bureaucracy",
+                                         "Computer Science"]]
+        self.character.bonds = [remaining_bond, lost_bond]
+        new_skills = {skill: self.character.skills[skill] + 10
+                      for skill in self.random_mock.sample_list[0]}
+        new_skills['Occult'] = self.character.skills['Occult'] + 10
+        new_sanity = self.character.sanity - 5
+        self.character.damaged_veteran_experience()
+
+        for skill in new_skills:
+            with self.subTest('Checking that there was an appropriate increase in the skill: '
+                              + skill):
+                self.assertEqual(self.character.skills[skill], new_skills[skill])
+
+        with self.subTest('Checking that sanity decreased'):
+            self.assertEqual(self.character.sanity, new_sanity)
+
+        with self.subTest('Checking that number of bonds decreased'):
+            self.assertEqual(self.character.num_bonds, expected_bonds)
+
+        with self.subTest('Checking that only one bond is left'):
+            self.assertEqual(self.character.bonds, [remaining_bond])
+
+        with self.subTest('Checking that the lost bond was recorded'):
+            self.assertEqual(self.character.lost_bonds, [lost_bond])
+
+        with self.subTest('Checking that the type of damaged veteran was set'):
+            self.assertEqual(self.character.damaged_veteran, 'Hard Experience')
+
+    def test_damaged_veteran_unnatural(self):
+        """Tests that all properties from the Things Man Was Not Meant to Know damaged veteran were
+        properly set"""
+        new_occult = self.character.skills['Occult'] + 20
+        new_unnatural = self.character.skills['Unnatural'] + 10
+        disorder = {'_id': 'Depression'}
+        self.random_mock.choice_list = [disorder]
+
+        self.character.stats['Power'] = 5
+
+        new_sanity = self.character.sanity - self.character.stats['Power']
+        new_bp = self.character.bp - self.character.stats['Power']
+
+        self.character.damaged_veteran_unnatural([disorder])
+
+        with self.subTest('Checking that occult increased'):
+            self.assertEqual(self.character.skills['Occult'], new_occult)
+
+        with self.subTest('Checking that Unnatural increased'):
+            self.assertEqual(self.character.skills['Unnatural'], new_unnatural)
+
+        with self.subTest('Checking that sanity decreased'):
+            self.assertEqual(self.character.sanity, new_sanity)
+
+        with self.subTest('Checking that breaking point decreased'):
+            self.assertEqual(self.character.bp, new_bp)
+
+        with self.subTest('Checking that the disorder was added'):
+            self.assertEqual(self.character.disorders, [disorder['_id']])
+
+        with self.subTest('Checking that the type of damaged veteran was set'):
+            self.assertEqual(self.character.damaged_veteran, 'Things Man Was Not Meant to Know')
+
+    def test_get_disorders(self):
+        """Tests that it returns the array of disorders"""
+        disorders = ['Anxiety', 'Depression']
+        self.character.disorders = disorders
+
+        self.assertEqual(self.character.get_disorders(), disorders)
