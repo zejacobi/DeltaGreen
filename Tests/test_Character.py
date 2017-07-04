@@ -1269,6 +1269,62 @@ class TestCharacter(unittest.TestCase):
         with self.subTest('Checking that the type of damaged veteran was set'):
             self.assertEqual(self.character.damaged_veteran, 'Things Man Was Not Meant to Know')
 
+    def test_damaged_veteran_violence_exists(self):
+        """It should not change the veteran type or apply any veteran logic if type already set"""
+        existing_type = 'Something or other'
+        starting_san = self.character.sanity
+        self.character.damaged_veteran = existing_type
+
+        self.character.damaged_veteran_violence()
+
+        with self.subTest('It should not change the damaged veteran type'):
+            self.assertEqual(self.character.damaged_veteran, existing_type)
+
+        with self.subTest('It should not change the sanity'):
+            self.assertEqual(self.character.sanity, starting_san)
+
+    def test_damaged_veteran_helplessness_exists(self):
+        """It should not change the veteran type or apply any veteran logic if type already set"""
+        existing_type = 'Something or other'
+        starting_san = self.character.sanity
+        self.character.damaged_veteran = existing_type
+
+        self.character.damaged_veteran_helplessness()
+
+        with self.subTest('It should not change the damaged veteran type'):
+            self.assertEqual(self.character.damaged_veteran, existing_type)
+
+        with self.subTest('It should not change the sanity'):
+            self.assertEqual(self.character.sanity, starting_san)
+
+    def test_damaged_veteran_experience_exists(self):
+        """It should not change the veteran type or apply any veteran logic if type already set"""
+        existing_type = 'Something or other'
+        starting_san = self.character.sanity
+        self.character.damaged_veteran = existing_type
+
+        self.character.damaged_veteran_experience()
+
+        with self.subTest('It should not change the damaged veteran type'):
+            self.assertEqual(self.character.damaged_veteran, existing_type)
+
+        with self.subTest('It should not change the sanity'):
+            self.assertEqual(self.character.sanity, starting_san)
+
+    def test_damaged_veteran_unnatural_exists(self):
+        """It should not change the veteran type or apply any veteran logic if type already set"""
+        existing_type = 'Something or other'
+        starting_san = self.character.sanity
+        self.character.damaged_veteran = existing_type
+
+        self.character.damaged_veteran_unnatural([{"_id": "Lupus"}])
+
+        with self.subTest('It should not change the damaged veteran type'):
+            self.assertEqual(self.character.damaged_veteran, existing_type)
+
+        with self.subTest('It should not change the sanity'):
+            self.assertEqual(self.character.sanity, starting_san)
+
     def test_get_disorders(self):
         """Tests that it returns the array of disorders"""
         disorders = ['Anxiety', 'Depression']
@@ -1284,4 +1340,12 @@ class TestCharacter(unittest.TestCase):
         """Tests that it returns an array with any adaptations the character might have"""
         adapted = 'Violence'
         self.character.adapted[adapted] = True
+
         self.assertEqual(self.character.get_adaptations(), [adapted])
+
+    def test_get_veteran_type(self):
+        """It should return the type set on the character class"""
+        vet_type = 'Things Man Was Not Meant to Know'
+        self.character.damaged_veteran = vet_type
+
+        self.assertEqual(self.character.get_veteran_type(), vet_type)

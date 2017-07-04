@@ -550,6 +550,8 @@ class Character(object):
         :return: None
         :rtype: None
         """
+        if self.damaged_veteran:
+            return None
         self._add_to_skill('Occult', 10)
         self.sanity -= 5
         self.stats['Charisma'] -= 3
@@ -564,6 +566,8 @@ class Character(object):
         :return: None
         :rtype: None
         """
+        if self.damaged_veteran:
+            return None
         self._add_to_skill('Occult', 10)
         self.sanity -= 5
         self.stats['Power'] -= 3
@@ -578,6 +582,8 @@ class Character(object):
         :return: None
         :rtype: None
         """
+        if self.damaged_veteran:
+            return None
         self._add_to_skill('Occult', 10)
         self.sanity -= 5
         self.damaged_veteran = 'Hard Experience'
@@ -598,7 +604,8 @@ class Character(object):
         """
         Applies the damaged veteran template "Things Man Was Not Meant to Know", breaking the agent
         (giving them a disorder and lowered sanity), but giving them a hefty boost to their
-        occult skill and giving them a starting unnatural score
+        occult skill and giving them a starting unnatural score. Can only be applied as the first
+        type of damaged veteran.
 
         :param list disorders: A list of disorders. One will be chosen from the list. Disorders
         are displayed using their "_id" property, which should contain their name.
@@ -606,6 +613,8 @@ class Character(object):
         :return: None
         :rtype: None
         """
+        if self.damaged_veteran:
+            return None
         self._add_to_skill('Occult', 20)
         self._add_to_skill('Unnatural', 10)
         self.sanity -= self.stats['Power']
@@ -643,3 +652,12 @@ class Character(object):
         :rtype: list
         """
         return [name for name in self.adapted.keys() if self.adapted[name]]
+
+    def get_veteran_type(self):
+        """
+        Gives the type of damaged veteran that has been applied to the character, if any has.
+
+        :return: The type of damaged veteran the character is
+        :rtype: string
+        """
+        return self.damaged_veteran
