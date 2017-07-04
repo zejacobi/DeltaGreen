@@ -29,9 +29,15 @@ class Character(object):
         self.sub_skill_types = sub_skills.keys()
         self.num_bonds = 0
         self.bonds = []
+        self.lost_bonds = []
         self.class_name = ''
         self.package_name = ''
         self.disorders = []
+        self.adapted = {
+            "Violence": False,
+            "Helplessness": False
+        }
+        self.damaged_veteran = ''
         self.stats = {
             'Strength': 0,
             'Dexterity': 0,
@@ -491,6 +497,15 @@ class Character(object):
         """
         return [bond["_id"] for bond in self.bonds]
 
+    def get_lost_bonds(self):
+        """
+        Gives a list containing all bonds a character has lost.
+
+        :return: The names of all of the bonds the character has lost.
+        :rtype: list
+        """
+        return [bond["_id"] for bond in self.lost_bonds]
+
     def get_bond_types(self):
         """
         Gives a dictionary which maps the bond types to booleans that show if the character does or
@@ -526,3 +541,123 @@ class Character(object):
         if bond_type in types:
             return types[bond_type]
         return False
+
+    def damaged_veteran_violence(self):
+        """
+        Applies the damaged veteran template "Extreme Violence", lowering Charisma and Sanity
+        but increasing skill with Occult and adapting the agent to violence.
+
+        :return: None
+        :rtype: None
+        """
+        if self.damaged_veteran:
+            return None
+        self._add_to_skill('Occult', 10)
+        self.sanity -= 5
+        self.stats['Charisma'] -= 3
+        self.adapted['Violence'] = True
+        self.damaged_veteran = 'Extreme Violence'
+
+    def damaged_veteran_helplessness(self):
+        """
+        Applies the damaged veteran template "Captivity or Imprisonment", lowering Power and Sanity
+        but increasing skill with Occult and adapting the agent to helplessness.
+
+        :return: None
+        :rtype: None
+        """
+        if self.damaged_veteran:
+            return None
+        self._add_to_skill('Occult', 10)
+        self.sanity -= 5
+        self.stats['Power'] -= 3
+        self.adapted['Helplessness'] = True
+        self.damaged_veteran = 'Captivity or Imprisonment'
+
+    def damaged_veteran_experience(self):
+        """
+        Applies the damaged veteran template "Hard Experience", lowering the number of bonds and
+        Sanity but increasing skill five skills (one of which must be Occult)
+
+        :return: None
+        :rtype: None
+        """
+        if self.damaged_veteran:
+            return None
+        self._add_to_skill('Occult', 10)
+        self.sanity -= 5
+        self.damaged_veteran = 'Hard Experience'
+        self.lost_bonds.append(self.bonds.pop())
+        self.num_bonds -= 1
+        plausible_skills = ["Alertness", "Athletics", "Bureaucracy", "Computer Science",
+                            "Criminology", "Demolitions", "Dodge", "Drive", "Firearms",
+                            "First Aid", "Forensics", "Heavy Machinery", "Heavy Weapons", "History",
+                            "HUMINT", "Law", "Melee Weapons", "Navigate", "Occult", "Persuade",
+                            "Pharmacy", "Psychotherapy", "Search", "Stealth", "Survival",
+                            "Unarmed Combat"]
+        skills = self.random.sample(plausible_skills, 4)
+
+        for skill in skills:
+            self._add_to_skill(skill, 10)
+
+    def damaged_veteran_unnatural(self, disorders):
+        """
+        Applies the damaged veteran template "Things Man Was Not Meant to Know", breaking the agent
+        (giving them a disorder and lowered sanity), but giving them a hefty boost to their
+        occult skill and giving them a starting unnatural score. Can only be applied as the first
+        type of damaged veteran.
+
+        :param list disorders: A list of disorders. One will be chosen from the list. Disorders
+        are displayed using their "_id" property, which should contain their name.
+
+        :return: None
+        :rtype: None
+        """
+        if self.damaged_veteran:
+            return None
+        self._add_to_skill('Occult', 20)
+        self._add_to_skill('Unnatural', 10)
+        self.sanity -= self.stats['Power']
+        self.bp -= self.stats['Power']
+        disorder = self.random.choice(disorders)
+        self.add_disorder(disorder)
+        self.damaged_veteran = 'Things Man Was Not Meant to Know'
+
+    def get_disorders(self):
+        """
+        Gives a list containing all disorders the character has
+
+        :return: The names of all of the disorders the character has picked up.
+        :rtype: list
+        """
+        return self.disorders
+
+    def add_disorder(self, disorder):
+        """
+        Strips away all chafe attached to a disorder object and just puts the name into the
+        list of the character's disorders
+
+        :param dict disorder: A dict containing information about the disorder, with an "_id"
+            property that gives the name of the disorder
+
+        :return: None
+        :rtype: None
+        """
+        self.disorders.append(disorder['_id'])
+
+    def get_adaptations(self):
+        """Determines what type of sanity damage (if any) the character is already adapted to.
+
+        :return: A list of which types of sanity damage a character is adapted to.
+        :rtype: list
+        """
+        return [name for name in self.adapted.keys() if self.adapted[name]]
+
+    def get_veteran_type(self):
+        """
+        Gives the type of damaged veteran that has been applied to the character, if any has.
+
+        :return: The type of damaged veteran the character is
+        :rtype: string
+        """
+        return self.damaged_veteran
