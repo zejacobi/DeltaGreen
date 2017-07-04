@@ -1,5 +1,5 @@
 # Delta Green Character Generator
-Open Source [Delta Green] [1] random character generator.
+Open Source [Delta Green](http://www.delta-green.com/) random character generator.
 
 ## Features
 * Generates a complete Delta Green character (all skills, stats, derived attributes, bonds, one 
@@ -32,11 +32,13 @@ From the `Docs` directory, run `make html`.
 * Language families/association scores to give more realistic language combinations
 * When picking a random skill in a package, more weight given to existing skills
 * Classes provide some bias to the stats
+* More open source skill packages and classes
+
+## Helping Out
+* The best way to help out right now is probably submitting homebrew skill packages or classes.
+These are just JSON files that can be edited in a text editor, even without programming experience.
 
 ## Legal
 Parts of Delta Green are licensed under the OGL. I'm trying to only publicly share the parts that
 are. If you are a rights holder or (heavens forfend) their lawyer, you can reach me at 
 zejacobi (squiggly a/at character thingy) gmail (dot) com
-
-
-[1]: http://www.delta-green.com/

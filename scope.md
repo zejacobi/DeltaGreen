@@ -28,7 +28,7 @@ Delta Green sourcebook to gatekeep non-OGL content to only people who have bough
 if they own the actual game and can access the non open-gaming license content (hopefully this is
 legal?)
 
-## Implementation 
+## Implementation Journal
 * Classes for connecting to Mongo Database
     * Wrapper class/function for making requests async
         * Should this just be the default for all Mongo Requests?
@@ -70,6 +70,10 @@ although this won't affect any open classes - it's only for the closed classes.
     * Double checking my logic in the Character Class and possibly simplifying it
     * Documenting Character.py and Generator.py
     * Unit tests for Character.py and Generator.py
-    
+* That set of priorities is now complete. I've also managed to polish off both disorders and 
+damaged veterans, the last things keeping this from being feature complete
+* The two most urgent next steps are:
+    * Differentiating OGL and non-OGL content in the database
+    * Saving and loading characters
     
 [1]: http://pcgen.org/
