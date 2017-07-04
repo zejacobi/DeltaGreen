@@ -211,6 +211,34 @@ class TestGenerator(unittest.TestCase):
         self.assertEqual(sorted(self.generator.character.bonds, key=operator.itemgetter('_id')),
                          sorted(self.bonds, key=operator.itemgetter('_id')))
 
+    def test_random_damaged_veteran_violence(self):
+        self.random_mock.choice_list = ['Violence']
+        self.generator.random_damaged_veteran()
+
+        self.assertEqual(self.generator.character.damaged_veteran, 'Extreme Violence')
+
+    def test_random_damaged_veteran_helpless(self):
+        self.random_mock.choice_list = ['Helpless']
+        self.generator.random_damaged_veteran()
+
+        self.assertEqual(self.generator.character.damaged_veteran, 'Captivity or Imprisonment')
+
+    def test_random_damaged_veteran_unnatural(self):
+        self.random_mock.choice_list = ['Unnatural', self.generator.disorders['Unnatural'][0]]
+        self.generator.random_damaged_veteran()
+
+        self.assertEqual(self.generator.character.damaged_veteran,
+                         'Things Man Was Not Meant to Know')
+
+    def test_random_damaged_veteran_experience(self):
+        self.random_mock.choice_list = ['Hard Experience']
+        self.random_mock.sample_list = [["Alertness", "Athletics", "Bureaucracy",
+                                         "Computer Science"]]
+        self.generator.character.bonds = [{"_id": "Wife"}, {"_id": "Mom"}]
+        self.generator.random_damaged_veteran()
+
+        self.assertEqual(self.generator.character.damaged_veteran, 'Hard Experience')
+
     def test_generate(self):
         """Tests that a random character is generated"""
         class_name = 'Federal Agent'
@@ -222,7 +250,7 @@ class TestGenerator(unittest.TestCase):
                                              if package['_id'] == package_name])
         self.random_mock.choice_list.extend(self.bonds[-3:])
         self.random_mock.range_list = [5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1,
-                                       5, 5, 5, 1, ]
+                                       5, 5, 5, 1, 1]
         self.random_mock.sample_list = [[skill_choice]]
         self.generator.generate()
 
@@ -257,3 +285,59 @@ class TestGenerator(unittest.TestCase):
                                    + 20 * (skill in self.random_mock.choice_list[1]['Skills']))
                     self.assertEqual(self.generator.character.skills[skill], skill_level)
 
+    def test_generate_damaged_veteran(self):
+        """Tests that a random character is generated with damaged veteran stats applied when
+            one is randomly chosen"""
+        class_name = 'Federal Agent'
+        skill_choice = 'Accounting'
+        package_name = 'Weasel'
+        self.random_mock.choice_list = [class_obj for class_obj in self.classes
+                                        if class_obj['_id'] == class_name]
+        self.random_mock.choice_list.extend([package for package in self.packages
+                                             if package['_id'] == package_name])
+        self.random_mock.choice_list.extend(self.bonds[-3:])
+        self.random_mock.range_list = [5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1,
+                                       5, 5, 5, 1, 2]
+        self.random_mock.sample_list = [[skill_choice]]
+        self.random_mock.choice_list.append('Violence')
+        self.generator.generate()
+
+        with self.subTest(msg='Testing that stats are set correctly'):
+            self.assertEqual(self.generator.character.stats, {
+                'Strength': 15,
+                'Dexterity': 15,
+                'Constitution': 15,
+                'Intelligence': 15,
+                'Power': 15,
+                'Charisma': 12
+            })
+
+        with self.subTest(msg='Testing that the class name was set correctly'):
+            self.assertEqual(self.generator.character.class_name, class_name)
+
+        with self.subTest(msg='Testing that the package name was set correctly'):
+            self.assertEqual(self.generator.character.package_name, package_name)
+
+        with self.subTest(msg='Testing that the number of bonds were set correctly'):
+            self.assertEqual(self.generator.character.num_bonds,
+                             self.random_mock.choice_list[0]['Bonds'])
+
+        with self.subTest(msg='Testing that the bonds were set correctly'):
+            self.assertEqual(sorted(self.generator.character.bonds, key=operator.itemgetter('_id')),
+                             sorted(self.bonds[-3:], key=operator.itemgetter('_id')))
+
+        for skill in self.random_mock.choice_list[0]['Skills'].keys():
+            with self.subTest(msg='Testing setting the skill: ' + skill):
+                skill_level = (self.random_mock.choice_list[0]['Skills'][skill]
+                               + 20 * (skill in self.random_mock.choice_list[1]['Skills']))
+                self.assertEqual(self.generator.character.skills[skill], skill_level)
+
+        with self.subTest(msg='Testing that occult was updated'):
+            self.assertEqual(self.generator.character.skills['Occult'],
+                             self.default_stats['Occult'] + 10)
+
+        with self.subTest('Checking that the character is now adapted to violence'):
+            self.assertEqual(self.generator.character.adapted['Violence'], True)
+
+        with self.subTest('Checking that the type of damaged veteran was set'):
+            self.assertEqual(self.generator.character.damaged_veteran, 'Extreme Violence')
