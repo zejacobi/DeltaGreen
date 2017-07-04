@@ -2,8 +2,8 @@
 Open Source [Delta Green] [1] random character generator.
 
 ## Features
-* Generates a complete Delta Green character (all skills, stats, derived attributes, bonds)
-    * Can't yet do damaged veterans
+* Generates a complete Delta Green character (all skills, stats, derived attributes, bonds, one 
+third of characters are damaged veterans)
 
 ## Installing
 * Create a virtual environment in the project folder with `virtualenv -p python3 venv`
@@ -29,8 +29,6 @@ From the top level directory: `python -m unittest Tests/test_*`
 From the `Docs` directory, run `make html`. 
 
 ## Wishlist
-* Damaged Veterans
-* Disorders
 * Language families/association scores to give more realistic language combinations
 * When picking a random skill in a package, more weight given to existing skills
 * Classes provide some bias to the stats
