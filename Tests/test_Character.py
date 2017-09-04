@@ -1,12 +1,271 @@
 import unittest
 import math
 
-from Lib.Character import Character
+from Lib.Character import RandomCharacter, BaseCharacter
 from Tests.RandomMock import RandomMock
 
 
-class TestCharacter(unittest.TestCase):
-    """Test Character Class"""
+class TestBaseCharacter(unittest.TestCase):
+    """
+    Testing the simple display functions in the BaseCharacter class
+    """
+    def setUp(self):
+        self.character = BaseCharacter()
+        self.character.skills = {
+            "Accounting": 10,
+            "Alertness": 20,
+            "Anthropology": 0,
+        }
+
+    def test_double_underscore_str(self):
+        """Tests the __str__ method of the class, ensuring it gives the expected output"""
+        self.character.bonds = [{'_id': 'Hairdresser'}]
+        self.character.class_name = 'Firefighter'
+        self.character.package_name = 'Criminal'
+        self.character.damaged_veteran = 'Gone Horribly Right'
+        self.character.lost_bonds = [{'_id': 'Brother'}]
+        self.character.disorders = ['OCD']
+        self.character.adapted = {'Violence': True, 'Helplessness': False}
+
+        char_str = str(self.character)
+        format_args = [
+            self.character.class_name, self.character.package_name, self.character.damaged_veteran,
+            self.character.disorders[0], self.character.bonds[0]['_id'],
+            self.character.lost_bonds[0]['_id'], 'Violence']
+
+        expected_str = 'Class:                {}\n' \
+                       'Skill package:        {}\n' \
+                       'Damaged veteran type: {}\nDisorders:\n' \
+                       '    {}\n\nBonds:\n' \
+                       '    {}: 0\n\n' \
+                       'Lost bonds:\n    {}\n\n' \
+                       'Adapted to:\n    {}\n\n' \
+                       'Attributes:\n' \
+                       '    Hit Points:     0\n' \
+                       '    Willpower:      0\n' \
+                       '    Sanity:         0\n' \
+                       '    Breaking Point: 0\n' \
+                       '\nStats:\n' \
+                       '    Strength:     0\n' \
+                       '    Dexterity:    0\n' \
+                       '    Constitution: 0\n' \
+                       '    Intelligence: 0\n' \
+                       '    Power:        0\n' \
+                       '    Charisma:     0\n\nSkills:\n'.format(*format_args)
+
+        for skill in sorted(self.character.skills.keys()):
+            expected_str += '    {}: {}\n'.format(skill, self.character.skills[skill])
+
+        self.assertEqual(char_str, expected_str)
+
+    def test_get_skills(self):
+        """It should return the character's skills object"""
+        self.assertEqual(self.character.get_skills(), self.character.skills)
+
+    def test_get_class(self):
+        """It should return the character's class name"""
+        self.character.class_name = 'Driver'
+
+        self.assertEqual(self.character.get_class(), self.character.class_name)
+
+    def test_get_package(self):
+        """It should return the character's class name"""
+        self.character.package_name = 'Driver'
+
+        self.assertEqual(self.character.get_package(), self.character.package_name)
+
+    def test_get_stats(self):
+        """It should return the character's stats"""
+        stats = {
+            'Charisma': 15,
+            'Constitution': 11,
+            'Dexterity': 12,
+            'Intelligence': 13,
+            'Power': 14,
+            'Strength': 10
+        }
+        self.character.stats = stats
+
+        self.assertEqual(self.character.get_stats(), stats)
+
+    def test_get_attributes(self):
+        """It should return the character's attributes"""
+        attr = {
+            'Sanity': 77,
+            'Hit Points': 12,
+            'Willpower Points': 18,
+            'Breaking Point': 72
+        }
+        self.character.sanity = attr['Sanity']
+        self.character.hp = attr['Hit Points']
+        self.character.wp = attr['Willpower Points']
+        self.character.bp = attr['Breaking Point']
+
+        self.assertEqual(self.character.get_attributes(), attr)
+
+    def test_get_bonds(self):
+        """Tests that it returns the array of bonds"""
+        bonds = [{"_id": "Daughter"}, {"_id": "Son"}]
+        self.character.bonds = bonds
+
+        self.assertEqual(self.character.get_bonds(), [bond["_id"] for bond in bonds])
+
+    def test_get_lost_bonds(self):
+        """Tests that it returns the array of bonds"""
+        bonds = [{"_id": "Daughter"}, {"_id": "Son"}]
+        self.character.lost_bonds = bonds
+
+        self.assertEqual(self.character.get_lost_bonds(), [bond["_id"] for bond in bonds])
+
+    def test_get_bond_type(self):
+        """Tests that it returns the expected array"""
+        bonds = [{
+            "_id": "Mother",
+            "Required": None,
+            "Family": True,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }, {
+            "_id": "Bartender",
+            "Required": None,
+            "Family": False,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        }]
+        self.character.bonds = bonds
+
+        self.assertEqual(self.character.get_bond_types(), {
+            "Family": True,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        })
+
+    def test_has_bond_type_type_exists_and_character_has_it(self):
+        """Tests that it returns true when the type of bond exists and the character has one"""
+        bonds = [{
+            "_id": "Mother",
+            "Required": None,
+            "Family": True,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }, {
+            "_id": "Bartender",
+            "Required": None,
+            "Family": False,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        }]
+        self.character.bonds = bonds
+
+        self.assertEqual(self.character.has_bond_type('Family'), True)
+
+    def test_has_bond_type_type_exists_and_character_does_not_have_it(self):
+        """Tests that it returns false when the type of bond exists and the character doesn't
+            have one"""
+        bonds = [{
+            "_id": "Mother",
+            "Required": None,
+            "Family": True,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }, {
+            "_id": "Bartender",
+            "Required": None,
+            "Family": False,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        }]
+        self.character.bonds = bonds
+
+        self.assertEqual(self.character.has_bond_type('Romantic'), False)
+
+    def test_has_bond_type_type_does_not_exist(self):
+        """Tests that it returns false when the type of doesn't exist"""
+        bonds = [{
+            "_id": "Mother",
+            "Required": None,
+            "Family": True,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }, {
+            "_id": "Bartender",
+            "Required": None,
+            "Family": False,
+            "Romantic": False,
+            "Friend": True,
+            "Work": False,
+            "Therapy": True
+        }]
+        self.character.bonds = bonds
+
+        self.assertEqual(self.character.has_bond_type('Relative'), False)
+
+    def test_get_disorders(self):
+        """Tests that it returns the array of disorders"""
+        disorders = ['Anxiety', 'Depression']
+        self.character.disorders = disorders
+
+        self.assertEqual(self.character.get_disorders(), disorders)
+
+    def test_get_adaptations_none(self):
+        """Tests that it returns an empty array when the character isn't adapted to anything"""
+        self.assertEqual(self.character.get_adaptations(), [])
+
+    def test_get_adaptations(self):
+        """Tests that it returns an array with any adaptations the character might have"""
+        adapted = 'Violence'
+        self.character.adapted[adapted] = True
+
+        self.assertEqual(self.character.get_adaptations(), [adapted])
+
+    def test_get_veteran_type(self):
+        """It should return the type set on the character class"""
+        vet_type = 'Things Man Was Not Meant to Know'
+        self.character.damaged_veteran = vet_type
+
+        self.assertEqual(self.character.get_veteran_type(), vet_type)
+
+    def test_get_character(self):
+        """Tests that it parrots everything that has been passed to it"""
+        expected = {
+            'Class': 'Firefighter',
+            'Package': 'Criminal',
+            'Number_Bonds': 4,
+            'Bonds': {'Hairdresser': 0},
+            'Lost_Bonds': [],
+            'Veteran': '',
+            'Disorders': [],
+            'Adapted_To': [],
+            'Attributes': self.character.get_attributes(),
+            'Stats': self.character.get_stats(),
+            'Skills': self.character.get_skills()
+        }
+        self.character.class_name = expected['Class']
+        self.character.package_name = expected['Package']
+        self.character.num_bonds = expected['Number_Bonds']
+        self.character.bonds = [{'_id': list(expected['Bonds'].keys())[0]}]
+
+        self.assertEqual(self.character.get_character(), expected)
+
+
+class TestRandomCharacter(unittest.TestCase):
+    """Test RandomCharacter Class"""
     @classmethod
     def setUpClass(cls):
         cls.skills = {
@@ -49,7 +308,7 @@ class TestCharacter(unittest.TestCase):
         cls.random_mock = RandomMock()
 
     def setUp(self):
-        self.character = Character(self.skills, self.sub_skills, self.mappings)
+        self.character = RandomCharacter(self.skills, self.sub_skills, self.mappings)
         self.character.random = self.random_mock  # deterministic and controllable random mock
 
     def tearDown(self):
@@ -979,54 +1238,6 @@ class TestCharacter(unittest.TestCase):
         with self.subTest(msg='Test that BP was set correctly'):
             self.assertEqual(self.character.bp, self.character.stats['Power'] * 4)
 
-    def test_get_skills(self):
-        """It should return the character's skills object"""
-        self.assertEqual(self.character.get_skills(), self.character.skills)
-
-    def test_get_class(self):
-        """It should return the character's class name"""
-        self.character.class_name = 'Driver'
-
-        self.assertEqual(self.character.get_class(), self.character.class_name)
-
-    def test_get_package(self):
-        """It should return the character's class name"""
-        self.character.package_name = 'Driver'
-
-        self.assertEqual(self.character.get_package(), self.character.package_name)
-
-    def test_get_stats(self):
-        """It should return the character's stats"""
-        stats = {
-            'Charisma': 15,
-            'Constitution': 11,
-            'Dexterity': 12,
-            'Intelligence': 13,
-            'Power': 14,
-            'Strength': 10
-        }
-        self.character.stats = stats
-
-        self.assertEqual(self.character.get_stats(), stats)
-
-    def test_get_attributes(self):
-        """It should return the character's attributes"""
-        self.character.stats = {'Charisma': 15,
-                                'Constitution': 11,
-                                'Dexterity': 12,
-                                'Intelligence': 13,
-                                'Power': 14,
-                                'Strength': 10}
-        self.character.calculate_attributes()
-
-        self.assertEqual(self.character.get_attributes(), {
-            'Sanity': self.character.stats['Power'] * 5,
-            'Hit Points': int(math.ceil((self.character.stats['Strength'] +
-                                         self.character.stats['Constitution'])/2)),
-            'Willpower Points': self.character.stats['Power'],
-            'Breaking Point': self.character.stats['Power'] * 4
-        })
-
     def test_add_bond(self):
         """Tests that it adds a bond to the array of bonds"""
         bond = {
@@ -1041,119 +1252,6 @@ class TestCharacter(unittest.TestCase):
         self.character.add_bond(bond)
 
         self.assertEqual(self.character.bonds, [bond])
-
-    def test_get_bonds(self):
-        """Tests that it returns the array of bonds"""
-        bonds = [{"_id": "Daughter"}, {"_id": "Son"}]
-        self.character.bonds = bonds
-
-        self.assertEqual(self.character.get_bonds(), [bond["_id"] for bond in bonds])
-
-    def test_get_lost_bonds(self):
-        """Tests that it returns the array of bonds"""
-        bonds = [{"_id": "Daughter"}, {"_id": "Son"}]
-        self.character.lost_bonds = bonds
-
-        self.assertEqual(self.character.get_lost_bonds(), [bond["_id"] for bond in bonds])
-
-    def test_get_bond_type(self):
-        """Tests that it returns the expected array"""
-        bonds = [{
-            "_id": "Mother",
-            "Required": None,
-            "Family": True,
-            "Romantic": False,
-            "Friend": False,
-            "Work": False,
-            "Therapy": False
-        }, {
-            "_id": "Bartender",
-            "Required": None,
-            "Family": False,
-            "Romantic": False,
-            "Friend": True,
-            "Work": False,
-            "Therapy": True
-        }]
-        self.character.bonds = bonds
-
-        self.assertEqual(self.character.get_bond_types(), {
-            "Family": True,
-            "Romantic": False,
-            "Friend": True,
-            "Work": False,
-            "Therapy": True
-        })
-
-    def test_has_bond_type_type_exists_and_character_has_it(self):
-        """Tests that it returns true when the type of bond exists and the character has one"""
-        bonds = [{
-            "_id": "Mother",
-            "Required": None,
-            "Family": True,
-            "Romantic": False,
-            "Friend": False,
-            "Work": False,
-            "Therapy": False
-        }, {
-            "_id": "Bartender",
-            "Required": None,
-            "Family": False,
-            "Romantic": False,
-            "Friend": True,
-            "Work": False,
-            "Therapy": True
-        }]
-        self.character.bonds = bonds
-
-        self.assertEqual(self.character.has_bond_type('Family'), True)
-
-    def test_has_bond_type_type_exists_and_character_does_not_have_it(self):
-        """Tests that it returns false when the type of bond exists and the character doesn't
-            have one"""
-        bonds = [{
-            "_id": "Mother",
-            "Required": None,
-            "Family": True,
-            "Romantic": False,
-            "Friend": False,
-            "Work": False,
-            "Therapy": False
-        }, {
-            "_id": "Bartender",
-            "Required": None,
-            "Family": False,
-            "Romantic": False,
-            "Friend": True,
-            "Work": False,
-            "Therapy": True
-        }]
-        self.character.bonds = bonds
-
-        self.assertEqual(self.character.has_bond_type('Romantic'), False)
-
-    def test_has_bond_type_type_does_not_exist(self):
-        """Tests that it returns false when the type of doesn't exist"""
-        bonds = [{
-            "_id": "Mother",
-            "Required": None,
-            "Family": True,
-            "Romantic": False,
-            "Friend": False,
-            "Work": False,
-            "Therapy": False
-        }, {
-            "_id": "Bartender",
-            "Required": None,
-            "Family": False,
-            "Romantic": False,
-            "Friend": True,
-            "Work": False,
-            "Therapy": True
-        }]
-        self.character.bonds = bonds
-
-        self.assertEqual(self.character.has_bond_type('Relative'), False)
 
     def test_damaged_veteran_violence(self):
         """Tests that all properties from the Extreme Violence damaged veteran were properly set"""
@@ -1324,91 +1422,3 @@ class TestCharacter(unittest.TestCase):
 
         with self.subTest('It should not change the sanity'):
             self.assertEqual(self.character.sanity, starting_san)
-
-    def test_get_disorders(self):
-        """Tests that it returns the array of disorders"""
-        disorders = ['Anxiety', 'Depression']
-        self.character.disorders = disorders
-
-        self.assertEqual(self.character.get_disorders(), disorders)
-
-    def test_get_adaptations_none(self):
-        """Tests that it returns an empty array when the character isn't adapted to anything"""
-        self.assertEqual(self.character.get_adaptations(), [])
-
-    def test_get_adaptations(self):
-        """Tests that it returns an array with any adaptations the character might have"""
-        adapted = 'Violence'
-        self.character.adapted[adapted] = True
-
-        self.assertEqual(self.character.get_adaptations(), [adapted])
-
-    def test_get_veteran_type(self):
-        """It should return the type set on the character class"""
-        vet_type = 'Things Man Was Not Meant to Know'
-        self.character.damaged_veteran = vet_type
-
-        self.assertEqual(self.character.get_veteran_type(), vet_type)
-
-    def test_get_character(self):
-        """Tests that it parrots everything that has been passed to it"""
-        expected = {
-            'Class': 'Firefighter',
-            'Package': 'Criminal',
-            'Number_Bonds': 4,
-            'Bonds': {'Hairdresser': 0},
-            'Lost_Bonds': [],
-            'Veteran': '',
-            'Disorders': [],
-            'Adapted_To': [],
-            'Attributes': self.character.get_attributes(),
-            'Stats': self.character.get_stats(),
-            'Skills': self.character.get_skills()
-        }
-        self.character.class_name = expected['Class']
-        self.character.package_name = expected['Package']
-        self.character.num_bonds = expected['Number_Bonds']
-        self.character.bonds = [{'_id': list(expected['Bonds'].keys())[0]}]
-
-        self.assertEqual(self.character.get_character(), expected)
-
-    def test_double_underscore_str(self):
-        """Tests the __str__ method of the class, ensuring it gives the expected output"""
-        self.character.bonds = [{'_id': 'Hairdresser'}]
-        self.character.class_name = 'Firefighter'
-        self.character.package_name = 'Criminal'
-        self.character.damaged_veteran = 'Gone Horribly Right'
-        self.character.lost_bonds = [{'_id': 'Brother'}]
-        self.character.disorders = ['OCD']
-        self.character.adapted = {'Violence': True, 'Helplessness': False}
-
-        char_str = str(self.character)
-        format_args = [
-            self.character.class_name, self.character.package_name, self.character.damaged_veteran,
-            self.character.disorders[0], self.character.bonds[0]['_id'],
-            self.character.lost_bonds[0]['_id'], 'Violence']
-
-        expected_str = 'Class:                {}\n' \
-                       'Skill package:        {}\n' \
-                       'Damaged veteran type: {}\nDisorders:\n' \
-                       '    {}\n\nBonds:\n' \
-                       '    {}: 0\n\n' \
-                       'Lost bonds:\n    {}\n\n' \
-                       'Adapted to:\n    {}\n\n' \
-                       'Attributes:\n' \
-                       '    Hit Points:     0\n' \
-                       '    Willpower:      0\n' \
-                       '    Sanity:         0\n' \
-                       '    Breaking Point: 0\n' \
-                       '\nStats:\n' \
-                       '    Strength:     0\n' \
-                       '    Dexterity:    0\n' \
-                       '    Constitution: 0\n' \
-                       '    Intelligence: 0\n' \
-                       '    Power:        0\n' \
-                       '    Charisma:     0\n\nSkills:\n'.format(*format_args)
-
-        for skill in sorted(self.character.skills.keys()):
-            expected_str += '    {}: {}\n'.format(skill, self.character.skills[skill])
-
-        self.assertEqual(char_str, expected_str)
