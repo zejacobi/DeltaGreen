@@ -5,11 +5,11 @@ Script to get all of the JSON files into the Mongo Database
 import sys
 import os
 
-import Lib.Mongo as Mongo
-
-from threading import Thread
-from queue import Queue
 from glob import glob
+from queue import Queue
+from threading import Thread
+
+import Lib.Utilities.Mongo as Mongo
 
 from Lib.Utilities.Workspace import parse_json
 

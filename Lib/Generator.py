@@ -1,7 +1,6 @@
 from threading import Thread
 
-import Lib.Mongo as Mongo
-
+import Lib.Utilities.Mongo as Mongo
 from Lib.Character import Character
 
 

@@ -1,9 +1,9 @@
-import unittest
-import os
-import mongomock
 import json
-
+import unittest
 from threading import Thread
+
+import mongomock
+import os
 
 import SeedDB as SeedDB
 
