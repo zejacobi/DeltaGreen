@@ -253,17 +253,19 @@ class TestGenerator(unittest.TestCase):
         self.random_mock.range_list = [5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1,
                                        5, 5, 5, 1, 1]
         self.random_mock.sample_list = [[skill_choice]]
-        self.generator.generate()
+        character = self.generator.generate()
+
+        expected_stats = {
+            'Strength': 15,
+            'Dexterity': 15,
+            'Constitution': 15,
+            'Intelligence': 15,
+            'Power': 15,
+            'Charisma': 15
+        }
 
         with self.subTest(msg='Testing that stats are set correctly'):
-            self.assertEqual(self.generator.character.stats, {
-                'Strength': 15,
-                'Dexterity': 15,
-                'Constitution': 15,
-                'Intelligence': 15,
-                'Power': 15,
-                'Charisma': 15
-            })
+            self.assertEqual(self.generator.character.stats, expected_stats)
 
         with self.subTest(msg='Testing that the class name was set correctly'):
             self.assertEqual(self.generator.character.class_name, class_name)
@@ -285,6 +287,27 @@ class TestGenerator(unittest.TestCase):
                     skill_level = (self.random_mock.choice_list[0]['Skills'][skill]
                                    + 20 * (skill in self.random_mock.choice_list[1]['Skills']))
                     self.assertEqual(self.generator.character.skills[skill], skill_level)
+
+        with self.subTest(msg='Testing that the return object is correct'):
+            expected = {
+                'Class': class_name,
+                'Package': package_name,
+                'Number_Bonds': self.random_mock.choice_list[0]['Bonds'],
+                'Bonds': {bond['_id']: expected_stats['Charisma'] for bond in self.bonds[-3:]},
+                'Lost_Bonds': [],
+                'Veteran': '',
+                'Disorders': [],
+                'Adapted_To': [],
+                'Attributes': {
+                    'Sanity': 75,
+                    'Hit Points': 15,
+                    'Willpower Points': 15,
+                    'Breaking Point': 60
+                },
+                'Stats': expected_stats,
+                'Skills': self.generator.character.skills
+            }
+            self.assertEqual(character, expected)
 
     def test_generate_damaged_veteran(self):
         """Tests that a random character is generated with damaged veteran stats applied when

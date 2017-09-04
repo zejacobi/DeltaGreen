@@ -1349,3 +1349,25 @@ class TestCharacter(unittest.TestCase):
         self.character.damaged_veteran = vet_type
 
         self.assertEqual(self.character.get_veteran_type(), vet_type)
+
+    def test_get_character(self):
+        """Tests that it parrots everything that has been passed to it"""
+        expected = {
+            'Class': 'Firefighter',
+            'Package': 'Criminal',
+            'Number_Bonds': 4,
+            'Bonds': {'Hairdresser': 0},
+            'Lost_Bonds': [],
+            'Veteran': '',
+            'Disorders': [],
+            'Adapted_To': [],
+            'Attributes': self.character.get_attributes(),
+            'Stats': self.character.get_stats(),
+            'Skills': self.character.get_skills()
+        }
+        self.character.class_name = expected['Class']
+        self.character.package_name = expected['Package']
+        self.character.num_bonds = expected['Number_Bonds']
+        self.character.bonds = [{'_id': list(expected['Bonds'].keys())[0]}]
+
+        self.assertEqual(self.character.get_character(), expected)
