@@ -247,3 +247,14 @@ class Generator(object):
         if self.character.random.randrange(0, 3) == 2:
             self.random_damaged_veteran()
         return self.character.get_character()
+
+    def save_character(self):
+        """
+        Method for saving a character to the database. Returns the unique ID of the record the
+        character is saved to.
+
+        :return: A MongoDB ID, corresponding to the record in which the character is saved.
+        :rtype: ObjectID
+        """
+
+        return self.Mongo.insert(self.character.get_character(), 'SavedCharacters')
