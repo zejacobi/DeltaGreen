@@ -1371,3 +1371,45 @@ class TestCharacter(unittest.TestCase):
         self.character.bonds = [{'_id': list(expected['Bonds'].keys())[0]}]
 
         self.assertEqual(self.character.get_character(), expected)
+
+    def test_double_underscore_str(self):
+        """Tests the __str__ method of the class, ensuring it gives the expected output"""
+        self.character.bonds = [{'_id': 'Hairdresser'}]
+        self.character.class_name = 'Firefighter'
+        self.character.package_name = 'Criminal'
+        self.character.damaged_veteran = 'Gone Horribly Right'
+        self.character.lost_bonds = [{'_id': 'Brother'}]
+        self.character.disorders = ['OCD']
+        self.character.adapted = {'Violence': True, 'Helplessness': False}
+
+        char_str = str(self.character)
+        format_args = [
+            self.character.class_name, self.character.package_name, self.character.damaged_veteran,
+            self.character.disorders[0], self.character.bonds[0]['_id'],
+            self.character.lost_bonds[0]['_id'], 'Violence']
+
+        expected_str = 'Class:                {}\n' \
+                       'Skill package:        {}\n' \
+                       'Damaged veteran type: {}\nDisorders:\n' \
+                       '    {}\n\nBonds:\n' \
+                       '    {}: 0\n\n' \
+                       'Lost bonds:\n    {}\n\n' \
+                       'Adapted to:\n    {}\n\n' \
+                       'Attributes:\n' \
+                       '    Hit Points:     0\n' \
+                       '    Willpower:      0\n' \
+                       '    Sanity:         0\n' \
+                       '    Breaking Point: 0\n' \
+                       '\nStats:\n' \
+                       '    Strength:     0\n' \
+                       '    Dexterity:    0\n' \
+                       '    Constitution: 0\n' \
+                       '    Intelligence: 0\n' \
+                       '    Power:        0\n' \
+                       '    Charisma:     0\n\nSkills:\n'.format(*format_args)
+
+        for skill in sorted(self.character.skills.keys()):
+            expected_str += '    {}: {}\n'.format(skill, self.character.skills[skill])
+
+        self.maxDiff = None
+        self.assertEqual(char_str, expected_str)

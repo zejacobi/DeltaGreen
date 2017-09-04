@@ -55,6 +55,56 @@ class Character(object):
 
         self.random = random  # this will make my life easier with unit testing
 
+    def __str__(self):
+        """Gives a formatted plain text version of the character
+
+        :return: A string giving all information needed to play the character
+        :rtype: str
+        """
+        outstr = 'Class:                {}\n' \
+                 'Skill package:        {}\n'.format(self.class_name, self.package_name)
+
+        outstr += 'Damaged veteran type: {}\nDisorders:\n'.format(self.damaged_veteran)
+        for disorder in self.disorders:
+            outstr += '    {}\n'.format(disorder)
+
+        outstr += '\nBonds:\n'
+
+        for bond in self.get_bonds():
+            outstr += '    {}: {}\n'.format(bond, self.stats['Charisma'])
+
+        outstr += '\n'
+
+        outstr += 'Lost bonds:\n'
+        for bond in self.get_lost_bonds():
+            outstr += '    {}\n'.format(bond)
+
+        outstr += '\n'
+
+        outstr += 'Adapted to:\n'
+        for adaptation in self.get_adaptations():
+            outstr += '    {}\n'.format(adaptation)
+
+        outstr += '\nAttributes:\n' \
+                  '    Hit Points:     {hp}\n' \
+                  '    Willpower:      {wp}\n' \
+                  '    Sanity:         {san}\n' \
+                  '    Breaking Point: {bp}\n'.format(hp=self.hp, wp=self.wp, san=self.sanity,
+                                                      bp=self.bp)
+
+        outstr += '\nStats:\n' \
+                  '    Strength:     {Strength}\n' \
+                  '    Dexterity:    {Dexterity}\n' \
+                  '    Constitution: {Constitution}\n' \
+                  '    Intelligence: {Intelligence}\n' \
+                  '    Power:        {Power}\n' \
+                  '    Charisma:     {Charisma}\n\nSkills:\n'.format(**self.stats)
+
+        for skill in sorted(self.skills.keys()):
+            outstr += '    {}: {}\n'.format(skill, self.skills[skill])
+
+        return outstr
+
     @staticmethod
     def _get_subskill_str(skill, sub):
         """
