@@ -64,3 +64,23 @@ class TestFind(unittest.TestCase):
         """Ensure that find_one returns the expected document if given a query"""
         self.assertEqual(Mongo.find_one(self.collection, {'data': 2}),
                          {'data': self.inserted_docs[1]['data']})
+
+    def test_find_one_none_found(self):
+        """Ensure that find_one returns the expected empty document if it can't find anything"""
+        self.assertEqual(Mongo.find_one(self.collection, {'polka_dots': 2}), {})
+
+    def test_find_by_id_literal(self):
+        """
+        Ensure that find_by_id returns the expected document if given the _id and the literal
+        argument=True argument.
+        """
+        self.assertEqual(Mongo.find_by_id(self.collection, 2, True),
+                         {'data': self.inserted_docs[1]['data']})
+
+    def test_find_by_id_oid(self):
+        """
+        Ensure that find_by_id returns the expected document if given the _id for an objectID
+        """
+        doc = {'data': 9}
+        obj_id = str(self.Mongo.insert({'data': doc['data']}, self.collection))
+        self.assertEqual(Mongo.find_by_id(self.collection, obj_id), doc)

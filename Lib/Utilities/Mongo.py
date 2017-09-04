@@ -5,6 +5,8 @@ over and over again.
 """
 
 from pymongo import MongoClient
+from bson import ObjectId
+
 from ExternalServices import DATABASE, MONGO_STRING
 
 client = MongoClient(MONGO_STRING + DATABASE)
@@ -65,12 +67,37 @@ def find_one(collection, query=None):
     :param string collection: The name of the database collection
     :param dict query: A query, potentially changing the returned record
     :return: A dict containing the first record in the natural ordering based on the search
-        criteria
+        criteria. If nothing is found, an empty dict will be returned.
     :rtype: dict
     """
     if query:
         res = database[collection].find_one(query)
     else:
         res = database[collection].find_one()
-    del res['_id']
-    return res
+
+    if res:
+        del res['_id']
+        return res
+    else:
+        return {}
+
+
+def find_by_id(collection, object_id, literal=False):
+    """
+    Function to find an object in the database by its unique MongoDB identifier. If you're using
+    your own thing as the **_id** of a record, you need to set the literal property to True.
+    Otherwise the  *object_id* argument will be cast to the BSON ObjectId type, before being matched
+    to the **_id** in the database.
+
+    :param str collection: he name of the database collection
+    :param str_or_int object_id: The unique ID (**_id**) of the record you're looking for
+    :param bool literal: If true, the *object_id* argument is kept as a whatever it's passed in as.
+        Otherwise it is cast to the BSON ObjectID type
+
+    :return: A dict containing the results of the query (if any). If nothing is found, an empty
+        dict is returned
+    :rtype: dict
+    """
+    if not literal:
+        object_id = ObjectId(str(object_id))
+    return find_one(collection, {"_id": object_id})

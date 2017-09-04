@@ -5,7 +5,9 @@ Handles generation of characters
 from threading import Thread
 
 import Lib.Utilities.Mongo as Mongo
+
 from Lib.Character import RandomCharacter
+from ExternalServices import SAVE_LOCATION
 
 
 class Generator(object):
@@ -261,4 +263,4 @@ class Generator(object):
         :rtype: ObjectID
         """
 
-        return self.Mongo.insert(self.character.get_character(), 'SavedCharacters')
+        return self.Mongo.insert(self.character.get_character(), SAVE_LOCATION)
