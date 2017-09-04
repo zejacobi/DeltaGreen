@@ -4,29 +4,15 @@ import operator
 import math
 
 
-class Character(object):
+class BaseCharacter(object):
     """
-    Class that contains all important properties of a character.
-
-    .. note::
-        Note that there is a distinction made between Skills (which can only be taken once and are
-        always the same) and sub-skills (which are a catch-all for a category of skills, such as
-        Foreign Language and Craft; these can be taken multiple times picking a different
-        sub-skill every time, such as Craft (Microelectronics) and Craft (Mechanic)). Understanding
-        this distinction is important, because it comes up multiple times.
-
-    :param dict default_skills: A dictionary containing all skills (except skills with
-        associated sub-skills) and their default values
-    :param dict sub_skills: A dictionary containing as keys all of the skills classified
-        as sub-skills, mapped to lists of all sub-skill options for each
-    :param dict skill_mappings: A dictionary that maps Skills with the stats that they're
-        associated with. Used to give reasonable looking stats to each character.
+    Class that contains all important properties of a character and the methods for reading those.
+    This class won't have any logic for setting or changing these; those show up in the
+    specialized sub-classes.
     """
-    def __init__(self, default_skills, sub_skills, skill_mappings):
-        self.skills = copy.deepcopy(default_skills)
-        self.defaults = default_skills
-        self.sub_skills = sub_skills
-        self.sub_skill_types = sub_skills.keys()
+
+    def __init__(self):
+        self.skills = {}
         self.num_bonds = 0
         self.bonds = []
         self.lost_bonds = []
@@ -46,14 +32,11 @@ class Character(object):
             'Power': 0,
             'Charisma': 0
         }
-        self.skill_mappings = skill_mappings
 
         self.hp = 0
         self.wp = 0
         self.sanity = 0
         self.bp = 0
-
-        self.random = random  # this will make my life easier with unit testing
 
     def __str__(self):
         """Gives a formatted plain text version of the character
@@ -104,6 +87,196 @@ class Character(object):
             outstr += '    {}: {}\n'.format(skill, self.skills[skill])
 
         return outstr
+
+    def get_skills(self):
+        """
+        Gives the dictionary containing all of the character's skills.
+
+        :return: A dictionary with all skills, mapping to the value associated with this skill
+        :rtype: dict
+        """
+        return self.skills
+
+    def get_class(self):
+        """
+        Gives the character's class
+
+        :return: The name of the class that the character has.
+        :rtype: str
+        """
+        return self.class_name
+
+    def get_package(self):
+        """
+        Gives the package that the character had applied to them
+
+        :return: The name of the package the character has.
+        :rtype: str
+        """
+        return self.package_name
+
+    def get_stats(self):
+        """
+        Gives the character's stats
+
+        :return: A dictionary mapping the six stats (Strength, Dexterity, Constitution,
+            Intelligence, Wisdom, Charisma)
+        :rtype: dict
+        """
+        return self.stats
+
+    def get_attributes(self):
+        """
+        Gives the attributes derived from the characters stats
+
+        :return: A dictionary mapping names of attributes to their integer values. Keys are:
+            **Sanity**, **Hit Points**, **Willpower Points**, and **Breaking Point**
+        :rtype: dict
+        """
+        return {
+            'Sanity': self.sanity,
+            'Hit Points': self.hp,
+            'Willpower Points': self.wp,
+            'Breaking Point': self.bp
+        }
+
+    def get_bonds(self):
+        """
+        Gives a list containing all bonds a character has
+
+        :return: The names of all of the bonds the character has
+        :rtype: list
+        """
+        return [bond["_id"] for bond in self.bonds]
+
+    def get_lost_bonds(self):
+        """
+        Gives a list containing all bonds a character has lost.
+
+        :return: The names of all of the bonds the character has lost.
+        :rtype: list
+        """
+        return [bond["_id"] for bond in self.lost_bonds]
+
+    def get_bond_types(self):
+        """
+        Gives a dictionary which maps the bond types to booleans that show if the character does or
+        doesn't have a bond of that type.
+
+        :return: A dict with keys **Family**, **Romantic**, **Friend**, **Work**, **Therapy**, all
+            of which map to booleans
+        :rtype: dict
+        """
+        types = {
+            "Family": False,
+            "Romantic": False,
+            "Friend": False,
+            "Work": False,
+            "Therapy": False
+        }
+        for bond in self.bonds:
+            for bond_type in types:
+                types[bond_type] = types[bond_type] or bond[bond_type]
+
+        return types
+
+    def has_bond_type(self, bond_type):
+        """
+        Determines if the character already has a bond of that bond type.
+
+        :param str bond_type: The name for the type of bond (one of: "Family", "Romantic",
+            "Friend", "Work", "Therapy")
+        :return: True if the character already has a bond of that type, false otherwise.
+        :rtype: bool
+        """
+        types = self.get_bond_types()
+        if bond_type in types:
+            return types[bond_type]
+        return False
+
+    def get_disorders(self):
+        """
+        Gives a list containing all disorders the character has
+
+        :return: The names of all of the disorders the character has picked up.
+        :rtype: list
+        """
+        return self.disorders
+
+    def get_adaptations(self):
+        """Determines what type of sanity damage (if any) the character is already adapted to.
+
+        :return: A list of which types of sanity damage a character is adapted to.
+        :rtype: list
+        """
+        return [name for name in self.adapted.keys() if self.adapted[name]]
+
+    def get_veteran_type(self):
+        """
+        Gives the type of damaged veteran that has been applied to the character, if any has.
+
+        :return: The type of damaged veteran the character is
+        :rtype: string
+        """
+        return self.damaged_veteran
+
+    def get_character(self):
+        """
+        Gives a dictionary containing all game relevant information about the character.
+
+        :return: A dictionary with keys **Class**, **Package**, **Number_Bonds**, **Bonds** (here
+            the name of the bond is mapped to the strength of the bond, an integer), **Lost_Bonds**
+            (a simple list), **Veteran** (empty string if not a veteran) **Disorders** (empty list
+            if none exist), **Adapted_To** (likewise empty if the character isn't adapted to
+            violence or helplessness), **Attributes** (HP, WP, San, BP in dictionary format),
+            **Stats**, and **Skills**
+        :rtype: dict
+        """
+        stats = self.get_stats()
+        character = {
+            'Class': self.class_name,
+            'Package': self.package_name,
+            'Number_Bonds': self.num_bonds,
+            'Bonds': {bond: stats['Charisma'] for bond in self.get_bonds()},
+            'Lost_Bonds': self.get_lost_bonds(),
+            'Veteran': self.damaged_veteran,
+            'Disorders': self.disorders,
+            'Adapted_To': self.get_adaptations(),
+            'Attributes': self.get_attributes(),
+            'Stats': self.stats,
+            'Skills': self.skills
+        }
+        return character
+
+
+class RandomCharacter(BaseCharacter):
+    """
+    Class that contains functions for randomly generating a character. Subclasses BaseCharacter
+    so that all character display methods only need to be implemented once.
+
+    .. note::
+        Note that there is a distinction made between Skills (which can only be taken once and are
+        always the same) and sub-skills (which are a catch-all for a category of skills, such as
+        Foreign Language and Craft; these can be taken multiple times picking a different
+        sub-skill every time, such as Craft (Microelectronics) and Craft (Mechanic)). Understanding
+        this distinction is important, because it comes up multiple times.
+
+    :param dict default_skills: A dictionary containing all skills (except skills with
+        associated sub-skills) and their default values
+    :param dict sub_skills: A dictionary containing as keys all of the skills classified
+        as sub-skills, mapped to lists of all sub-skill options for each
+    :param dict skill_mappings: A dictionary that maps Skills with the stats that they're
+        associated with. Used to give reasonable looking stats to each character.
+    """
+    def __init__(self, default_skills, sub_skills, skill_mappings):
+        BaseCharacter.__init__(self)
+        self.skills = copy.deepcopy(default_skills)
+        self.defaults = default_skills
+        self.sub_skills = sub_skills
+        self.sub_skill_types = sub_skills.keys()
+        self.skill_mappings = skill_mappings
+
+        self.random = random  # this will make my life easier with unit testing
 
     @staticmethod
     def _get_subskill_str(skill, sub):
@@ -472,58 +645,6 @@ class Character(object):
         self.sanity = self.stats['Power'] * 5
         self.bp = self.stats['Power'] * 4
 
-    def get_skills(self):
-        """
-        Gives the dictionary containing all of the character's skills.
-
-        :return: A dictionary with all skills, mapping to the value associated with this skill
-        :rtype: dict
-        """
-        return self.skills
-
-    def get_class(self):
-        """
-        Gives the character's class
-
-        :return: The name of the class that the character has.
-        :rtype: str
-        """
-        return self.class_name
-
-    def get_package(self):
-        """
-        Gives the package that the character had applied to them
-
-        :return: The name of the package the character has.
-        :rtype: str
-        """
-        return self.package_name
-
-    def get_stats(self):
-        """
-        Gives the character's stats
-
-        :return: A dictionary mapping the six stats (Strength, Dexterity, Constitution,
-            Intelligence, Wisdom, Charisma)
-        :rtype: dict
-        """
-        return self.stats
-
-    def get_attributes(self):
-        """
-        Gives the attributes derived from the characters stats
-
-        :return: A dictionary mapping names of attributes to their integer values. Keys are:
-            **Sanity**, **Hit Points**, **Willpower Points**, and **Breaking Point**
-        :rtype: dict
-        """
-        return {
-            'Sanity': self.sanity,
-            'Hit Points': self.hp,
-            'Willpower Points': self.wp,
-            'Breaking Point': self.bp
-        }
-
     def add_bond(self, bond):
         """
         Adds a bond to the character's list of bonds
@@ -537,60 +658,6 @@ class Character(object):
         :rtype: None
         """
         self.bonds.append(bond)
-
-    def get_bonds(self):
-        """
-        Gives a list containing all bonds a character has
-
-        :return: The names of all of the bonds the character has
-        :rtype: list
-        """
-        return [bond["_id"] for bond in self.bonds]
-
-    def get_lost_bonds(self):
-        """
-        Gives a list containing all bonds a character has lost.
-
-        :return: The names of all of the bonds the character has lost.
-        :rtype: list
-        """
-        return [bond["_id"] for bond in self.lost_bonds]
-
-    def get_bond_types(self):
-        """
-        Gives a dictionary which maps the bond types to booleans that show if the character does or
-        doesn't have a bond of that type.
-
-        :return: A dict with keys **Family**, **Romantic**, **Friend**, **Work**, **Therapy**, all
-            of which map to booleans
-        :rtype: dict
-        """
-        types = {
-            "Family": False,
-            "Romantic": False,
-            "Friend": False,
-            "Work": False,
-            "Therapy": False
-        }
-        for bond in self.bonds:
-            for bond_type in types:
-                types[bond_type] = types[bond_type] or bond[bond_type]
-
-        return types
-
-    def has_bond_type(self, bond_type):
-        """
-        Determines if the character already has a bond of that bond type.
-
-        :param str bond_type: The name for the type of bond (one of: "Family", "Romantic",
-            "Friend", "Work", "Therapy")
-        :return: True if the character already has a bond of that type, false otherwise.
-        :rtype: bool
-        """
-        types = self.get_bond_types()
-        if bond_type in types:
-            return types[bond_type]
-        return False
 
     def damaged_veteran_violence(self):
         """
@@ -673,15 +740,6 @@ class Character(object):
         self.add_disorder(disorder)
         self.damaged_veteran = 'Things Man Was Not Meant to Know'
 
-    def get_disorders(self):
-        """
-        Gives a list containing all disorders the character has
-
-        :return: The names of all of the disorders the character has picked up.
-        :rtype: list
-        """
-        return self.disorders
-
     def add_disorder(self, disorder):
         """
         Strips away all chafe attached to a disorder object and just puts the name into the
@@ -694,48 +752,3 @@ class Character(object):
         :rtype: None
         """
         self.disorders.append(disorder['_id'])
-
-    def get_adaptations(self):
-        """Determines what type of sanity damage (if any) the character is already adapted to.
-
-        :return: A list of which types of sanity damage a character is adapted to.
-        :rtype: list
-        """
-        return [name for name in self.adapted.keys() if self.adapted[name]]
-
-    def get_veteran_type(self):
-        """
-        Gives the type of damaged veteran that has been applied to the character, if any has.
-
-        :return: The type of damaged veteran the character is
-        :rtype: string
-        """
-        return self.damaged_veteran
-
-    def get_character(self):
-        """
-        Gives a dictionary containing all game relevant information about the character.
-
-        :return: A dictionary with keys **Class**, **Package**, **Number_Bonds**, **Bonds** (here
-            the name of the bond is mapped to the strength of the bond, an integer), **Lost_Bonds**
-            (a simple list), **Veteran** (empty string if not a veteran) **Disorders** (empty list
-            if none exist), **Adapted_To** (likewise empty if the character isn't adapted to
-            violence or helplessness), **Attributes** (HP, WP, San, BP in dictionary format),
-            **Stats**, and **Skills**
-        :rtype: dict
-        """
-        stats = self.get_stats()
-        character = {
-            'Class': self.class_name,
-            'Package': self.package_name,
-            'Number_Bonds': self.num_bonds,
-            'Bonds': {bond: stats['Charisma'] for bond in self.get_bonds()},
-            'Lost_Bonds': self.get_lost_bonds(),
-            'Veteran': self.damaged_veteran,
-            'Disorders': self.disorders,
-            'Adapted_To': self.get_adaptations(),
-            'Attributes': self.get_attributes(),
-            'Stats': self.stats,
-            'Skills': self.skills
-        }
-        return character

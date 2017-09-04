@@ -1,7 +1,7 @@
 from threading import Thread
 
 import Lib.Utilities.Mongo as Mongo
-from Lib.Character import Character
+from Lib.Character import RandomCharacter
 
 
 class Generator(object):
@@ -49,7 +49,7 @@ class Generator(object):
         for t in threads:
             t.join()
 
-        self.character = Character(self.defaults, self.sub_skills, self.skill_mapping)
+        self.character = RandomCharacter(self.defaults, self.sub_skills, self.skill_mapping)
 
     def _get_classes(self):
         """
