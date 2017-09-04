@@ -1411,5 +1411,4 @@ class TestCharacter(unittest.TestCase):
         for skill in sorted(self.character.skills.keys()):
             expected_str += '    {}: {}\n'.format(skill, self.character.skills[skill])
 
-        self.maxDiff = None
         self.assertEqual(char_str, expected_str)
