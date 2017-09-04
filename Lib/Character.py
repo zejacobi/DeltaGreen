@@ -8,6 +8,11 @@ import copy
 import operator
 import math
 
+import Lib.Utilities.Mongo as Mongo
+
+from ExternalServices import SAVE_LOCATION
+from Lib.Utilities.Exceptions import NotFoundError
+
 
 class BaseCharacter(object):
     """
@@ -757,3 +762,42 @@ class RandomCharacter(BaseCharacter):
         :rtype: None
         """
         self.disorders.append(disorder['_id'])
+
+
+class LoadedCharacter(BaseCharacter):
+    """
+    Class that loads an existing character into the BaseCharacter class so that it can be displayed.
+    Raises NotFoundError if the character cannot be found in the database.
+
+    :param str character_id: The unique ID of the character. This is set by MongoDB and is how we
+        find the character in the database.
+
+    :raises: NotFoundError
+    """
+    def __init__(self, character_id):
+        BaseCharacter.__init__(self)
+        self.Mongo = Mongo
+
+        character = self.Mongo.find_by_id(SAVE_LOCATION, character_id)
+
+        if not character:
+            raise NotFoundError('Could not find character with ID {0!s}'.format(character_id))
+
+        self.skills = character['Skills']
+        self.num_bonds = character['Number_Bonds']
+        self.bonds = [{"_id": bond} for bond in character['Bonds'].keys()]
+        self.lost_bonds = [{"_id": bond} for bond in character['Lost_Bonds']]
+        self.class_name = character['Class']
+        self.package_name = character['Package']
+        self.disorders = character['Disorders']
+        self.adapted = {
+            "Violence": "Violence" in character['Adapted_To'],
+            "Helplessness": "Helplessness" in character['Adapted_To'],
+        }
+        self.damaged_veteran = character['Veteran']
+        self.stats = character['Stats']
+        self.hp = character['Attributes']['Hit Points']
+        self.bp = character['Attributes']['Breaking Point']
+        self.wp = character['Attributes']['Willpower Points']
+        self.sanity = character['Attributes']['Sanity']
+

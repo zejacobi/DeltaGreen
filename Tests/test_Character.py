@@ -1,8 +1,15 @@
 import unittest
 import math
 
+import mongomock
+
+import Lib.Utilities.Mongo as Mongo
+import Lib.Character as Character
+
 from Lib.Character import RandomCharacter, BaseCharacter
+from Lib.Utilities.Exceptions import NotFoundError
 from Tests.RandomMock import RandomMock
+from ExternalServices import SAVE_LOCATION
 
 
 class TestBaseCharacter(unittest.TestCase):
@@ -1422,3 +1429,90 @@ class TestRandomCharacter(unittest.TestCase):
 
         with self.subTest('It should not change the sanity'):
             self.assertEqual(self.character.sanity, starting_san)
+
+
+class TestLoadedCharacter(unittest.TestCase):
+    """Tests for LoadedCharacters class"""
+
+    @classmethod
+    def setUpClass(cls):
+        """
+        We need to set a mocked database for the whole character package here, then we need to
+        save a character to that database and note the _id
+        """
+        cls.mongo_obj = Mongo
+        cls.mongo = mongomock.MongoClient()['Test']
+        cls.mongo_obj.database = cls.mongo
+        Character.Mongo = cls.mongo_obj
+        cls.character_obj = BaseCharacter()
+        cls.character_obj.skills = {
+            "Accounting": 10,
+            "Alertness": 20,
+            "Anthropology": 0,
+        }
+        cls.character_obj.bonds = [{'_id': 'Hairdresser'}]
+        cls.character_obj.class_name = 'Firefighter'
+        cls.character_obj.package_name = 'Criminal'
+        cls.character_obj.damaged_veteran = 'Gone Horribly Right'
+        cls.character_obj.lost_bonds = [{'_id': 'Brother'}]
+        cls.character_obj.disorders = ['OCD']
+        cls.character_obj.adapted = {'Violence': True, 'Helplessness': False}
+
+        cls.character_id = cls.mongo_obj.insert(cls.character_obj.get_character(), SAVE_LOCATION)
+
+    def test_exception_on_missing_id(self):
+        """Testing an exception is raised when the saved character isn't found"""
+        with self.assertRaises(NotFoundError):
+            Character.LoadedCharacter('AAAA1234AAAA1234AAAA1234')
+
+    def test_initialization(self):
+        """
+        Tests that the LoadedCharacter can be initialized without errors and correctly sets all
+        properties
+        """
+        try:
+            character = Character.LoadedCharacter(str(self.character_id))
+        except NotFoundError:
+            self.fail('__init__() unexpectedly raised NotFoundError')
+
+        with self.subTest(mgs='It should successfully set the skills'):
+            self.assertDictEqual(character.skills, self.character_obj.skills)
+
+        with self.subTest(mgs='It should successfully set the number of bonds'):
+            self.assertEqual(character.num_bonds, self.character_obj.num_bonds)
+
+        with self.subTest(mgs='It should successfully set the bonds'):
+            self.assertEqual(character.bonds, self.character_obj.bonds)
+
+        with self.subTest(mgs='It should successfully set the lost bonds'):
+            self.assertEqual(character.lost_bonds, self.character_obj.lost_bonds)
+
+        with self.subTest(mgs='It should successfully set the class name'):
+            self.assertEqual(character.class_name, self.character_obj.class_name)
+
+        with self.subTest(mgs='It should successfully set the package name'):
+            self.assertEqual(character.package_name, self.character_obj.package_name)
+
+        with self.subTest(mgs='It should successfully set the disorders'):
+            self.assertEqual(character.disorders, self.character_obj.disorders)
+
+        with self.subTest(mgs='It should successfully set the adapted properties'):
+            self.assertEqual(character.adapted, self.character_obj.adapted)
+
+        with self.subTest(mgs='It should successfully set the veteran type'):
+            self.assertEqual(character.damaged_veteran, self.character_obj.damaged_veteran)
+
+        with self.subTest(mgs='It should successfully set the stats'):
+            self.assertDictEqual(character.stats, self.character_obj.stats)
+
+        with self.subTest(mgs='It should successfully set the HP'):
+            self.assertEqual(character.hp, self.character_obj.hp)
+
+        with self.subTest(mgs='It should successfully set the WP'):
+            self.assertEqual(character.wp, self.character_obj.wp)
+
+        with self.subTest(mgs='It should successfully set the BP'):
+            self.assertEqual(character.bp, self.character_obj.bp)
+
+        with self.subTest(mgs='It should successfully set the San'):
+            self.assertEqual(character.sanity, self.character_obj.sanity)
