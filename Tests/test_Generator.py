@@ -1,15 +1,16 @@
 import unittest
+
 import mongomock
 import operator
 
 from os import path
 
+import Lib.Generator as Generator
+import Lib.Utilities.Mongo as Mongo
+
 from Lib.Utilities.Workspace import parse_json
 from Tests.RandomMock import RandomMock
 from Tests.TestData import data_path
-
-import Lib.Mongo as Mongo
-import Lib.Generator as Generator
 
 
 class TestGenerator(unittest.TestCase):

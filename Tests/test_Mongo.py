@@ -1,7 +1,8 @@
 import unittest
+
 import mongomock
 
-import Lib.Mongo as Mongo
+import Lib.Utilities.Mongo as Mongo
 
 
 class TestInsert(unittest.TestCase):
