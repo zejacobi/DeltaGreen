@@ -661,3 +661,31 @@ class Character(object):
         :rtype: string
         """
         return self.damaged_veteran
+
+    def get_character(self):
+        """
+        Gives a dictionary containing all game relevant information about the character.
+
+        :return: A dictionary with keys **Class**, **Package**, **Number_Bonds**, **Bonds** (here
+            the name of the bond is mapped to the strength of the bond, an integer), **Lost_Bonds**
+            (a simple list), **Veteran** (empty string if not a veteran) **Disorders** (empty list
+            if none exist), **Adapted_To** (likewise empty if the character isn't adapted to
+            violence or helplessness), **Attributes** (HP, WP, San, BP in dictionary format),
+            **Stats**, and **Skills**
+        :rtype: dict
+        """
+        stats = self.get_stats()
+        character = {
+            'Class': self.class_name,
+            'Package': self.package_name,
+            'Number_Bonds': self.num_bonds,
+            'Bonds': {bond: stats['Charisma'] for bond in self.get_bonds()},
+            'Lost_Bonds': self.get_lost_bonds(),
+            'Veteran': self.damaged_veteran,
+            'Disorders': self.disorders,
+            'Adapted_To': self.get_adaptations(),
+            'Attributes': self.get_attributes(),
+            'Stats': self.stats,
+            'Skills': self.skills
+        }
+        return character

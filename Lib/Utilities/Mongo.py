@@ -15,8 +15,8 @@ def insert(json_doc, collection):
     """
     Function for inserting JSON files into a Mongo database
 
-    :param dict_or_list json_doc: A valid python dictionary or list, which will be converted to
-        the MongoDB BSON format as it is inserted into the database.
+    :param dict_or_list json_doc: A valid python dictionary or list of dictionaries, which will be
+        converted to the MongoDB BSON format as it is inserted into the database.
     :param str collection: The collection to insert the document into
     :return: The unique ID or IDs given to the inserted item
     :rtype: string_or_list

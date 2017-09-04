@@ -253,17 +253,19 @@ class TestGenerator(unittest.TestCase):
         self.random_mock.range_list = [5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1,
                                        5, 5, 5, 1, 1]
         self.random_mock.sample_list = [[skill_choice]]
-        self.generator.generate()
+        character = self.generator.generate()
+
+        expected_stats = {
+            'Strength': 15,
+            'Dexterity': 15,
+            'Constitution': 15,
+            'Intelligence': 15,
+            'Power': 15,
+            'Charisma': 15
+        }
 
         with self.subTest(msg='Testing that stats are set correctly'):
-            self.assertEqual(self.generator.character.stats, {
-                'Strength': 15,
-                'Dexterity': 15,
-                'Constitution': 15,
-                'Intelligence': 15,
-                'Power': 15,
-                'Charisma': 15
-            })
+            self.assertEqual(self.generator.character.stats, expected_stats)
 
         with self.subTest(msg='Testing that the class name was set correctly'):
             self.assertEqual(self.generator.character.class_name, class_name)
@@ -285,6 +287,27 @@ class TestGenerator(unittest.TestCase):
                     skill_level = (self.random_mock.choice_list[0]['Skills'][skill]
                                    + 20 * (skill in self.random_mock.choice_list[1]['Skills']))
                     self.assertEqual(self.generator.character.skills[skill], skill_level)
+
+        with self.subTest(msg='Testing that the return object is correct'):
+            expected = {
+                'Class': class_name,
+                'Package': package_name,
+                'Number_Bonds': self.random_mock.choice_list[0]['Bonds'],
+                'Bonds': {bond['_id']: expected_stats['Charisma'] for bond in self.bonds[-3:]},
+                'Lost_Bonds': [],
+                'Veteran': '',
+                'Disorders': [],
+                'Adapted_To': [],
+                'Attributes': {
+                    'Sanity': 75,
+                    'Hit Points': 15,
+                    'Willpower Points': 15,
+                    'Breaking Point': 60
+                },
+                'Stats': expected_stats,
+                'Skills': self.generator.character.skills
+            }
+            self.assertEqual(character, expected)
 
     def test_generate_damaged_veteran(self):
         """Tests that a random character is generated with damaged veteran stats applied when
@@ -342,6 +365,58 @@ class TestGenerator(unittest.TestCase):
 
         with self.subTest('Checking that the type of damaged veteran was set'):
             self.assertEqual(self.generator.character.damaged_veteran, 'Extreme Violence')
+
+    def test_save_character(self):
+        """Tests saving a character."""
+        class_name = 'Federal Agent'
+        skill_choice = 'Accounting'
+        package_name = 'Weasel'
+        self.random_mock.choice_list = [class_obj for class_obj in self.classes
+                                        if class_obj['_id'] == class_name]
+        self.random_mock.choice_list.extend([package for package in self.packages
+                                             if package['_id'] == package_name])
+        self.random_mock.choice_list.extend(self.bonds[-3:])
+        self.random_mock.range_list = [5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1,
+                                       5, 5, 5, 1, 1]
+        self.random_mock.sample_list = [[skill_choice]]
+        self.generator.generate()
+
+        character_id = self.generator.save_character()
+
+        returned_character = self.mongo_obj.find_all('SavedCharacters')[0]
+
+        with self.subTest(msg='Test that the ID in the DB matches that returned by the function'):
+            self.assertEqual(character_id, returned_character['_id'])
+
+        with self.subTest(msg='Test that the character is fully saved in the DB'):
+            expected = {
+                '_id': character_id,
+                'Class': class_name,
+                'Package': package_name,
+                'Number_Bonds': self.random_mock.choice_list[0]['Bonds'],
+                'Bonds': {bond['_id']: 15 for bond in self.bonds[-3:]},
+                'Lost_Bonds': [],
+                'Veteran': '',
+                'Disorders': [],
+                'Adapted_To': [],
+                'Attributes': {
+                    'Sanity': 75,
+                    'Hit Points': 15,
+                    'Willpower Points': 15,
+                    'Breaking Point': 60
+                },
+                'Stats': {
+                    'Strength': 15,
+                    'Dexterity': 15,
+                    'Constitution': 15,
+                    'Intelligence': 15,
+                    'Power': 15,
+                    'Charisma': 15
+                },
+                'Skills': self.generator.character.skills
+            }
+            self.maxDiff = None
+            self.assertEqual(returned_character, expected)
 
 
 class TestGeneratorOGL(unittest.TestCase):

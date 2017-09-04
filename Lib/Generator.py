@@ -228,10 +228,16 @@ class Generator(object):
 
     def generate(self):
         """
-        Method that randomly generates a completed Delta Green character. Doesn't return anything,
-        but the properties are accessible through the **character** property on this Class.
+        Method that randomly generates a completed Delta Green character. Returns a dictionary
+        that contains all game relevant information about the character.
 
-        :return: None
+        :return: A dictionary with keys **Class**, **Package**, **Number_Bonds**, **Bonds** (here
+            the name of the bond is mapped to the strength of the bond, an integer), **Lost_Bonds**
+            (a simple list), **Veteran** (empty string if not a veteran) **Disorders** (empty list
+            if none exist), **Adapted_To** (likewise empty if the character isn't adapted to
+            violence or helplessness), **Attributes** (HP, WP, San, BP in dictionary format),
+            **Stats**, and **Skills**
+        :rtype: dict
         """
         self.random_character_class()
         self.random_character_package()
@@ -240,3 +246,15 @@ class Generator(object):
         self.random_character_bonds()
         if self.character.random.randrange(0, 3) == 2:
             self.random_damaged_veteran()
+        return self.character.get_character()
+
+    def save_character(self):
+        """
+        Method for saving a character to the database. Returns the unique ID of the record the
+        character is saved to.
+
+        :return: A MongoDB ID, corresponding to the record in which the character is saved.
+        :rtype: ObjectID
+        """
+
+        return self.Mongo.insert(self.character.get_character(), 'SavedCharacters')
