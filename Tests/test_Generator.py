@@ -87,7 +87,7 @@ class TestGenerator(unittest.TestCase):
         self.assertEqual(self.generator.disorders, {
             "Violence": self.violence_disorders,
             "Helplessness": self.helplessness_disorders,
-            "Unnatural": self.unnatural_disorders,
+            "Unnatural": self.unnatural_disorders
         })
 
     def test_private_get_bonds_no_class(self):
@@ -342,3 +342,51 @@ class TestGenerator(unittest.TestCase):
 
         with self.subTest('Checking that the type of damaged veteran was set'):
             self.assertEqual(self.generator.character.damaged_veteran, 'Extreme Violence')
+
+
+class TestGeneratorOGL(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """This is much less involved, as we just need to test two functions"""
+        cls.mongo_obj = Mongo
+        cls.mongo = mongomock.MongoClient()['Test']
+        cls.mongo_obj.database = cls.mongo
+        Generator.Mongo = cls.mongo_obj
+
+        cls.classes = parse_json(path.join(data_path, 'classes.json'))[0]
+        cls.classes[0]['open'] = True
+        cls.packages = parse_json(path.join(data_path, 'packages.json'))[0]
+        cls.packages[0]['open'] = True
+
+        cls.mongo_obj.insert(cls.classes, 'classes')
+        cls.mongo_obj.insert(cls.packages, 'packages')
+
+        # Insert the rest of the stuff just to avoid errors
+        cls.bonds = parse_json(path.join(data_path, 'bonds.json'))[0]
+        cls.bonds = sorted(cls.bonds, key=operator.itemgetter('Work'), reverse=True)
+        cls.default_stats = parse_json(path.join(data_path, 'default_stats.json'))[0]
+        cls.skill_mapping = parse_json(path.join(data_path, 'skill_mapping.json'))[0]
+        cls.sub_skills = parse_json(path.join(data_path, 'sub_skills.json'))[0]
+        cls.violence_disorders = parse_json(path.join(data_path, 'violence_disorders.json'))[0]
+        cls.unnatural_disorders = parse_json(path.join(data_path, 'unnatural_disorders.json'))[0]
+        cls.helplessness_disorders = parse_json(path.join(data_path,
+                                                          'helplessness_disorders.json'))[0]
+
+        cls.mongo_obj.insert(cls.bonds, 'bonds')
+        cls.mongo_obj.insert(cls.default_stats, 'default_stats')
+        cls.mongo_obj.insert(cls.skill_mapping, 'skill_mapping')
+        cls.mongo_obj.insert(cls.sub_skills, 'sub_skills')
+        cls.mongo_obj.insert(cls.helplessness_disorders, 'disorders')
+        cls.mongo_obj.insert(cls.unnatural_disorders, 'disorders')
+        cls.mongo_obj.insert(cls.violence_disorders, 'disorders')
+
+    def setUp(self):
+        self.generator = Generator.Generator(True)
+
+    def test_init_classes(self):
+        """Initializing the class should have grabbed the classes from the database"""
+        self.assertEqual(self.generator.classes, [self.classes[0]])
+
+    def test_init_packages(self):
+        """Initializing the class should have grabbed the packages from the database"""
+        self.assertEqual(self.generator.packages, [self.packages[0]])

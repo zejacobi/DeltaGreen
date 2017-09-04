@@ -29,7 +29,8 @@
         "Persuade",
         "Survival"
       ]
-    }
+    },
+    "open": true
   },
   {
     "_id": "Oil Worker",
@@ -54,7 +55,8 @@
       "Number": 0,
       "All": false,
       "List": []
-    }
+    },
+    "open": true
   },
   {
     "_id": "Office Worker",
@@ -71,7 +73,8 @@
       "Number": 2,
       "All": true,
       "List": []
-    }
+    },
+    "open": true
   },
   {
     "_id": "Eclectic",
@@ -81,7 +84,8 @@
       "Number": 8,
       "All": true,
       "List": []
-    }
+    },
+    "open": true
   },
   {
     "_id": "Private Investigator",
@@ -100,7 +104,8 @@
       "Number": 0,
       "All": false,
       "List": []
-    }
+    },
+    "open": true
  },
  {
    "_id": "Professor",
@@ -126,7 +131,8 @@
        "Military Science",
        "Medicine"
      ]
-   }
+   },
+   "open": true
  },
  {
    "_id": "Notched Barrel",
@@ -145,7 +151,8 @@
      "Number": 0,
      "All": false,
      "List": []
-   }
+   },
+   "open": true
  },
  {
    "_id": "Weasel",
@@ -164,6 +171,7 @@
      "Number": 0,
      "All": false,
      "List": []
-   }
+   },
+   "open": true
  }
 ]
