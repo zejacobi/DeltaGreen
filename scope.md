@@ -9,10 +9,11 @@ I want this personally, because I think it would be cool to have this for Delta 
 I want to program this publicly because I think it will be a good way to show off what
 I'm capable of in python to prospective future employers. 
 
-And I want to give back to the RPG community. I spent countless hours playing with [PCGEN] [1] when 
-I was younger. I don't know Java, so I can't really contribute to PCGEN. But I can try and make 
-something of my own and make sure it's FOSS. Since I'm currently obsessed with Delta Green and there
-appears to be no Delta Green character generator, here's where I can make a big impact. 
+And I want to give back to the RPG community. I spent countless hours playing with 
+[PCGEN](http://pcgen.org/) when I was younger. I don't know Java, so I can't really contribute to 
+PCGEN. But I can try and make something of my own and make sure it's FOSS. Since I'm currently 
+obsessed with Delta Green and there appears to be no Delta Green character generator, here's where I
+can make a big impact. 
 
 It also helps that Delta Green is under the OGL. I can enforce a separation between OGL content and
 non-OGL using my .gitignore file. If/when I end up hosting this, I hope to use a password from the
@@ -75,5 +76,5 @@ damaged veterans, the last things keeping this from being feature complete
 * The two most urgent next steps are:
     * Differentiating OGL and non-OGL content in the database
     * Saving and loading characters
-    
-[1]: http://pcgen.org/
+* Both of those priorities completed on 2017/09/04. 
+    * Next up is a plan for APIs, then developing those APIs using Flask
