@@ -38,3 +38,12 @@ DeltaGreen.Lib.Utilities.Mongo module
         :members:
         :undoc-members:
         :show-inheritance:
+
+
+DeltaGreen.Lib.Utilities.Exceptions module
+------------------------------------------
+
+.. automodule:: Lib.Utilities.Exceptions
+        :members:
+        :undoc-members:
+        :show-inheritance:

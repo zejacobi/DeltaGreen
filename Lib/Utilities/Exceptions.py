@@ -9,11 +9,10 @@ class Error(Exception):
 
 
 class NotFoundError(Error):
-    """Exception raised when an excepted file or database entry cannot be found
+    """
+    Exception raised when an excepted file or database entry cannot be found
 
-    Attributes:
-        expression -- input expression in which the error occurred
-        message -- explanation of the error
+    :ivar str message: Gives context as to what exactly is missing.
     """
 
     def __init__(self, message):
