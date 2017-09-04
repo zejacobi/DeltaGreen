@@ -31,7 +31,8 @@
         "Value": 40
       }
     ],
-    "Bonds": 4
+    "Bonds": 4,
+    "open": true
   },
   {
     "_id": "Anthropologist",
@@ -65,7 +66,8 @@
         "Value": 40
       }
     ],
-    "Bonds": 4
+    "Bonds": 4,
+    "open": true
   },
   {
     "_id": "Computer Scientist",
@@ -107,7 +109,8 @@
         "Value": 40
       }
     ],
-    "Bonds": 3
+    "Bonds": 3,
+    "open": true
   },
   {
     "_id": "Federal Agent",
@@ -135,7 +138,8 @@
       }
     },
     "Subskills": [],
-    "Bonds": 3
+    "Bonds": 3,
+    "open": true
   },
   {
     "_id": "Physician",
@@ -163,7 +167,8 @@
         "Value": 50
       }
     ],
-    "Bonds": 3
+    "Bonds": 3,
+    "open": true
   },
   {
     "_id": "Scientist",
@@ -199,7 +204,8 @@
         "Value": 50
       }
     ],
-    "Bonds": 4
+    "Bonds": 4,
+    "open": true
   },
   {
     "_id": "Special Operator",
@@ -228,6 +234,7 @@
         "Value": 60
       }
     ],
-    "Bonds": 2
+    "Bonds": 2,
+    "open": true
   }
 ]
