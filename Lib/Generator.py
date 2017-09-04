@@ -10,10 +10,15 @@ class Generator(object):
     Database, uses this to instantiate a character, and contains functions for ensuring some
     character features get generated correctly.
     """
-    def __init__(self):
+    def __init__(self, open_gaming_only=False):
         """
         Gets all information from the Mongo Database and uses it to instantiate a character class.
+
+        :param bool open_gaming_only: If set to true, only OLG licensed or homebrew materials
+            where the rights-holders have given me permission to use them will be used in the
+            character.
         """
+        self.open_gaming_only = open_gaming_only
         self.Mongo = Mongo
         self.classes = []
         self.bonds = []
@@ -52,7 +57,10 @@ class Generator(object):
 
         :return: None
         """
-        self.classes = self.Mongo.find_all('classes')
+        if self.open_gaming_only:
+            self.classes = self.Mongo.find_subset('classes', {"open": True})
+        else:
+            self.classes = self.Mongo.find_all('classes')
 
     def _get_violence_disorders(self):
         """
@@ -84,7 +92,10 @@ class Generator(object):
 
         :return: None
         """
-        self.packages = self.Mongo.find_all('packages')
+        if self.open_gaming_only:
+            self.packages = self.Mongo.find_subset('packages', {"open": True})
+        else:
+            self.packages = self.Mongo.find_all('packages')
 
     def _get_defaults(self):
         """
