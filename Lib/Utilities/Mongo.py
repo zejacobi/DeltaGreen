@@ -1,3 +1,9 @@
+"""
+All the functions that deal with the Mongo database. These are mostly wrappers, existing so I
+don't have to write the same simple code (e.g. for turning a Mongo cursor object into a proper list)
+over and over again.
+"""
+
 from pymongo import MongoClient
 from ExternalServices import DATABASE, MONGO_STRING
 

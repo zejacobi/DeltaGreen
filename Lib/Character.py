@@ -608,7 +608,7 @@ class Character(object):
         type of damaged veteran.
 
         :param list disorders: A list of disorders. One will be chosen from the list. Disorders
-        are displayed using their "_id" property, which should contain their name.
+            are displayed using their "_id" property, which should contain their name.
 
         :return: None
         :rtype: None
