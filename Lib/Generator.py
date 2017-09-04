@@ -1,3 +1,7 @@
+"""
+Handles generation of characters
+"""
+
 from threading import Thread
 
 import Lib.Utilities.Mongo as Mongo

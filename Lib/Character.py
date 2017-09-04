@@ -1,3 +1,8 @@
+"""
+Contains classes that represent characters, the transformations that can be applied to characters,
+and functions for displaying created characters.
+"""
+
 import random
 import copy
 import operator
