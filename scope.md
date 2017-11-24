@@ -78,3 +78,13 @@ damaged veterans, the last things keeping this from being feature complete
     * Saving and loading characters
 * Both of those priorities completed on 2017/09/04. 
     * Next up is a plan for APIs, then developing those APIs using Flask
+* I think I want to get to a MVP website ASAP. To this end, I want 3 API endpoints
+    * `GET /characters` (generates a random character)
+    * `PUT /characters/<id>` (which implies that I need some way to save a character given the
+    character representation as a dictionary)
+        * I think the best thing to do here then is create sub-class for loading a character
+        from a dict and make LoadedCharacter depend on it
+    * `GET /characters/<id>` (gets a specific saved character using LoadedCharacter)
+* After these, I want to add in a site, properly serving the HTML using Flask (unlike last
+time I did a similar thing, where I ran the front-end separately and had to deal with CORS 
+problems)
