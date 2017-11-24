@@ -1431,6 +1431,85 @@ class TestRandomCharacter(unittest.TestCase):
             self.assertEqual(self.character.sanity, starting_san)
 
 
+class TestCharacterFromDict(unittest.TestCase):
+    """Tests for CharacterFromDict class"""
+
+    @classmethod
+    def setUpClass(cls):
+        """We need to set up the character dictionary"""
+        cls.character_obj = BaseCharacter()
+        cls.character_obj.skills = {
+            "Accounting": 10,
+            "Alertness": 20,
+            "Anthropology": 0,
+        }
+        cls.character_obj.bonds = [{'_id': 'Hairdresser'}]
+        cls.character_obj.class_name = 'Firefighter'
+        cls.character_obj.package_name = 'Criminal'
+        cls.character_obj.damaged_veteran = 'Gone Horribly Right'
+        cls.character_obj.lost_bonds = [{'_id': 'Brother'}]
+        cls.character_obj.disorders = ['OCD']
+        cls.character_obj.adapted = {'Violence': True, 'Helplessness': False}
+        cls.character_dict = cls.character_obj.get_character()
+
+    def test_exception_on_missing_id(self):
+        """Testing an exception is raised when we pass in a dictionary missing keys"""
+        with self.assertRaises(NotFoundError):
+            Character.CharacterFromDict({})
+
+    def test_initialization(self):
+        """
+        Tests that the CharacterFromDict can be initialized without errors and correctly sets all
+        properties
+        """
+        try:
+            character = Character.CharacterFromDict(self.character_dict)
+        except NotFoundError:
+            self.fail('__init__() unexpectedly raised NotFoundError')
+
+        with self.subTest(mgs='It should successfully set the skills'):
+            self.assertDictEqual(character.skills, self.character_obj.skills)
+
+        with self.subTest(mgs='It should successfully set the number of bonds'):
+            self.assertEqual(character.num_bonds, self.character_obj.num_bonds)
+
+        with self.subTest(mgs='It should successfully set the bonds'):
+            self.assertEqual(character.bonds, self.character_obj.bonds)
+
+        with self.subTest(mgs='It should successfully set the lost bonds'):
+            self.assertEqual(character.lost_bonds, self.character_obj.lost_bonds)
+
+        with self.subTest(mgs='It should successfully set the class name'):
+            self.assertEqual(character.class_name, self.character_obj.class_name)
+
+        with self.subTest(mgs='It should successfully set the package name'):
+            self.assertEqual(character.package_name, self.character_obj.package_name)
+
+        with self.subTest(mgs='It should successfully set the disorders'):
+            self.assertEqual(character.disorders, self.character_obj.disorders)
+
+        with self.subTest(mgs='It should successfully set the adapted properties'):
+            self.assertEqual(character.adapted, self.character_obj.adapted)
+
+        with self.subTest(mgs='It should successfully set the veteran type'):
+            self.assertEqual(character.damaged_veteran, self.character_obj.damaged_veteran)
+
+        with self.subTest(mgs='It should successfully set the stats'):
+            self.assertDictEqual(character.stats, self.character_obj.stats)
+
+        with self.subTest(mgs='It should successfully set the HP'):
+            self.assertEqual(character.hp, self.character_obj.hp)
+
+        with self.subTest(mgs='It should successfully set the WP'):
+            self.assertEqual(character.wp, self.character_obj.wp)
+
+        with self.subTest(mgs='It should successfully set the BP'):
+            self.assertEqual(character.bp, self.character_obj.bp)
+
+        with self.subTest(mgs='It should successfully set the San'):
+            self.assertEqual(character.sanity, self.character_obj.sanity)
+
+
 class TestLoadedCharacter(unittest.TestCase):
     """Tests for LoadedCharacters class"""
 

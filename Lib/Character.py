@@ -1,6 +1,6 @@
 """
-Contains classes that represent characters, the transformations that can be applied to characters,
-and functions for displaying created characters.
+Contains classes that represent characters, the transformations that can be applied to
+characters,and functions for displaying created characters.
 """
 
 import random
@@ -764,18 +764,55 @@ class RandomCharacter(BaseCharacter):
         self.disorders.append(disorder['_id'])
 
 
-class LoadedCharacter(BaseCharacter):
+class CharacterFromDict(BaseCharacter):
     """
-    Class that loads an existing character into the BaseCharacter class so that it can be displayed.
-    Raises NotFoundError if the character cannot be found in the database.
+    Class that loads an existing character dictionary into the BaseCharacter class so that it
+    can be displayed. Raises NotFoundError if any excepted property of the character class is
+    missing.
 
-    :param str character_id: The unique ID of the character. This is set by MongoDB and is how we
-        find the character in the database.
+    :param dict character: The dictionary representation of a character as created by the
+        :meth:`~BaseCharacter.get_character` method.
+
+    :raises: NotFoundError
+    """
+    def __init__(self, character):
+        BaseCharacter.__init__(self)
+        try:
+            self.skills = character['Skills']
+            self.num_bonds = character['Number_Bonds']
+            self.bonds = [{"_id": bond} for bond in character['Bonds'].keys()]
+            self.lost_bonds = [{"_id": bond} for bond in character['Lost_Bonds']]
+            self.class_name = character['Class']
+            self.package_name = character['Package']
+            self.disorders = character['Disorders']
+            self.adapted = {
+                "Violence": "Violence" in character['Adapted_To'],
+                "Helplessness": "Helplessness" in character['Adapted_To'],
+            }
+            self.damaged_veteran = character['Veteran']
+            self.stats = character['Stats']
+            self.hp = character['Attributes']['Hit Points']
+            self.bp = character['Attributes']['Breaking Point']
+            self.wp = character['Attributes']['Willpower Points']
+            self.sanity = character['Attributes']['Sanity']
+        except KeyError as k:
+            raise NotFoundError('Character dictionary missing expected property: {}'.format(k))
+
+
+class LoadedCharacter(CharacterFromDict, BaseCharacter):
+    """
+    Class that loads an existing character into the BaseCharacter class so that it can be
+    displayed. Raises NotFoundError if the character cannot be found in the database or any
+    expected property of the character is missing
+
+    :param str character_id: The unique ID of the character. This is set by MongoDB and is how
+        we find the character in the database.
 
     :raises: NotFoundError
     """
     def __init__(self, character_id):
-        BaseCharacter.__init__(self)
+        BaseCharacter.__init__(self)  # ensure that class properties are set, even if we error
+        # before getting to the point of creating the character from dict.
         self.Mongo = Mongo
 
         character = self.Mongo.find_by_id(SAVE_LOCATION, character_id)
@@ -783,21 +820,4 @@ class LoadedCharacter(BaseCharacter):
         if not character:
             raise NotFoundError('Could not find character with ID {0!s}'.format(character_id))
 
-        self.skills = character['Skills']
-        self.num_bonds = character['Number_Bonds']
-        self.bonds = [{"_id": bond} for bond in character['Bonds'].keys()]
-        self.lost_bonds = [{"_id": bond} for bond in character['Lost_Bonds']]
-        self.class_name = character['Class']
-        self.package_name = character['Package']
-        self.disorders = character['Disorders']
-        self.adapted = {
-            "Violence": "Violence" in character['Adapted_To'],
-            "Helplessness": "Helplessness" in character['Adapted_To'],
-        }
-        self.damaged_veteran = character['Veteran']
-        self.stats = character['Stats']
-        self.hp = character['Attributes']['Hit Points']
-        self.bp = character['Attributes']['Breaking Point']
-        self.wp = character['Attributes']['Willpower Points']
-        self.sanity = character['Attributes']['Sanity']
-
+        CharacterFromDict.__init__(self, character)
