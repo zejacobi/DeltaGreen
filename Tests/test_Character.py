@@ -65,6 +65,12 @@ class TestBaseCharacter(unittest.TestCase):
 
         self.assertEqual(char_str, expected_str)
 
+    def test_double_underscore_getitem(self):
+        """Tests the __getitem__ method of the class, ensuring it gives the expected output"""
+        self.character.class_name = 'Firefighter'
+
+        self.assertEqual(self.character.class_name, self.character['Class'])
+
     def test_get_skills(self):
         """It should return the character's skills object"""
         self.assertEqual(self.character.get_skills(), self.character.skills)
@@ -1457,7 +1463,7 @@ class TestLoadingCharacterFromDict(unittest.TestCase):
         with self.assertRaises(NotFoundError):
             Character.BaseCharacter().parse_character({})
 
-    def test_initialization(self):
+    def test_running(self):
         """
         Tests that the parse_character function initializes the character without errors and
         correctly sets all properties
@@ -1545,7 +1551,7 @@ class TestLoadingCharacter(unittest.TestCase):
         with self.assertRaises(NotFoundError):
             Character.BaseCharacter().load_character_from_db('AAAA1234AAAA1234AAAA1234')
 
-    def test_initialization(self):
+    def test_running(self):
         """
         Tests that the character can be initialized from the DB without errors and that this
         correctly sets all properties
@@ -1596,4 +1602,82 @@ class TestLoadingCharacter(unittest.TestCase):
             self.assertEqual(character.bp, self.character_obj.bp)
 
         with self.subTest(mgs='It should successfully set the San'):
+            self.assertEqual(character.sanity, self.character_obj.sanity)
+
+
+class TestSavingCharacter(unittest.TestCase):
+    """Tests for the save in the BaseCharacters class"""
+
+    @classmethod
+    def setUpClass(cls):
+        """
+        We need to set a mocked database for the whole character package here, then we need to
+        have a character prepared that can be saved in that database
+        """
+        cls.mongo_obj = Mongo
+        cls.mongo = mongomock.MongoClient()['Test']
+        cls.mongo_obj.database = cls.mongo
+        Character.Mongo = cls.mongo_obj
+        cls.character_obj = BaseCharacter()
+        cls.character_obj.skills = {
+            "Accounting": 10,
+            "Alertness": 20,
+            "Anthropology": 0,
+        }
+        cls.character_obj.bonds = [{'_id': 'Hairdresser'}]
+        cls.character_obj.class_name = 'Firefighter'
+        cls.character_obj.package_name = 'Criminal'
+        cls.character_obj.damaged_veteran = 'Gone Horribly Right'
+        cls.character_obj.lost_bonds = [{'_id': 'Brother'}]
+        cls.character_obj.disorders = ['OCD']
+        cls.character_obj.adapted = {'Violence': True, 'Helplessness': False}
+
+    def test_running(self):
+        """
+        Tests that all properties of the character are successfully saved in the db
+        """
+        db_id = self.character_obj.save()
+        character = BaseCharacter()
+        self.assertTrue(character.load_character_from_db(db_id))
+
+        with self.subTest(mgs='It should successfully have saved the skills'):
+            self.assertDictEqual(character.skills, self.character_obj.skills)
+
+        with self.subTest(mgs='It should successfully have saved the number of bonds'):
+            self.assertEqual(character.num_bonds, self.character_obj.num_bonds)
+
+        with self.subTest(mgs='It should successfully have saved the bonds'):
+            self.assertEqual(character.bonds, self.character_obj.bonds)
+
+        with self.subTest(mgs='It should successfully have saved the lost bonds'):
+            self.assertEqual(character.lost_bonds, self.character_obj.lost_bonds)
+
+        with self.subTest(mgs='It should successfully have saved the class name'):
+            self.assertEqual(character.class_name, self.character_obj.class_name)
+
+        with self.subTest(mgs='It should successfully have saved the package name'):
+            self.assertEqual(character.package_name, self.character_obj.package_name)
+
+        with self.subTest(mgs='It should successfully have saved the disorders'):
+            self.assertEqual(character.disorders, self.character_obj.disorders)
+
+        with self.subTest(mgs='It should successfully have saved the adapted properties'):
+            self.assertEqual(character.adapted, self.character_obj.adapted)
+
+        with self.subTest(mgs='It should successfully have saved the veteran type'):
+            self.assertEqual(character.damaged_veteran, self.character_obj.damaged_veteran)
+
+        with self.subTest(mgs='It should successfully have saved the stats'):
+            self.assertDictEqual(character.stats, self.character_obj.stats)
+
+        with self.subTest(mgs='It should successfully have saved the HP'):
+            self.assertEqual(character.hp, self.character_obj.hp)
+
+        with self.subTest(mgs='It should successfully have saved the WP'):
+            self.assertEqual(character.wp, self.character_obj.wp)
+
+        with self.subTest(mgs='It should successfully have saved the BP'):
+            self.assertEqual(character.bp, self.character_obj.bp)
+
+        with self.subTest(mgs='It should successfully have saved the San'):
             self.assertEqual(character.sanity, self.character_obj.sanity)

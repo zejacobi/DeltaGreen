@@ -99,6 +99,9 @@ class BaseCharacter(object):
 
         return outstr
 
+    def __getitem__(self, item):
+        return self.get_character()[item]
+
     def get_skills(self):
         """
         Gives the dictionary containing all of the character's skills.
@@ -315,6 +318,17 @@ class BaseCharacter(object):
 
         self.parse_character(character)
         return True
+
+    def save(self):
+        """
+        Method for saving a character to the database. Returns the unique ID of the record the
+        character is saved to.
+
+        :return: A MongoDB ID, corresponding to the record in which the character is saved.
+        :rtype: ObjectID
+        """
+
+        return self.Mongo.insert(self.get_character(), SAVE_LOCATION)
 
 
 class RandomCharacter(BaseCharacter):

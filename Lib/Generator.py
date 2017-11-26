@@ -263,4 +263,4 @@ class Generator(object):
         :rtype: ObjectID
         """
 
-        return self.Mongo.insert(self.character.get_character(), SAVE_LOCATION)
+        return self.character.save()
