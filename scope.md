@@ -80,7 +80,7 @@ damaged veterans, the last things keeping this from being feature complete
     * Next up is a plan for APIs, then developing those APIs using Flask
 * I think I want to get to a MVP website ASAP. To this end, I want 3 API endpoints
     * `GET /characters` (generates a random character)
-    * `PUT /characters/<id>` (which implies that I need some way to save a character given the
+    * `POST /characters` (which implies that I need some way to save a character given the
     character representation as a dictionary)
         * I think the best thing to do here then is create sub-class for loading a character
         from a dict and make LoadedCharacter depend on it
