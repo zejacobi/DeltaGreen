@@ -1431,8 +1431,8 @@ class TestRandomCharacter(unittest.TestCase):
             self.assertEqual(self.character.sanity, starting_san)
 
 
-class TestCharacterFromDict(unittest.TestCase):
-    """Tests for CharacterFromDict class"""
+class TestLoadingCharacterFromDict(unittest.TestCase):
+    """Tests for parse_character method of the BaseCharacter class"""
 
     @classmethod
     def setUpClass(cls):
@@ -1453,17 +1453,18 @@ class TestCharacterFromDict(unittest.TestCase):
         cls.character_dict = cls.character_obj.get_character()
 
     def test_exception_on_missing_id(self):
-        """Testing an exception is raised when we pass in a dictionary missing keys"""
+        """Test that an exception is raised when we pass in a dictionary missing keys"""
         with self.assertRaises(NotFoundError):
-            Character.CharacterFromDict({})
+            Character.BaseCharacter().parse_character({})
 
     def test_initialization(self):
         """
-        Tests that the CharacterFromDict can be initialized without errors and correctly sets all
-        properties
+        Tests that the parse_character function initializes the character without errors and
+        correctly sets all properties
         """
         try:
-            character = Character.CharacterFromDict(self.character_dict)
+            character = Character.BaseCharacter()
+            self.assertTrue(character.parse_character(self.character_dict))
         except NotFoundError:
             self.fail('__init__() unexpectedly raised NotFoundError')
 
@@ -1510,8 +1511,8 @@ class TestCharacterFromDict(unittest.TestCase):
             self.assertEqual(character.sanity, self.character_obj.sanity)
 
 
-class TestLoadedCharacter(unittest.TestCase):
-    """Tests for LoadedCharacters class"""
+class TestLoadingCharacter(unittest.TestCase):
+    """Tests for the load_character_from_db method in the BaseCharacters class"""
 
     @classmethod
     def setUpClass(cls):
@@ -1542,15 +1543,16 @@ class TestLoadedCharacter(unittest.TestCase):
     def test_exception_on_missing_id(self):
         """Testing an exception is raised when the saved character isn't found"""
         with self.assertRaises(NotFoundError):
-            Character.LoadedCharacter('AAAA1234AAAA1234AAAA1234')
+            Character.BaseCharacter().load_character_from_db('AAAA1234AAAA1234AAAA1234')
 
     def test_initialization(self):
         """
-        Tests that the LoadedCharacter can be initialized without errors and correctly sets all
-        properties
+        Tests that the character can be initialized from the DB without errors and that this
+        correctly sets all properties
         """
         try:
-            character = Character.LoadedCharacter(str(self.character_id))
+            character = Character.BaseCharacter()
+            self.assertTrue(character.load_character_from_db(str(self.character_id)))
         except NotFoundError:
             self.fail('__init__() unexpectedly raised NotFoundError')
 
