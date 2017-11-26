@@ -4,6 +4,7 @@ import mongomock
 
 import Lib.Utilities.Mongo as Mongo
 
+from Lib.Utilities.Exceptions import MalformedError
 
 class TestInsert(unittest.TestCase):
     def setUp(self):
@@ -84,3 +85,10 @@ class TestFind(unittest.TestCase):
         doc = {'data': 9}
         obj_id = str(self.Mongo.insert({'data': doc['data']}, self.collection))
         self.assertEqual(Mongo.find_by_id(self.collection, obj_id), doc)
+
+    def test_find_by_id_oid_err(self):
+        """
+        Ensure that find_by_id returns the expected document if given the _id for an objectID
+        """
+        with self.assertRaises(MalformedError):
+            Mongo.find_by_id(self.collection, 'abc')

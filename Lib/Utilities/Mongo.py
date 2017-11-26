@@ -6,7 +6,9 @@ over and over again.
 
 from pymongo import MongoClient
 from bson import ObjectId
+from bson.errors import InvalidId
 
+from Lib.Utilities.Exceptions import MalformedError
 from ExternalServices import DATABASE, MONGO_STRING
 
 client = MongoClient(MONGO_STRING + DATABASE)
@@ -99,5 +101,8 @@ def find_by_id(collection, object_id, literal=False):
     :rtype: dict
     """
     if not literal:
-        object_id = ObjectId(str(object_id))
+        try:
+            object_id = ObjectId(str(object_id))
+        except InvalidId:
+            raise MalformedError("{} is not a valid literal ObjectID".format(object_id))
     return find_one(collection, {"_id": object_id})

@@ -307,7 +307,7 @@ class BaseCharacter(object):
         :param str character_id: The unique ID of the character. This is set by MongoDB and is how
             we find the character in the database.
 
-        :raises: NotFoundError
+        :raises: NotFoundError, MalformedError
 
         :return: True if the character is successfully loaded.
         """
