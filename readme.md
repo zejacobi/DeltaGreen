@@ -6,6 +6,7 @@ Open Source [Delta Green](http://www.delta-green.com/) random character generato
 third of characters are damaged veterans)
 
 ## Installing
+* Install Python 3.5
 * Create a virtual environment in the project folder with `virtualenv -p python3 venv`
 * Activate the virtual environment with `source venv/bin/activate`
 * Install the necessary packages with `pip install requirements.txt`
@@ -18,9 +19,15 @@ globals `DATABASE` (the name of the mongo database you plan to use) and `MONGO_S
 * Whenever you open this in a new terminal/powershell window, you'll have to activate the VENV again
 with `source venv/bin/activate`
 
-## Using
+## Using (Command Line)
 * From the top level directory: `python Test.py`
     * The results will print to the console.
+
+## Using (Web)
+* With venv activated, run `python server.py` in the top level folder
+    * You can generate a character by navigating to `http://localhost:8080/api/v1/characters` in
+    your favourite web browser
+    * For now, the character is just a JSON object
 
 ## Running The Tests
 From the top level directory: `python -m unittest Tests/test_*`
