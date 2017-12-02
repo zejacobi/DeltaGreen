@@ -4,6 +4,8 @@ import mongomock
 
 import Lib.Utilities.Mongo as Mongo
 
+from copy import deepcopy
+
 from Lib.Utilities.Exceptions import MalformedError
 
 class TestInsert(unittest.TestCase):
@@ -20,6 +22,14 @@ class TestInsert(unittest.TestCase):
         """Ensure that the insert function works for a dictionary"""
         self.assertEqual(self.Mongo.insert({"_id": "test"}, 'test'), 'test')
         self.assertEqual(self.mongo['test'].find()[0], {"_id": 'test'})
+
+    def test_insert_side_effects(self):
+        """Ensure that the insert function works for a dictionary WITHOUT MUTATING THE FUCKING
+            DICT"""
+        original = {"test": 1}
+        copy = deepcopy(original)
+        self.Mongo.insert(original, 'test')
+        self.assertEqual(copy, original)
 
     def test_insert_single_dict_in_array(self):
         """Ensure that the insert function works for a single dict array"""
