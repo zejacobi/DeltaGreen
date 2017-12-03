@@ -6,7 +6,11 @@ over and over again.
 
 from pymongo import MongoClient
 from bson import ObjectId
+from bson.errors import InvalidId
 
+from copy import deepcopy
+
+from Lib.Utilities.Exceptions import MalformedError
 from ExternalServices import DATABASE, MONGO_STRING
 
 client = MongoClient(MONGO_STRING + DATABASE)
@@ -17,12 +21,21 @@ def insert(json_doc, collection):
     """
     Function for inserting JSON files into a Mongo database
 
+    :note: It appears that pymongo does something incredibly *vile* here; it silently modifies
+        the original object with an **_id** field. I get why it needs to add one, but HAVING A
+        FUNCTION WITH SUCH A SERIOUS SIDE EFFECT AND NO WARNING IS TERRIBLE. Because of this, I've
+        added a deepcopy step, which protects the original document and added this to my test
+        cases.
+    :note: ObjectID is not a serializable property. So anything saved can no longer be serialized
+        by json.dumps, which is, uh, problematic for an API!
+
     :param dict_or_list json_doc: A valid python dictionary or list of dictionaries, which will be
         converted to the MongoDB BSON format as it is inserted into the database.
     :param str collection: The collection to insert the document into
     :return: The unique ID or IDs given to the inserted item
     :rtype: string_or_list
     """
+    json_doc = deepcopy(json_doc)
     if isinstance(json_doc, dict):
         return database[collection].insert_one(json_doc).inserted_id
     elif len(json_doc) == 1:
@@ -99,5 +112,8 @@ def find_by_id(collection, object_id, literal=False):
     :rtype: dict
     """
     if not literal:
-        object_id = ObjectId(str(object_id))
+        try:
+            object_id = ObjectId(str(object_id))
+        except InvalidId:
+            raise MalformedError("{} is not a valid literal ObjectID".format(object_id))
     return find_one(collection, {"_id": object_id})

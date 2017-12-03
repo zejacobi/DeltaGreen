@@ -1,6 +1,6 @@
 """
-Contains classes that represent characters, the transformations that can be applied to characters,
-and functions for displaying created characters.
+Contains classes that represent characters, the transformations that can be applied to
+characters,and functions for displaying created characters.
 """
 
 import random
@@ -22,6 +22,7 @@ class BaseCharacter(object):
     """
 
     def __init__(self):
+        self.Mongo = Mongo
         self.skills = {}
         self.num_bonds = 0
         self.bonds = []
@@ -97,6 +98,9 @@ class BaseCharacter(object):
             outstr += '    {}: {}\n'.format(skill, self.skills[skill])
 
         return outstr
+
+    def __getitem__(self, item):
+        return self.get_character()[item]
 
     def get_skills(self):
         """
@@ -257,6 +261,74 @@ class BaseCharacter(object):
             'Skills': self.skills
         }
         return character
+
+    def parse_character(self, character):
+        """
+        Method that overwrites whatever currently exists for this character with the character
+        passed as a dictionary. Raises NotFoundError if any expected property of the character is
+        missing in this dictionary.
+
+        :param dict character: The dictionary representation of a character as created by the
+            :meth:`~BaseCharacter.get_character` method.
+
+        :raises: NotFoundError
+
+        :return: True if the character is successfully loaded.
+        """
+        try:
+            self.skills = character['Skills']
+            self.num_bonds = character['Number_Bonds']
+            self.bonds = [{"_id": bond} for bond in character['Bonds'].keys()]
+            self.lost_bonds = [{"_id": bond} for bond in character['Lost_Bonds']]
+            self.class_name = character['Class']
+            self.package_name = character['Package']
+            self.disorders = character['Disorders']
+            self.adapted = {
+                "Violence": "Violence" in character['Adapted_To'],
+                "Helplessness": "Helplessness" in character['Adapted_To'],
+            }
+            self.damaged_veteran = character['Veteran']
+            self.stats = character['Stats']
+            self.hp = character['Attributes']['Hit Points']
+            self.bp = character['Attributes']['Breaking Point']
+            self.wp = character['Attributes']['Willpower Points']
+            self.sanity = character['Attributes']['Sanity']
+            return True
+        except KeyError as k:
+            raise NotFoundError('Character dictionary missing expected property: {}'.format(k))
+
+    def load_character_from_db(self, character_id):
+        """
+        Method that overwrites whatever currently exists for this character with the character
+        that exists in the database with the provided **_id**. Raises NotFoundError if the
+        character cannot be found in the database or any expected property of the character is
+        missing.
+
+        :param str character_id: The unique ID of the character. This is set by MongoDB and is how
+            we find the character in the database.
+
+        :raises: NotFoundError, MalformedError
+
+        :return: True if the character is successfully loaded.
+        """
+        character = self.Mongo.find_by_id(SAVE_LOCATION, character_id)
+
+        if not character:
+            raise NotFoundError('Could not find character with ID {0!s}'.format(character_id))
+
+        self.parse_character(character)
+        return True
+
+    def save(self):
+        """
+        Method for saving a character to the database. Returns the unique ID of the record the
+        character is saved to.
+
+        :return: A MongoDB ID, corresponding to the record in which the character is saved.
+        :rtype: ObjectID
+        """
+
+        return self.Mongo.insert(self.get_character(), SAVE_LOCATION)
 
 
 class RandomCharacter(BaseCharacter):
@@ -762,42 +834,3 @@ class RandomCharacter(BaseCharacter):
         :rtype: None
         """
         self.disorders.append(disorder['_id'])
-
-
-class LoadedCharacter(BaseCharacter):
-    """
-    Class that loads an existing character into the BaseCharacter class so that it can be displayed.
-    Raises NotFoundError if the character cannot be found in the database.
-
-    :param str character_id: The unique ID of the character. This is set by MongoDB and is how we
-        find the character in the database.
-
-    :raises: NotFoundError
-    """
-    def __init__(self, character_id):
-        BaseCharacter.__init__(self)
-        self.Mongo = Mongo
-
-        character = self.Mongo.find_by_id(SAVE_LOCATION, character_id)
-
-        if not character:
-            raise NotFoundError('Could not find character with ID {0!s}'.format(character_id))
-
-        self.skills = character['Skills']
-        self.num_bonds = character['Number_Bonds']
-        self.bonds = [{"_id": bond} for bond in character['Bonds'].keys()]
-        self.lost_bonds = [{"_id": bond} for bond in character['Lost_Bonds']]
-        self.class_name = character['Class']
-        self.package_name = character['Package']
-        self.disorders = character['Disorders']
-        self.adapted = {
-            "Violence": "Violence" in character['Adapted_To'],
-            "Helplessness": "Helplessness" in character['Adapted_To'],
-        }
-        self.damaged_veteran = character['Veteran']
-        self.stats = character['Stats']
-        self.hp = character['Attributes']['Hit Points']
-        self.bp = character['Attributes']['Breaking Point']
-        self.wp = character['Attributes']['Willpower Points']
-        self.sanity = character['Attributes']['Sanity']
-

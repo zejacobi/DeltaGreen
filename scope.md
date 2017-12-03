@@ -80,7 +80,7 @@ damaged veterans, the last things keeping this from being feature complete
     * Next up is a plan for APIs, then developing those APIs using Flask
 * I think I want to get to a MVP website ASAP. To this end, I want 3 API endpoints
     * `GET /characters` (generates a random character)
-    * `PUT /characters/<id>` (which implies that I need some way to save a character given the
+    * `POST /characters` (which implies that I need some way to save a character given the
     character representation as a dictionary)
         * I think the best thing to do here then is create sub-class for loading a character
         from a dict and make LoadedCharacter depend on it
@@ -88,3 +88,7 @@ damaged veterans, the last things keeping this from being feature complete
 * After these, I want to add in a site, properly serving the HTML using Flask (unlike last
 time I did a similar thing, where I ran the front-end separately and had to deal with CORS 
 problems)
+* API complete. My very next step should be briefly trying to get Travis-CI working and adding the
+badge for that here.
+* Then I can try and make the front-end. I want to build it using the latest versions of Pug,
+Angular, and Flexbox.
