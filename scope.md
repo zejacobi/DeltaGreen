@@ -88,3 +88,7 @@ damaged veterans, the last things keeping this from being feature complete
 * After these, I want to add in a site, properly serving the HTML using Flask (unlike last
 time I did a similar thing, where I ran the front-end separately and had to deal with CORS 
 problems)
+* API complete. My very next step should be briefly trying to get Travis-CI working and adding the
+badge for that here.
+* Then I can try and make the front-end. I want to build it using the latest versions of Pug,
+Angular, and Flexbox.
