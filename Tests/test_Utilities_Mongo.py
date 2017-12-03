@@ -8,6 +8,7 @@ from copy import deepcopy
 
 from Lib.Utilities.Exceptions import MalformedError
 
+
 class TestInsert(unittest.TestCase):
     def setUp(self):
         self.Mongo = Mongo

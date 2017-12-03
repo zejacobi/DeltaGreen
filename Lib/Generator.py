@@ -5,8 +5,8 @@ Handles generation of characters
 from threading import Thread
 
 import Lib.Utilities.Mongo as Mongo
+import Lib.Character as Character
 
-from Lib.Character import RandomCharacter
 from ExternalServices import SAVE_LOCATION
 
 
@@ -55,7 +55,8 @@ class Generator(object):
         for t in threads:
             t.join()
 
-        self.character = RandomCharacter(self.defaults, self.sub_skills, self.skill_mapping)
+        self.character = Character.RandomCharacter(self.defaults, self.sub_skills,
+                                                   self.skill_mapping)
 
     def _get_classes(self):
         """
