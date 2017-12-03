@@ -34,6 +34,10 @@ From the top level directory: `python -m unittest Tests/test_*`
 
 ## Building The Docs
 From the `Docs` directory, run `make html`. 
+Sometimes the API autodocs stop tracking changes and the whole _build directory has to be deleted
+to remind them to build what they should. If this happens, you can run (with an activated venv) the
+script `make_docs.sh` (*nix only) in the `Docs` directory to handle deleting the _build folder
+automatically before building the updated docs.
 
 ## Wishlist
 * Language families/association scores to give more realistic language combinations
