@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/zejacobi/DeltaGreen/branch/master/graph/badge.svg)](https://codecov.io/gh/zejacobi/DeltaGreen)
+[![Build Status](https://travis-ci.org/zejacobi/DeltaGreen.svg?branch=master)](https://travis-ci.org/zejacobi/DeltaGreen)
+
 # Delta Green Character Generator
 Open Source [Delta Green](http://www.delta-green.com/) random character generator.
 
@@ -39,6 +42,10 @@ To run the unit tests with coverage, run
 coverage run tests.py
 coverage report
 ```
+
+*Note:* If a `ExternalServices.py` file has not been created by the time you run the unit tests,
+it will automatically create one for you. This is a semi-accidental result of needing that file
+to exist for the tests to run. 
 
 ## Building The Docs
 From the `Docs` directory, run `make html`. 
