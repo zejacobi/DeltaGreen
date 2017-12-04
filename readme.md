@@ -30,7 +30,15 @@ with `source venv/bin/activate`
     * For now, the character is just a JSON object
 
 ## Running The Tests
-From the top level directory: `python -m unittest Tests/test_*`
+From the top level directory: `python tests.py`
+
+Remember to add all new tests to the `tests.py` file.
+
+To run the unit tests with coverage, run
+```bash
+coverage run tests.py
+coverage report
+```
 
 ## Building The Docs
 From the `Docs` directory, run `make html`. 

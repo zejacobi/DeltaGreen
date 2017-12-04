@@ -30,7 +30,8 @@ def worker():
         Mongo.insert(json_obj, collection_name)
         q.task_done()
 
-if __name__ == '__main__':
+
+if __name__ == '__main__':  # pragma: no cover
     try:
         directory = sys.argv[1]
     except IndexError:

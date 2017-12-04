@@ -1,0 +1,18 @@
+[run]
+source =
+    Lib
+    API
+    SeedDB
+    ExternalServices
+
+omit =
+    # omit anything in the venv
+    venv/*
+    # omit anything in the Test folder
+    Tests/*
+    # omit the tests.py file
+    tests.py
+    # omit the __init__.py files
+    API/__init__.py
+    Lib/__init__.py
+    Lib/Utilities/__init__.py

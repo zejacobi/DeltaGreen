@@ -9,3 +9,5 @@ Docs/_templates/
 .DS_Store
 *.pyc
 **/__pycache__/
+.coverage
+coverage.xml
