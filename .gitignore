@@ -11,3 +11,4 @@ Docs/_templates/
 **/__pycache__/
 .coverage
 coverage.xml
+!/Tests/TestData/ExternalServices.py
