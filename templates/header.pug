@@ -1,0 +1,9 @@
+doctype html
+html
+    head
+        link(href="{{ url_for('static', filename='style.css') }}" rel='stylesheet')
+        script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js")
+        script(src="{{ url_for('static', filename='dgApp.js') }}")
+        title='D̴e̶l̸t̶a̷ ̴G̷r̵e̸e̵n̶ ̶C̸h̸a̶r̵a̷c̷t̷e̶r̶ ̷G̶e̴n̴e̷r̷a̷t̶o̷r̷'
+        body(ng-app="dgApp")
+            block content

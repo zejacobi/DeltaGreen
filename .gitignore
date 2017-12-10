@@ -12,3 +12,5 @@ Docs/_templates/
 .coverage
 coverage.xml
 !/Tests/TestData/ExternalServices.py
+static/style.css
+static/style.css.map
