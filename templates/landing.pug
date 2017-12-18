@@ -1,6 +1,36 @@
 extends header
 
 block content
-    b Delta Green Character Generator
-    br
-    a(href='/new') Generate
+    script(src="{{ url_for('static', filename='controllers/landing.js') }}")
+    div(ng-controller="landing")
+        .topbar
+            a(class='triangle' href='/')
+            .generator-title {!title!}
+        .main-content
+            .exposition
+                p
+                    a(href="http://www.delta-green.com/") Delta Green
+                    | &#32;is a role playing game developed by the Delta Green Partnership. Delta Green is
+                    | also a conspiracy. It works in the shadows, within governments and other
+                    | organizations to make sure that knowledge of the Mythos doesn't leak out.
+                    | Sometimes, Delta Green agents are even able to save people while accomplishing
+                    | their primary mission.
+                p
+                    | This tool is intended as a resource for players and handlers alike. My hope
+                    | is that it will provide ready-made characters for sessions of all sorts.
+                p
+                    | If you'd like to enter the conspiracy, press the button below. But beware
+                    | Once you're in Delta Green, there's no way out. The only retirement plan the
+                    | conspiracy offers is 9mm.
+            a(class='topSecretBox' href='/character') Generate
+
+        .copyright
+            div
+                | Published by arrangement with the Delta Green Partnership. The intellectual
+                | property known as Delta Green is ™ and © the Delta Green Partnership, who has
+                | licensed its use here. The contents of this document have been released under GNU
+                | GENERAL PUBLIC LICENSE Version 3 by Zachary Jacobi, excepting those elements that
+                | are components of the Delta Green intellectual property
+            p
+                | You can&#32;
+                a(href="https://github.com/zejacobi/DeltaGreen") contribute to this project on Github.
