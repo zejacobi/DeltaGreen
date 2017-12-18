@@ -10,4 +10,4 @@ app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
 
 
 if __name__ == "__main__":
-    app.run('localhost', port=8080, debug=False)
+    app.run('0.0.0.0', port=8080, debug=False)
