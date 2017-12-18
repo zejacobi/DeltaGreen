@@ -7,4 +7,9 @@ html
         script(src="{{ url_for('static', filename='dgApp.js') }}")
         title='Delta Green Character Generator'
         body(ng-app="dgApp")
+            script(src="{{ url_for('static', filename='controllers/header.js') }}")
+            div(ng-controller="header")
+                .topbar
+                    a(class='triangle' href='/')
+                    .generator-title {!title!}
             block content

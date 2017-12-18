@@ -1,4 +1,4 @@
-dgApp.controller('landing', ['$scope', '$timeout', function($scope, $timeout) {
+dgApp.controller('header', ['$scope', '$timeout', function($scope, $timeout) {
     var title = 'Delta Green Character Generator';
     $scope.title = title;
 
