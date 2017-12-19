@@ -9,7 +9,7 @@ html
         body(ng-app="dgApp")
             script(src="{{ url_for('static', filename='controllers/header.js') }}")
             div(ng-controller="header")
-                .topbar
+                .topBar
                     a(class='triangle' href='/')
-                    .generator-title {!title!}
+                    .generatorTitle {!title!}
             block content
