@@ -3,9 +3,22 @@
   font-size: 2vmin
   display: grid
   grid-column-gap: 2vw
-  line-height: 1
-  grid-template-columns: 14vw 22vw 18vw 36vw
+  grid-template-columns: 16vw 30vw 20vw 24vw
   grid-template-rows: auto auto auto auto auto auto auto auto
+  line-height: 1
+
+  @media (max-width: 1024px)
+    grid-template-columns: 26vw 34vw 30vw
+    grid-template-rows: auto auto auto auto auto auto auto auto 2vmin auto
+
+  @media (max-width: 768px)
+    grid-template-columns: 36vm 56vw
+    font-size: 2.5vmin
+    grid-template-rows: auto auto auto 2.5vmin auto 2.5vm auto 2.5vmin auto
+
+  @media (max-width: 412px)
+    font-size: 3vmin
+
 
 .propertiesDown
   display: flex
@@ -18,23 +31,51 @@
 .characterCls
   @extend .propertiesDown
   grid-column-start: 1
-  grid-column-end: col2-start
+  grid-column-end: 2
   grid-row-start: 1
-  grid-row-end: row3-start
+  grid-row-end: 3
 
 .characterHistory
   @extend .propertiesDown
   grid-column-start: 2
-  grid-column-end: col3-start
+  grid-column-end: end
   grid-row-start: 1
-  grid-row-end: row3-start
+  grid-row-end: 3
 
 .characterBonds
   @extend .propertiesDown
+  line-height: 1
   grid-column-start: 3
-  grid-column-end: col4-start
+  grid-column-end: 4
   grid-row-start: 1
-  grid-row-end: row6-start
+  grid-row-end: 6
+
+  @media (max-width: 768px)
+    margin-top: 2.5vmin
+    grid-column-start: 1
+    grid-column-end: end
+    grid-row-start: 4
+    grid-row-end: 4
+
+.characterAttributes
+  position: relative
+  grid-column-start: 1
+  grid-column-end: 3
+  grid-row-start: 4
+  grid-row-end: 8
+  display: grid
+  grid-column-gap: 2vw
+  grid-template-columns: 16vw 1fr 1fr
+
+  @media (max-width: 1024px)
+    grid-template-columns: 26vw 16vw 16vw
+
+  @media (max-width: 768px)
+    margin-top: 2.5vmin
+    grid-column-start: 1
+    grid-column-end: end
+    grid-row-start: 6
+    grid-row-end: 7
 
 .characterStats
   grid-column-start: 4
@@ -47,16 +88,20 @@
   grid-template-columns: 1fr 1fr 1fr
   grid-template-rows: auto auto auto auto auto auto auto
 
-.characterAttributes
-  position: relative
-  top: -1vh
-  grid-column-start: 1
-  grid-column-end: col3-start
-  grid-row-start: 4
-  grid-row-end: end
-  display: grid
-  grid-column-gap: 2vw
-  grid-template-columns: 14vw 7vw 7vw
+  @media (max-width: 1024px)
+    grid-template-columns: 26vw 16vw 16vw
+    grid-column-gap: 2vw
+    grid-column-start: 1
+    grid-column-end: 3
+    grid-row-start: 10
+    grid-row-end: end
+
+  @media (max-width: 768px)
+    margin-top: 2.5vmin
+    grid-column-start: 1
+    grid-column-end: end
+    grid-row-start: 8
+    grid-row-end: end
 
 .gridTitle
   font-weight: bold

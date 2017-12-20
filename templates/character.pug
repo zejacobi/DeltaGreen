@@ -17,7 +17,7 @@ block content
                         | {!bond!}: {!str!}
                     .lostGridItem(ng-repeat='bond in character.Lost_Bonds')
                         | {!bond!}
-                    .gridItem &nbsp;
+                    .gridItem(ng-show='character.Adapted_To.length') &nbsp;
                     .gridTitle(ng-show='character.Adapted_To.length') Adapted to
                     .gridItem(ng-show='character.Adapted_To.length') {! character.Adapted_To[0]!}
                 .characterAttributes
@@ -59,8 +59,5 @@ block content
                     .gridItem CHA
                     .gridItem {! character.Stats.Charisma || "&nbsp;"!}
                     .gridItem {! character.Stats.Charisma * 5 || "&nbsp;"!}
-
-
-
 
         include footer
