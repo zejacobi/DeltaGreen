@@ -1,24 +1,28 @@
-.characterSheetTop
+.characterSheet
   font-family: 'Inconsolata', monospace
   font-size: 2vmin
-  display: grid
-  grid-column-gap: 2vw
-  grid-template-columns: 16vw 30vw 20vw 24vw
-  grid-template-rows: auto auto auto auto auto auto auto auto
   line-height: 1
 
-  @media (max-width: 1024px)
-    grid-template-columns: 26vw 34vw 30vw
-    grid-template-rows: auto auto auto auto auto auto auto auto 2vmin auto
-
   @media (max-width: 768px)
-    grid-template-columns: 36vm 56vw
     font-size: 2.5vmin
-    grid-template-rows: auto auto auto 2.5vmin auto 2.5vm auto 2.5vmin auto
 
   @media (max-width: 412px)
     font-size: 3vmin
 
+.characterSheetTop
+  display: grid
+  grid-column-gap: 2vw
+  grid-template-columns: 16vw 30vw 20vw 24vw
+  grid-template-rows: auto auto auto auto auto auto auto auto auto
+  line-height: 1
+
+  @media (max-width: 1024px) and (min-width: 769px)
+    grid-template-columns: 26vw 34vw 30vw
+    grid-template-rows: auto auto auto auto auto auto auto auto 2vmin auto auto
+
+  @media (max-width: 768px)
+    grid-template-columns: 36vw 56vw
+    grid-template-rows: auto auto auto auto auto auto auto auto auto auto
 
 .propertiesDown
   display: flex
@@ -67,11 +71,12 @@
   grid-column-gap: 2vw
   grid-template-columns: 16vw 1fr 1fr
 
-  @media (max-width: 1024px)
+  @media (max-width: 1024px) and (min-width: 769px)
     grid-template-columns: 26vw 16vw 16vw
 
   @media (max-width: 768px)
     margin-top: 2.5vmin
+    grid-template-columns: 36vw 27vw 27vw
     grid-column-start: 1
     grid-column-end: end
     grid-row-start: 6
@@ -88,20 +93,22 @@
   grid-template-columns: 1fr 1fr 1fr
   grid-template-rows: auto auto auto auto auto auto auto
 
-  @media (max-width: 1024px)
+  @media (max-width: 1024px) and (min-width: 769px)
     grid-template-columns: 26vw 16vw 16vw
     grid-column-gap: 2vw
     grid-column-start: 1
     grid-column-end: 3
     grid-row-start: 10
-    grid-row-end: end
+    grid-row-end: 10
 
   @media (max-width: 768px)
     margin-top: 2.5vmin
+    grid-template-columns: 36vw 27vw 27vw
+    grid-column-gap: 2vw
     grid-column-start: 1
     grid-column-end: end
     grid-row-start: 8
-    grid-row-end: end
+    grid-row-end: 8
 
 .gridTitle
   font-weight: bold
@@ -112,3 +119,30 @@
 .lostGridItem
   @extend .gridItem
   text-decoration: line-through
+
+.disorders
+  margin-top: 2vmin
+  grid-column-start: 1
+  grid-column-end: 2
+  grid-row-start: 9
+  grid-row-end: end
+  display: grid
+  line-height: 1
+  grid-column-gap: 2vw
+  grid-template-columns: 16vw 30vw
+
+  @media (max-width: 1024px) and (min-width: 769px)
+    grid-template-columns: 26vw 16vw
+    grid-column-gap: 2vw
+    grid-column-start: 1
+    grid-column-end: 2
+    grid-row-start: 11
+    grid-row-end: end
+
+  @media (max-width: 768px)
+    grid-template-columns: 36vw 56vw
+    margin-top: 2.5vmin
+    grid-column-start: 1
+    grid-column-end: end
+    grid-row-start: 9
+    grid-row-end: end
