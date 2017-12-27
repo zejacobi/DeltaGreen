@@ -1,0 +1,71 @@
+extends header
+
+block content
+    script(src="{{ url_for('static', filename='controllers/character.js') }}")
+    div(ng-controller="character")
+        .characterSheet
+            .characterSheetTop
+                .characterCls
+                    .gridTitle Profession
+                    .gridItem {!character.Class || "&nbsp;"!}
+                .characterHistory
+                    .gridTitle Education and Occupational History
+                    .gridItem {!character.Package || "&nbsp;"!}
+                .characterBonds
+                    .gridTitle Bonds
+                    .gridItem(ng-repeat='(bond, str) in character.Bonds')
+                        | {!bond!}: {!str!}
+                    .lostGridItem(ng-repeat='bond in character.Lost_Bonds')
+                        | {!bond!}
+                    .gridItem(ng-show='character.Adapted_To.length') &nbsp;
+                    .gridTitle(ng-show='character.Adapted_To.length') Adapted to
+                    .gridItem(ng-show='character.Adapted_To.length') {!character.Adapted_To[0]!}
+                .characterAttributes
+                    .gridTitle Derived Attributes
+                    .gridTitle Current
+                    .gridTitle Maximum
+                    .gridBox Hitpoints
+                    .gridBox {!character.Attributes["Hit Points"] || "&nbsp;"!}
+                    .gridBox {!character.Attributes["Hit Points"] || "&nbsp;"!}
+                    .gridBox Willpower Points
+                    .gridBox {!character.Attributes["Willpower Points"] || "&nbsp;"!}
+                    .gridBox {!character.Attributes["Willpower Points"] || "&nbsp;"!}
+                    .gridBox Sanity Points
+                    .gridBox {!character.Attributes["Sanity"] || "&nbsp;"!}
+                    .gridBox {!99 - character.Skills.Unnatural || "&nbsp;"!}
+                    .gridBox Breaking Point
+                    .gridBox {!character.Attributes["Breaking Point"] || "&nbsp;"!}
+                    .gridBox -
+                .characterStats
+                    // thanks to python the dict is probably out of order; manually display it
+                    .gridTitle Statistics
+                    .gridTitle Score
+                    .gridTitle X5
+                    .gridItem STR
+                    .gridItem {!character.Stats.Strength || "&nbsp;"!}
+                    .gridItem {!character.Stats.Strength * 5 || "&nbsp;"!}
+                    .gridItem DEX
+                    .gridItem {!character.Stats.Dexterity || "&nbsp;"!}
+                    .gridItem {!character.Stats.Dexterity * 5 || "&nbsp;"!}
+                    .gridItem CON
+                    .gridItem {!character.Stats.Constitution || "&nbsp;"!}
+                    .gridItem {!character.Stats.Constitution * 5 || "&nbsp;"!}
+                    .gridItem INT
+                    .gridItem {!character.Stats.Intelligence || "&nbsp;"!}
+                    .gridItem {!character.Stats.Intelligence * 5 || "&nbsp;"!}
+                    .gridItem POW
+                    .gridItem {!character.Stats.Power || "&nbsp;"!}
+                    .gridItem {!character.Stats.Power * 5 || "&nbsp;"!}
+                    .gridItem CHA
+                    .gridItem {!character.Stats.Charisma || "&nbsp;"!}
+                    .gridItem {!character.Stats.Charisma * 5 || "&nbsp;"!}
+                .disorders(ng-show='character.Disorders.length')
+                    .gridTitle Disorders
+                    .gridItem {!character.Disorders[0]!}
+            .gridItem &nbsp;
+            .gridTitle Skills
+            .characterSheetSkills
+                .skillPair(ng-repeat='(skill, perc) in character.Skills')
+                    .gridItem {!skill!}
+                    .gridItem {!perc!}
+        include footer
