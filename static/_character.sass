@@ -6,6 +6,13 @@ $mobile: "(max-width: 412px)"
   font-family: 'Inconsolata', monospace
   font-size: 2vmin
   line-height: 1
+  padding: 2vh 2vw
+  display: flex
+  justify-content: flex-start
+  align-items: stretch
+  flex-direction: column
+  flex-wrap: wrap
+  min-height: calc(80vh - 8vmin)
 
   @media #{$small}
     font-size: 2.5vmin
@@ -15,17 +22,16 @@ $mobile: "(max-width: 412px)"
 
 .characterSheetTop
   display: grid
-  grid-column-gap: 2vw
-  grid-template-columns: 16vw 30vw 20vw 24vw
+  grid-template-columns: 3fr 4fr 3fr 3fr
   grid-template-rows: auto auto auto auto auto auto auto auto auto
   line-height: 1
 
   @media #{$medium}
-    grid-template-columns: 26vw 34vw 30vw
+    grid-template-columns: 2fr 3fr 3fr
     grid-template-rows: auto auto auto auto auto auto auto auto 2vmin auto auto
 
   @media #{$small}
-    grid-template-columns: 36vw 56vw
+    grid-template-columns: 2fr 3fr
     grid-template-rows: auto auto auto auto auto auto auto auto auto auto
 
 .propertiesDown
@@ -46,7 +52,7 @@ $mobile: "(max-width: 412px)"
 .characterHistory
   @extend .propertiesDown
   grid-column-start: 2
-  grid-column-end: end
+  grid-column-end: 3
   grid-row-start: 1
   grid-row-end: 3
 
@@ -66,21 +72,19 @@ $mobile: "(max-width: 412px)"
     grid-row-end: 4
 
 .characterAttributes
-  position: relative
   grid-column-start: 1
   grid-column-end: 3
   grid-row-start: 4
   grid-row-end: 8
   display: grid
-  grid-column-gap: 2vw
-  grid-template-columns: 16vw 1fr 1fr
+  grid-template-columns: 3fr 2fr 2fr
 
   @media #{$medium}
-    grid-template-columns: 26vw 16vw 16vw
+    grid-template-columns: 4fr 3fr 3fr
 
   @media #{$small}
     margin-top: 2.5vmin
-    grid-template-columns: 36vw 27vw 27vw
+    grid-template-columns: 4fr 3fr 3fr
     grid-column-start: 1
     grid-column-end: end
     grid-row-start: 6
@@ -88,7 +92,7 @@ $mobile: "(max-width: 412px)"
 
 .characterStats
   grid-column-start: 4
-  grid-column-end: end
+  grid-column-end: 5
   grid-row-start: 1
   grid-row-end: 7
   display: grid
@@ -98,8 +102,8 @@ $mobile: "(max-width: 412px)"
   grid-template-rows: auto auto auto auto auto auto auto
 
   @media #{$medium}
-    grid-template-columns: 26vw 16vw 16vw
-    grid-column-gap: 2vw
+    grid-template-columns: 4fr 3fr 3fr
+    grid-column-gap: 0
     grid-column-start: 1
     grid-column-end: 3
     grid-row-start: 10
@@ -107,8 +111,8 @@ $mobile: "(max-width: 412px)"
 
   @media #{$small}
     margin-top: 2.5vmin
-    grid-template-columns: 36vw 27vw 27vw
-    grid-column-gap: 2vw
+    grid-template-columns: 4fr 3fr 3fr
+    grid-column-gap: 0
     grid-column-start: 1
     grid-column-end: end
     grid-row-start: 8
@@ -127,26 +131,48 @@ $mobile: "(max-width: 412px)"
 .disorders
   margin-top: 2vmin
   grid-column-start: 1
-  grid-column-end: 2
+  grid-column-end: 3
   grid-row-start: 9
   grid-row-end: end
   display: grid
   line-height: 1
-  grid-column-gap: 2vw
-  grid-template-columns: 16vw 30vw
+  grid-template-columns: 3fr 4fr
 
   @media #{$medium}
-    grid-template-columns: 26vw 16vw
-    grid-column-gap: 2vw
+    grid-template-columns: 2fr 3fr
     grid-column-start: 1
-    grid-column-end: 2
+    grid-column-end: 3
     grid-row-start: 11
     grid-row-end: end
 
   @media #{$small}
-    grid-template-columns: 36vw 56vw
+    grid-template-columns: 2fr 3fr
     margin-top: 2.5vmin
     grid-column-start: 1
     grid-column-end: end
     grid-row-start: 9
     grid-row-end: end
+
+.characterSheetSkills
+  display: grid
+  grid-column-gap: 1vw
+  grid-template-columns: 1fr 1fr 1fr 1fr
+  line-height: 1
+
+  @media #{$medium}
+    grid-template-columns: 1fr 1fr 1fr
+
+  @media #{$small}
+    grid-template-columns: 1fr 1fr
+
+  @media #{$mobile}
+    grid-template-columns: 1fr
+
+.skillPair
+  display: grid
+  grid-column-gap: 0.5vw
+  grid-template-columns: 3fr 1fr
+
+  @media #{$mobile}
+    grid-column-gap: 0
+    grid-template-columns: 2fr 3fr
