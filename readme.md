@@ -22,15 +22,14 @@ globals `DATABASE` (the name of the mongo database you plan to use) and `MONGO_S
 * Whenever you open this in a new terminal/powershell window, you'll have to activate the VENV again
 with `source venv/bin/activate`
 
+## Using (Web)
+* With venv activated, run `python server.py` in the top level folder
+    * Go to `localhost:8080` to see the landing page. There will be a link to character
+    generation from there.
+
 ## Using (Command Line)
 * From the top level directory: `python Test.py`
     * The results will print to the console.
-
-## Using (Web)
-* With venv activated, run `python server.py` in the top level folder
-    * You can generate a character by navigating to `http://localhost:8080/api/v1/characters` in
-    your favourite web browser
-    * For now, the character is just a JSON object
 
 ## Running The Tests
 From the top level directory: `python tests.py`
@@ -59,6 +58,7 @@ automatically before building the updated docs.
 * When picking a random skill in a package, more weight given to existing skills
 * Classes provide some bias to the stats
 * More open source skill packages and classes
+* Incorporate random names from https://randomuser.me/
 
 ## Helping Out
 * The best way to help out right now is probably submitting homebrew skill packages or classes.
