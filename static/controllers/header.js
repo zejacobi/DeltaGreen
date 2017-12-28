@@ -3,7 +3,7 @@ dgApp.controller('header', ['$scope', '$timeout', function($scope, $timeout) {
     $scope.title = title;
 
     var glitches = [
-        "D̴e̸l̵t̶a̷ ̶G̸r̷e̵e̸n̷ ̸C̴h̶a̷r̸a̷c̶t̶e̴r̴ ̵G̸e̸n̶e̶r̸a̴t̴o̶r̶",  // courtesy of https://lingojam.com/GlitchTextGenerator
+        "D̴e̸lt̶a̷ G̸re̵en̷ C̴h̶a̷r̸a̷c̶te̴r̴ ̵G̸ener̸at̴or̶",  // courtesy of https://lingojam.com/GlitchTextGenerator
         "D__ta Gre_n Ch_RACTER gEn__ator",
         "��� ��� ����� ������",
         "Delta Green Character Crematory",
