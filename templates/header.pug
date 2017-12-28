@@ -6,6 +6,7 @@ html
         script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js")
         script(src="{{ url_for('static', filename='dgApp.js') }}")
         title='Delta Green Character Generator'
+        meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1")
         body(ng-app="dgApp")
             script(src="{{ url_for('static', filename='controllers/header.js') }}")
             div(ng-controller="header")

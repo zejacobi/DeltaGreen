@@ -3,6 +3,24 @@ extends header
 block content
     script(src="{{ url_for('static', filename='controllers/character.js') }}")
     div(ng-controller="character")
+        .modalUnderlay(ng-if='saveDialogue || loadDialogue' ng-click='closeModal()')
+        .modal(ng-if='saveDialogue')
+            div(ng-if='!error && !id') Saving...
+            div(ng-if='error')
+                p While saving, the following error was encountered:
+                p {!error!}
+            div(ng-if='id')
+                p You character has been successfully saved.
+                p You can access this character using the code: {!id!}
+                p
+                    | You can also directly link to this character, using&#32;
+                    a(href="{!baseURL + id!}") {!baseURL + id!}
+                    | .
+            .topSecretBox(ng-click='closeModal()') CLOSE
+        .modal(ng-if='loadDialogue')
+        .buttonSpace
+            .topSecretBox(ng-click='save()') SAVE
+            .topSecretBox(ng-click='save()') LOAD
         .characterSheet
             .characterSheetTop
                 .characterCls

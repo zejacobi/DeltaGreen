@@ -11,3 +11,13 @@ def landing():
 @Views.route('/character')
 def character():
     return render_template('character.pug')
+
+
+@Views.route('/character/')
+def character_alt():
+    return render_template('character.pug')
+
+
+@Views.route('/character/<char>')
+def character_load(char=None):
+    return render_template('character.pug')
