@@ -4,6 +4,9 @@
 # Delta Green Character Generator
 Open Source [Delta Green](http://www.delta-green.com/) random character generator.
 
+It's now finished to the point where it can be used online!
+See it in action [here](http://deltagreen.zachjacobi.com)!
+
 ## Features
 * Generates a complete Delta Green character (all skills, stats, derived attributes, bonds, one 
 third of characters are damaged veterans)
@@ -21,11 +24,17 @@ globals `DATABASE` (the name of the mongo database you plan to use) and `MONGO_S
 * Add the open gaming content to your Mongo database with `python SeedDB.py OpenGamingJSON/`
 * Whenever you open this in a new terminal/powershell window, you'll have to activate the VENV again
 with `source venv/bin/activate`
+* Install Ruby
+* Run `gem install sass`
+* Run (from the project directory) `sass ./static/style.sass ./static/style.css`
 
 ## Using (Web)
 * With venv activated, run `python server.py` in the top level folder
     * Go to `localhost:8080` to see the landing page. There will be a link to character
     generation from there.
+    * The argument `mobile` runs in the server on `0.0.0.0`, so other devices on your
+    wifi network can use it
+    * The argument `server` runs the server on port 80 and `0.0.0.0`.
 
 ## Using (Command Line)
 * From the top level directory: `python Test.py`
