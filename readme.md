@@ -15,7 +15,7 @@ third of characters are damaged veterans)
 * Install Python 3.5
 * Create a virtual environment in the project folder with `virtualenv -p python3 venv`
 * Activate the virtual environment with `source venv/bin/activate`
-* Install the necessary packages with `pip install requirements.txt`
+* Install the necessary packages with `pip install -r requirements.txt`
 * You'll need to create a MongoDB database and save the connection string and database name to a
 file called `ExternalServices.py` (in the top level project directory). This file will need the 
 globals `DATABASE` (the name of the mongo database you plan to use) and `MONGO_STRING` 
