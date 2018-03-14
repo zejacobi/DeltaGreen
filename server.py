@@ -1,5 +1,4 @@
 from sys import argv
-
 from flask import Flask
 from API.v1 import V1
 from API.LetsEncrypt import Challenge
@@ -24,4 +23,5 @@ if argv and len(argv) > 1 and argv[1] == 'server':
     port = 80
 
 if __name__ == "__main__":
-    app.run(host, port=port, debug=False)
+    context = ('cert.pem', 'key.pem')
+    app.run(host, port=port, debug=False, ssl_context=context)
