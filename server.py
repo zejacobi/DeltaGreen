@@ -20,7 +20,7 @@ if argv and len(argv) > 1 and argv[1] == 'mobile':
 
 if argv and len(argv) > 1 and argv[1] == 'server':
     host = '0.0.0.0'
-    port = 80
+    port = 443
 
 if __name__ == "__main__":
     context = ('cert.pem', 'key.pem')
