@@ -14,3 +14,5 @@ coverage.xml
 !/Tests/TestData/ExternalServices.py
 static/style.css
 static/style.css.map
+key.pem
+cert.pem
