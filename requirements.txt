@@ -10,7 +10,7 @@ Flask==0.12.2
 idna==2.6
 imagesize==0.7.1
 itsdangerous==0.24
-Jinja2==2.8
+Jinja2==2.11.3
 MarkupSafe==0.23
 mock==2.0.0
 mongomock==3.6.0
